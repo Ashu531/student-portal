@@ -1,0 +1,26 @@
+.otp-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .input-field{
+        width: 15%;
+        padding: 1.6rem 0 1.6rem 2rem;
+        background: rgba(42, 10, 98, 0.1);
+        border-radius: 0.8rem;
+        align-self: stretch;
+        margin: 0.8rem 0;
+        border: none;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2rem;
+        line-height: 2rem;
+        color: #FFFFFF;
+    }
+    .input-field:focus{
+        outline: none;
+    }
+}
