@@ -1,0 +1,28 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-light: #6699ff;
+  --primary-base: #3377ff;
+  --primary-dark: #0f5ef7;
+}
+
+html {
+  font-size: 10px;
+  overflow: hidden;
+  /* //   background: #eee center no-repeat fixed;
+  // @media screen and (min-width: 400px) {
+  //     font-size: 11px;
+  // } */
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+@import "../src/components/home/home";
+@import "../src/components/login/login";
