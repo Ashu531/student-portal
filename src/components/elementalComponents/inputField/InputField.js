@@ -15,7 +15,7 @@ export default function InputField({
 
     return (
         <div className='input-container' style={{width, height, margin}}>
-            {icon && <img className='icon' src={icon}/>}
+            {icon && <img className='icon' src={icon} style={{margin: '0.4rem'}}/>}
             <input 
                 className='input-field' 
                 placeholder={placeholder}

@@ -3,6 +3,7 @@ import Button from '../elementalComponents/button/Button';
 import logo from '../../assets/credenc-logo-big.png';
 import collegeLogo from '../../assets/credenc-text-logo.png';
 import Table from '../elementalComponents/table/Table';
+import Modal from '../elementalComponents/modal/Modal';
 
 export default function Home() {
 
@@ -19,6 +20,17 @@ export default function Home() {
 
     const [amount, setAmount] = useState(0);
 
+    const [confirmationDialog, setConfirmationDialog] = useState(false);
+
+    const getModalData = () => {
+        return {
+            'name': 'John Doe',
+            'email': 'johndoe@gmail.com',
+            'phone': '9876543210',
+            'amount': amount
+        }
+    }
+
     const handleAmount = (isChecked, i) => {
         if(i != -1){
             let installmentList = [...installments];
@@ -30,6 +42,7 @@ export default function Home() {
                 newAmount += installments[i]['amount'] + installments[i]['penalty'];
             } else {
                 newAmount -= installments[i]['amount'] + installments[i]['penalty'];
+                setSelectAll(isChecked);
             }
             setAmount(newAmount);
         } else {
@@ -62,12 +75,29 @@ export default function Home() {
         }
     }
 
+    const handleProceed = () => {
+        if(amount > 0){
+            setConfirmationDialog(true);
+        }else{
+            setConfirmationDialog(false);
+        }
+    }
+
+    const handleProceedAndPay = () => {
+        console.log('successful');
+    }
+
+    const closeModel = () => {
+        setConfirmationDialog(false);
+    }
+
     useEffect(() => {
         console.log(amount);
     }, [amount])
 
     return (
-        <div className='home'>
+        <>
+        <div className={`home ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='container'>
                 <div className='content-container'>
                     <div className='header-container'>
@@ -101,9 +131,15 @@ export default function Home() {
                     <Table list={installments} handleCheckBox={handleAmount} selectAll={selectAll}/>
                 </div>
                 <div className='button-container'>
-                    <Button text='Proceed' handleClick={() => console.log('clicked')}/>
+                    <Button text='Proceed' handleClick={handleProceed}/>
                 </div>
             </div>
         </div>
+        {confirmationDialog && <Modal 
+            data={getModalData()} 
+            handleSubmit={handleProceedAndPay}
+            handleClose={closeModel}
+        />}
+        </>
     )
 }

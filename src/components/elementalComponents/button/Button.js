@@ -6,7 +6,8 @@ export default function Button({
     background='',
     margin='',
     counterValue=0,
-    counterText=''
+    counterText='',
+    size='button-big'
 }) {
 
     const [counter, setCounter] = useState(counterValue);
@@ -18,13 +19,13 @@ export default function Button({
     return (
         <div style={{width: '100%'}}>
             {counter > 0 && <button 
-                className='button disabled'
+                className={`${size} disabled`}
                 style={{background, margin, fontWeight:'500', color:'rgba(255, 255, 255, 0.6)'}}
             >
                 {counterText} {counter} sec..
             </button>}
             {counter == 0 && <button 
-                className='button' 
+                className={`${size}`} 
                 onClick={handleClick} 
                 style={{background, margin}}
             >
