@@ -16,7 +16,7 @@ export default function Button({
     }, [counter]);
 
     return (
-        <div>
+        <div style={{width: '100%'}}>
             {counter > 0 && <button 
                 className='button disabled'
                 style={{background, margin, fontWeight:'500', color:'rgba(255, 255, 255, 0.6)'}}

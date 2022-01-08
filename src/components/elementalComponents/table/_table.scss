@@ -1,0 +1,65 @@
+.table{
+    width: 100%;
+    border-radius: 0.8rem;
+
+    .thead{
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.6rem 1.2rem;
+        border-radius: 0.8rem 0.8rem 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        th{
+            font-weight: normal;
+        }
+    }
+
+    .tbody{
+        max-height: 25rem;
+        display: block;
+        overflow: scroll;
+        overflow-x: hidden;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        border-radius: 0 0 0.8rem 0.8rem;
+
+        .row{
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #D2D1D1;
+
+            .status{
+                padding: 0.4rem 1.2rem;
+                border-radius: 3.2rem;
+                font-weight: 500;
+                font-size: 1.2rem;
+                line-height: 1.8rem;
+                text-transform: uppercase;
+            }
+            .overdue{
+                background: rgba(216, 35, 35, 0.1);
+                color: #D82323;
+            }
+            .due{
+                background: rgba(216, 133, 35, 0.1);
+                color: #D88523;
+            }
+            .paid{
+                background: rgba(119, 219, 38, 0.1);
+                color: #285e09;
+            }
+        }
+
+        // .row:hover{
+        //     transform: scale(1.005);
+        // }
+    }
+
+}
