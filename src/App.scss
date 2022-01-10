@@ -35,7 +35,8 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
   overflow-x: hidden;
-  background: linear-gradient(107.56deg, #4530B1 0%, #772AA1 58.85%, #CA1C7A 99.48%);
+  // background: linear-gradient(107.56deg, #4530B1 0%, #772AA1 58.85%, #CA1C7A 99.48%);
+  background-image: url('../src/assets/background.png');
 }
 
 @import "../src/components/home/home";

@@ -3,6 +3,7 @@ import logo from '../../assets/credenc-logo-big.png';
 import Button from '../elementalComponents/button/Button';
 import InputField from '../elementalComponents/inputField/InputField';
 import OtpField from '../elementalComponents/otpField/OtpField';
+// import background from '../../assets/background.png';
 
 export default function Login() {
 
