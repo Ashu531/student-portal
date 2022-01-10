@@ -6,6 +6,8 @@
   --primary-light: #6699ff;
   --primary-base: #3377ff;
   --primary-dark: #0f5ef7;
+  --white-outline: linear-gradient(120deg,rgba(255, 255, 255, 0.4),rgba(255, 255, 255, 0)); 
+  --coloured-outline: linear-gradient(120deg, rgba(88, 59, 204, 0.9) 0%, rgba(207, 113, 163, 0.9) 100%);
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -37,6 +39,46 @@ body {
   overflow-x: hidden;
   background: linear-gradient(107.56deg, #4530B1 0%, #772AA1 58.85%, #CA1C7A 99.48%);
   // background-image: url('../src/assets/background.png');
+}
+
+.wrapper{
+  position: relative;
+  width: 40rem;
+  height: 50rem;
+  backdrop-filter: blur(80px);
+
+  &::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      border-radius:2.4rem; 
+      padding:2px; 
+      background:linear-gradient(120deg,rgba(255, 255, 255, 0.4)
+      ,rgba(255, 255, 255, 0)
+      ); 
+      -webkit-mask: 
+          linear-gradient(#fff 0 0) content-box, 
+          linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out; 
+      mask-composite: exclude;
+  }
+
+}
+
+@media screen and (max-width: 499px){
+
+  .wrapper{
+      width: 100%;
+      height: 100%;
+
+      &::before{
+          border-radius: 0;
+          border: none;
+      }
+  }
 }
 
 @import "../src/components/home/home";

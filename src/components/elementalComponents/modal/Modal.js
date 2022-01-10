@@ -23,7 +23,7 @@ export default function Modal({ data, handleClose, handleSubmit }) {
                 </div>
                 <div className='subtitle' style={{margin: '1rem 0 0'}}>Please note that, an additional covenience fee may apply</div>
                 <div className='button-container'>
-                    <Button text={`Proceed and Pay ${data.amount}`} size='button-small' handleClick={handleSubmit}/>
+                    <Button text={`Proceed and Pay INR ${data.amount}`} size='button-small' handleClick={handleSubmit}/>
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ import logo from '../../assets/credenc-logo-big.png';
 import collegeLogo from '../../assets/credenc-text-logo.png';
 import Table from '../elementalComponents/table/Table';
 import Modal from '../elementalComponents/modal/Modal';
+import background from '../../assets/background.png';
 
 export default function Home() {
 
@@ -97,7 +98,7 @@ export default function Home() {
 
     return (
         <>
-        <div className={`home ${confirmationDialog ? 'open-modal' : ''}`}>
+        <div className={`home ${confirmationDialog ? 'open-modal' : ''}`} style={{backgroundImage: `url(${background})`}}>
             <div className='container'>
                 <div className='content-container'>
                     <div className='header-container'>

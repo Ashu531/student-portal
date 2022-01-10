@@ -3,10 +3,11 @@ import logo from '../../assets/credenc-logo-big.png';
 import logo2 from '../../assets/credenc-text-logo.png';
 import successIcon from '../../assets/check-circle.svg';
 import Button from '../elementalComponents/button/Button';
+import background from '../../assets/background.png';
 
 export default function Success() {
     return (
-        <div className='success'>
+        <div className='success' style={{backgroundImage: `url(${background})`}}>
             <img src={logo} className='logo'/>
             <img src={logo2} className='logo-right'/>
             <div className='wrapper'>

@@ -3,9 +3,12 @@ import logo from '../../assets/credenc-logo-big.png';
 import Button from '../elementalComponents/button/Button';
 import InputField from '../elementalComponents/inputField/InputField';
 import OtpField from '../elementalComponents/otpField/OtpField';
-// import background from '../../assets/background.png';
+import background from '../../assets/background.png';
+import caret from '../../assets/caret-right.svg';
 
 export default function Login() {
+
+    const students = [{'name': 'John Doe', 'id': 'ABC1234'}, {'name': 'Nandini Mediratta', 'id': 'ABD1235'}];
 
     const [inputValue, setInputValue] = useState('');
     const [isValid, setIsValid] = useState(false);
@@ -14,6 +17,7 @@ export default function Login() {
         value: '',
         values: ['', '', '', '', '', '']
     });
+    const [verified, setVerified] = useState(false);
 
     const getOtpFromState = () => {
         return otp.values.join('');
@@ -41,7 +45,7 @@ export default function Login() {
     const handleProceedButton = () => {
         const isOtpValid = validateOtp(getOtpFromState());
         if(isOtpValid)
-            console.log('congrats');
+            setVerified(true);
     }
 
     const getLastFourDigits = () => {
@@ -66,9 +70,9 @@ export default function Login() {
     }
 
     return (
-        <div className='login'>
+        <div className='login' style={{backgroundImage: `url(${background})`}}>
             <img src={logo} className='logo'/>
-            {!otp.generated && <div className='wrapper'>
+            {!verified && !otp.generated && <div className='wrapper'>
             <div className='container'>
                 <div className='header-container'>
                     <div className='header'>Login</div>
@@ -90,7 +94,7 @@ export default function Login() {
                 </div>
             </div>}
 
-            {otp.generated && <div className='wrapper'>
+            {!verified && otp.generated && <div className='wrapper'>
                 <div className='container'>
                 <div className='header-container'>
                     <div className='header'>Verify OTP</div>
@@ -116,6 +120,28 @@ export default function Login() {
                         margin='0.6rem 0 1.2rem'
                     />
                 </div>
+                </div>
+            </div>}
+            {verified && <div className='wrapper'>
+                <div className='container'>
+                    <div className='header-container'>
+                        <div className='header'>Select Student</div>
+                        {/* <div className='subline'>Please check message on xxxxxx{getLastFourDigits()}</div> */}
+                    </div>
+                    <div style={{width: '100%'}}>
+                        {
+                            students.map((student, i) => (
+                                <div className='student-card'>
+                                    <div className='text-container'>
+                                        <div className='name'>{student.name}</div>
+                                        <div className='id'>{student.id}</div>
+                                    </div>
+                                    <img src={caret} className='icon'/>
+                                </div>
+                            ))
+                        }
+                    </div>
+                    <div></div>
                 </div>
             </div>}
         </div>
