@@ -68,7 +68,8 @@ export default function Login() {
     return (
         <div className='login'>
             <img src={logo} className='logo'/>
-            {!otp.generated && <div className='container'>
+            {!otp.generated && <div className='wrapper'>
+            <div className='container'>
                 <div className='header-container'>
                     <div className='header'>Login</div>
                     <div className='subline'>Let's pay your college fee</div>
@@ -86,9 +87,11 @@ export default function Login() {
                         handleClick={handleGenerateOtpButton}
                     />
                 </div>
+                </div>
             </div>}
 
-            {otp.generated && <div className='container'>
+            {otp.generated && <div className='wrapper'>
+                <div className='container'>
                 <div className='header-container'>
                     <div className='header'>Verify OTP</div>
                     <div className='subline'>Please check message on xxxxxx{getLastFourDigits()}</div>
@@ -112,6 +115,7 @@ export default function Login() {
                         handleClick={handleProceedButton}
                         margin='0.6rem 0 1.2rem'
                     />
+                </div>
                 </div>
             </div>}
         </div>
