@@ -106,7 +106,7 @@ export default function Login() {
     }
 
     const navigateToInstallmentPage = (i) => {
-        navigate(`/${inputValue}/${students[i].id}`);
+        navigate(`/home/${inputValue}/${students[i].id}`);
     }
 
     return (
