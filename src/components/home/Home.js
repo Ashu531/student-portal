@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Button from '../elementalComponents/button/Button';
 import logo from '../../assets/credenc-logo-big.png';
-import collegeLogo from '../../assets/credenc-text-logo.png';
 import Table from '../elementalComponents/table/Table';
 import Modal from '../elementalComponents/modal/Modal';
 import background from '../../assets/background.png';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Home() {
 
-    const [installments, setInstallments] = useState([
-        {'name': 'Installment Name', 'amount': 10000, 'penalty': 1000, 'start_date': '2021 Jan 16', 'due_date': '2021 Jan 16', 'end_date': '2021 Jan 16', 'status': 'overdue', 'is_selected': false},
-        {'name': 'Installment Name', 'amount': 10000, 'penalty': 1000, 'start_date': '2021 Jan 16', 'due_date': '2021 Jan 16', 'end_date': '2021 Jan 16', 'status': 'due', 'is_selected': false},
-        {'name': 'Installment Name', 'amount': 10000, 'penalty': 1000, 'start_date': '2021 Jan 16', 'due_date': '2021 Jan 16', 'end_date': '2021 Jan 16', 'status': 'due', 'is_selected': false},
-        {'name': 'Installment Name', 'amount': 10000, 'penalty': 1000, 'start_date': '2021 Jan 16', 'due_date': '2021 Jan 16', 'end_date': '2021 Jan 16', 'status': 'paid', 'is_selected': false},
-        {'name': 'Installment Name', 'amount': 10000, 'penalty': 1000, 'start_date': '2021 Jan 16', 'due_date': '2021 Jan 16', 'end_date': '2021 Jan 16', 'status': 'overdue', 'is_selected': false},
-        {'name': 'Installment Name', 'amount': 10000, 'penalty': 1000, 'start_date': '2021 Jan 16', 'due_date': '2021 Jan 16', 'end_date': '2021 Jan 16', 'status': 'due', 'is_selected': false},
-    ]);
+    let { id, phone } = useParams();
+
+    const [installments, setInstallments] = useState([]);
+    const [student, setStudent] = useState({});
 
     const [selectAll, setSelectAll] = useState(false);
 
@@ -25,11 +22,19 @@ export default function Home() {
 
     const getModalData = () => {
         return {
-            'name': 'John Doe',
-            'email': 'johndoe@gmail.com',
-            'phone': '9876543210',
+            'name': student.name,
+            'email': student.email,
+            'phone': phone,
             'amount': amount
         }
+    }
+
+    const getData = async () => {
+        const data = await axios.get(`${API_URL}/api/kid/v1/installments/${id}/`)
+        .then(res => res.data)
+        .catch(error => error.response.data);
+
+        return data;
     }
 
     const handleAmount = (isChecked, i) => {
@@ -40,9 +45,9 @@ export default function Home() {
 
             let newAmount = amount;
             if(isChecked){
-                newAmount += installments[i]['amount'] + installments[i]['penalty'];
+                newAmount += parseFloat(installments[i]['amount']) + parseFloat(installments[i]['penalty']);
             } else {
-                newAmount -= installments[i]['amount'] + installments[i]['penalty'];
+                newAmount -= parseFloat(installments[i]['amount']) + parseFloat(installments[i]['penalty']);
                 setSelectAll(isChecked);
             }
             setAmount(newAmount);
@@ -54,7 +59,7 @@ export default function Home() {
                 let amount = 0;
                 installmentList.forEach((installment) => {
                     installment['is_selected'] = isChecked;
-                    amount += installment['amount'] + installment['penalty'];
+                    amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
                 });
 
                 setInstallments(installmentList);
@@ -96,6 +101,13 @@ export default function Home() {
         console.log(amount);
     }, [amount])
 
+    useEffect(async () => {
+        const data = await getData();
+        setInstallments(data.data);
+        setStudent(data.student);
+        console.log(student);
+    }, [])
+
     return (
         <>
         <div className={`home ${confirmationDialog ? 'open-modal' : ''}`} style={{backgroundImage: `url(${background})`}}>
@@ -110,22 +122,22 @@ export default function Home() {
                     </div>
                     <div className='header-container sub-header-container'>
                         <div className='college-container'>
-                            <img src={collegeLogo} className='college-logo'/>
+                            <img src={`data:image/png;base64,${student.logo}`} className='college-logo'/>
                             <div className='mini-header grow'>
                                 <div className='subtitle'>College</div>
-                                <div className='title'>Durham College</div>
+                                <div className='title'>{student.college}</div>
                             </div>
                             <div className='mini-header'>
                                 <div className='subtitle'>Name</div>
-                                <div className='title'>John Doe</div>
+                                <div className='title'>{student.name}</div>
                             </div>
                             <div className='mini-header'>
                                 <div className='subtitle'>Course</div>
-                                <div className='title'>Btech-ECE</div>
+                                <div className='title'>{student.course}</div>
                             </div>
                             <div className='mini-header'>
                                 <div className='subtitle'>Unique ID</div>
-                                <div className='title'>ABC1234</div>
+                                <div className='title'>{student.id}</div>
                             </div>
                         </div>
                     </div>

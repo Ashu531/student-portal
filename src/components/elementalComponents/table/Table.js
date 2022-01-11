@@ -53,7 +53,7 @@ export default function Table({ list, handleCheckBox, selectAll=false}) {
                 {list.map((row, i) => (
                     <tr key={i} className='row'>
                         <td style={{minWidth: '30%'}}>
-                            <span style={{fontSize: '1.4rem', lineHeight: '2.1rem', color: '#000000', fontWeight:'500'}}>
+                            <span style={{fontSize: '1.4rem', lineHeight: '2.1rem', color: '#000000', fontWeight:'500', textTransform: 'capitalize'}}>
                                 {row.name}
                             </span>
                         </td>
@@ -81,7 +81,7 @@ export default function Table({ list, handleCheckBox, selectAll=false}) {
                         </td>
                         <td style={{minWidth: '10%', textAlign: 'right'}}>
                             <span style={{fontSize: '1.4rem', lineHeight: '2.1rem', color: 'rgba(0, 0, 0, 0.6)'}}>
-                                {row.end_date}
+                                {row.expire_date}
                             </span>
                         </td>
                         <td style={{minWidth: '10%', textAlign: 'center'}}>

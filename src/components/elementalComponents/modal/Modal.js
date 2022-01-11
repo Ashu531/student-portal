@@ -17,7 +17,9 @@ export default function Modal({ data, handleClose, handleSubmit }) {
                     <div className="close" onClick={handleClose}>&times;</div>
                 </div>
                 <div className='modal-body'>
-                    <Field value={data.name} icon={profileIcon}/>
+                    <div style={{textTransform: 'capitalize'}}>
+                        <Field value={data.name} icon={profileIcon}/>
+                    </div>
                     <Field value={data.email} icon={mentionIcon}/>
                     <Field value={data.phone} icon={phoneIcon}/>
                 </div>

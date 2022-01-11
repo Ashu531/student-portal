@@ -25,6 +25,14 @@
         backdrop-filter: blur(80px);
         border-radius: 2.4rem;
 
+        .students-container{
+            width: 100%;
+            overflow: scroll;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
         .header-container{
             width: 100%;
 

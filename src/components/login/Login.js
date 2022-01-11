@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import logo from '../../assets/credenc-logo-big.png';
 import Button from '../elementalComponents/button/Button';
 import InputField from '../elementalComponents/inputField/InputField';
 import OtpField from '../elementalComponents/otpField/OtpField';
 import background from '../../assets/background.png';
 import caret from '../../assets/caret-right.svg';
+import axios from 'axios';
 
 export default function Login() {
 
-    const students = [{'name': 'John Doe', 'id': 'ABC1234'}, {'name': 'Nandini Mediratta', 'id': 'ABD1235'}];
+    const navigate = useNavigate();
+
+    const [students, setStudents] = useState([]);
 
     const [inputValue, setInputValue] = useState('');
     const [isValid, setIsValid] = useState(false);
     const [otp, setOtp] = useState({
         generated: false,
-        value: '',
         values: ['', '', '', '', '', '']
     });
     const [verified, setVerified] = useState(false);
@@ -23,8 +26,18 @@ export default function Login() {
         return otp.values.join('');
     }
 
-    const validateOtp = (value) => {
-        return value === otp.value;
+    const validateOtp = async (value) => {
+        if(value.length == 6){
+            const otpVerified = await axios.post(`${API_URL}/api/kid/v1/verify_otp/`, JSON.stringify({otp: value}), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => (res.data.status))
+            .catch(error => error.response.data.status);
+
+            return otpVerified;
+        }
     }
 
     const handleOtp = (val, i) => {
@@ -33,19 +46,42 @@ export default function Login() {
         setOtp({...otp, values: values});
     }
 
-    const handleGenerateOtpButton = () => {
-        if(isValid)
-            setOtp({...otp, generated: true, value: '123456'});
+    const sendOtp = async () => {
+        const otpGenerated = await axios.post(`${API_URL}/api/kid/v1/send_otp/`, JSON.stringify({phone_number: inputValue}), {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => (res.data));
+
+        return otpGenerated.status;
     }
 
-    const handleResendOtpButton = () => {
-        setOtp({...otp, value: '654321'})
+    const getStudents = async () => {
+        const students = await axios.get(`${API_URL}/api/kid/v1/identify/${inputValue}/`)
+        .then(res => (res.data.data));
+
+        return students;
     }
 
-    const handleProceedButton = () => {
-        const isOtpValid = validateOtp(getOtpFromState());
-        if(isOtpValid)
-            setVerified(true);
+    const handleGenerateOtpButton = async () => {
+        if(isValid){
+            const otpGenerated = await sendOtp();
+
+            setOtp({...otp, generated: otpGenerated})
+        }
+    }
+
+    const handleProceedButton = async () => {
+        const isOtpValid = await validateOtp(getOtpFromState());
+        if(isOtpValid){
+            const studentList = await getStudents();
+            if(studentList){
+                console.log(studentList);
+                setStudents(studentList);
+                setVerified(true);
+            }
+        }
     }
 
     const getLastFourDigits = () => {
@@ -67,6 +103,10 @@ export default function Login() {
                 setIsValid(true);
         }
             
+    }
+
+    const navigateToInstallmentPage = (i) => {
+        navigate(`/${inputValue}/${students[i].id}`);
     }
 
     return (
@@ -108,7 +148,7 @@ export default function Login() {
                     <div className='message-left'>Didn't receive an OTP?</div>
                     <Button 
                         text={"Resend OTP"} 
-                        handleClick={handleResendOtpButton}
+                        handleClick={handleGenerateOtpButton}
                         background='rgba(255, 255, 255, 0.15)'
                         margin='0.6rem 0'
                         counterValue={5}
@@ -128,10 +168,10 @@ export default function Login() {
                         <div className='header'>Select Student</div>
                         {/* <div className='subline'>Please check message on xxxxxx{getLastFourDigits()}</div> */}
                     </div>
-                    <div style={{width: '100%'}}>
+                    <div className='students-container'>
                         {
                             students.map((student, i) => (
-                                <div className='student-card'>
+                                <div className='student-card' key={i} onClick={() => navigateToInstallmentPage(i)}>
                                     <div className='text-container'>
                                         <div className='name'>{student.name}</div>
                                         <div className='id'>{student.id}</div>
