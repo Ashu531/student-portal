@@ -17,13 +17,17 @@ export default function Login() {
     const [inputValue, setInputValue] = useState('');
     const [isValid, setIsValid] = useState(false);
     const [otp, setOtp] = useState({
-        generated: false,
+        generated: true,
         values: ['', '', '', '', '', '']
     });
     const [verified, setVerified] = useState(false);
 
     const getOtpFromState = () => {
         return otp.values.join('');
+    }
+
+    const areAllFilled = () => {
+        return getOtpFromState().length === 6;
     }
 
     const validateOtp = async (value) => {
@@ -112,9 +116,10 @@ export default function Login() {
     return (
         <div className='login' style={{backgroundImage: `url(${background})`}}>
             <img src={logo} className='logo'/>
-            {!verified && !otp.generated && <div className='wrapper'>
-            <div className='container'>
+            {!verified && !otp.generated &&
+            <div className='wrapper container'>
                 <div className='header-container'>
+                    <img src={logo} className='logo-small'/>
                     <div className='header'>Login</div>
                     <div className='subline'>Let's pay your college fee</div>
                 </div>
@@ -126,17 +131,20 @@ export default function Login() {
                 />
                 <div className='bottom-container'>
                     <div className='message'>An OTP will be sent to the above number</div>
-                    <Button 
-                        text='Generate OTP' 
-                        handleClick={handleGenerateOtpButton}
-                    />
-                </div>
+                    <div className={isValid ? 'small-wrapper': ''} style={{margin: '1.2rem 0'}}>
+                        <Button 
+                            text='Generate OTP' 
+                            handleClick={handleGenerateOtpButton}
+                            classes={`button-big button-primary ${isValid ? '': 'disabled'}`}
+                        />
+                    </div>
                 </div>
             </div>}
 
-            {!verified && otp.generated && <div className='wrapper'>
-                <div className='container'>
+            {!verified && otp.generated &&
+                <div className='wrapper container'>
                 <div className='header-container'>
+                    <img src={logo} className='logo-small'/>
                     <div className='header'>Verify OTP</div>
                     <div className='subline'>Please check message on xxxxxx{getLastFourDigits()}</div>
                 </div>
@@ -145,26 +153,31 @@ export default function Login() {
                     <OtpField handleChange={(val, i) => handleOtp(val, i)} otp={otp}/>
                 </div> 
                 <div className='bottom-container'>
-                    <div className='message-left'>Didn't receive an OTP?</div>
-                    <Button 
-                        text={"Resend OTP"} 
-                        handleClick={handleGenerateOtpButton}
-                        background='rgba(255, 255, 255, 0.15)'
-                        margin='0.6rem 0'
-                        counterValue={5}
-                        counterText={"Resend OTP in"}
-                    />
+                    <div className='resend-otp-container'>
+                        <div className='message-left'>Didn't receive an OTP?</div>
+                        <div className='small-wrapper-colored' style={{margin: '0.8rem 0'}}>
+                            <Button 
+                                text={"Resend OTP"} 
+                                handleClick={handleGenerateOtpButton}
+                                counterValue={5}
+                                counterText={"Resend in"}
+                                classes='button-big button-secondary'
+                            />
+                        </div>
+                    </div>
+                    <div className={areAllFilled() ? `small-wrapper`: ''} style={{margin: '1.2rem 0 0'}}>
                     <Button 
                         text='Proceed'
                         handleClick={handleProceedButton}
-                        margin='0.6rem 0 1.2rem'
+                        classes={`${areAllFilled() ? '' : 'disabled'} button-big button-primary`}
                     />
-                </div>
+                    </div>
                 </div>
             </div>}
             {verified && <div className='wrapper'>
                 <div className='container'>
                     <div className='header-container'>
+                        <img src={logo} className='logo-small'/>
                         <div className='header'>Select Student</div>
                         {/* <div className='subline'>Please check message on xxxxxx{getLastFourDigits()}</div> */}
                     </div>

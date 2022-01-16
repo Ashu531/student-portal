@@ -10,17 +10,19 @@ export default function InputField({
     maxLength=10,
     width='',
     height='',
-    margin=''
+    margin='',
+    inputType='text'
 }) {
 
     return (
-        <div className='input-container' style={{width, height, margin}}>
+        <div className='small-wrapper input-container' style={{width, height, margin}}>
             {icon && <img className='icon' src={icon} style={{margin: '0.4rem'}}/>}
             <input 
                 className='input-field' 
                 placeholder={placeholder}
                 onChange={(e) => handleChange(e.target.value)}
                 maxLength={maxLength}
+                type={inputType}
             ></input>
             {validate && validity && <img className='icon' src={check}/>}
         </div>

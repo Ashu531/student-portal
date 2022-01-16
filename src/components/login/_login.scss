@@ -14,15 +14,15 @@
     }
 
     .container{
-        height: 100%;
-        width: 100%;
+        width: 40rem;
+        height: 50rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
         padding: 3.2rem 2.4rem 2.4rem;
         background: rgba(255, 255, 255, 0.18);
-        backdrop-filter: blur(80px);
+        // backdrop-filter: blur(80px);
         border-radius: 2.4rem;
 
         .students-container{
@@ -35,6 +35,12 @@
 
         .header-container{
             width: 100%;
+
+            .logo-small{
+                width: 4.2rem;
+                height: 4.4rem;
+                display: none;
+            }
 
             .header{
                 font-style: normal;
@@ -69,6 +75,12 @@
 
         .bottom-container{
             width: 100%;
+
+            .resend-otp-container {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+            }
 
             .message{
                 text-align: center;
@@ -118,3 +130,57 @@
         height: 3.2rem;
     }
 }
+
+@media screen and (max-width: 499px){
+
+    .logo{
+        display: none;
+    }
+
+    .login{
+        .container{
+            width: 85%;
+            height: 85%;
+
+            .header-container{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                pointer-events: auto;
+
+                .logo-small{
+                    display: block;
+                }
+
+                .header{
+                    font-size: 2rem;
+                    line-height: 3rem;
+                }
+    
+                .subline{
+                    font-size: 1.2rem;
+                }
+            }
+
+            .bottom-container{
+                pointer-events: auto;
+
+                .resend-otp-container{
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+
+                .message{
+                    line-height: 1.8rem;
+                }
+
+                .message-left{
+                    font-size: 1.2rem;
+                    line-height: 2.3rem;
+                }
+            }
+        }
+    }
+  }

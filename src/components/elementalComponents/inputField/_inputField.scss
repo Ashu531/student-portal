@@ -29,3 +29,12 @@
         height: 1.6rem;
     }
 }
+
+@media screen and (max-width: 499px){
+    .input-container{
+        .input-field{
+            font-size: 1.2rem;
+            line-height: 1.8rem;
+        }
+    }
+}

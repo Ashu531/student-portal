@@ -10,12 +10,15 @@ export default function Success() {
         <div className='success' style={{backgroundImage: `url(${background})`}}>
             <img src={logo} className='logo'/>
             <img src={logo2} className='logo-right'/>
-            <div className='wrapper'>
                 <div className='container'>
                     <img src={successIcon} className='icon'/>
                     <div className='header'>
                         <div className='title'>Payment Successful</div>
                         <div className='subtitle'>Your fees payment has been made!</div>
+                        <div style={{display:'flex', justifyContent:'space-evenly', margin:'1.2rem 0'}}>
+                        <img src={logo} className='header-logo-small'/>
+                        <img src={logo2} className='header-logo'/>
+                        </div>
                     </div>
                     <div className='receipt-container'>
                         <div className='pair'>
@@ -39,9 +42,10 @@ export default function Success() {
                             <div className='value'>NEFT</div>
                         </div>
                     </div>
-                    <Button text='Download Receipt' handleClick={() => console.log('downloaded')}/>
+                    <div style={{margin: '1.5rem 0', width: '100%'}}>
+                        <Button text='Download Receipt' handleClick={() => console.log('downloaded')} classes='button-big button-primary'/>
+                    </div>
                 </div>
-            </div>
         </div>
     )
 }
