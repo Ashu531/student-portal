@@ -102,8 +102,9 @@
 
     .success{
         .container{
-            width: 85%;
-            height: 85%;
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
 
             .title{
                 font-size: 2rem;

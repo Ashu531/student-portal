@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import checkIcon from "../../../assets/checkIcon.svg";
+import checkIcon from "../../../assets/check-icon.svg";
 
-export default function CheckBox({ size = "1.8rem", setChecked, isChecked=false }) {
+export default function CheckBox({ size = "2.2rem", setChecked, isChecked=false }) {
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -15,12 +15,13 @@ export default function CheckBox({ size = "1.8rem", setChecked, isChecked=false 
       style={{
         width: `${size}`,
         height: `${size}`,
-        background: `${isChecked ? "#73E286" : "none"}`,
+        background: `${isChecked ? "rgba(158, 60, 165, 1)" : "none"}`,
+        border: `${isChecked ? "2px solid rgba(158, 60, 165, 1)" : ""}`
       }}
     >
       {isChecked && (
         <img
-          style={{ height: `${size}`, width: `${size}`, margin: 0 }}
+          style={{ height: '1.8rem', width: '1.8rem', margin: 0 }}
           src={checkIcon}
           alt="check icon"
         />

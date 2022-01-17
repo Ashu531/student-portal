@@ -90,7 +90,7 @@ export default function Table({ list, handleCheckBox, selectAll=false}) {
                             </span>
                         </td>
                         <td>
-                            <CheckBox setChecked={(v) => handleCheckBox(v, i)} isChecked={row.is_selected}/>
+                            <CheckBox setChecked={(v) => handleCheckBox(v, i)} isChecked={row.is_mandatory}/>
                         </td>
                     </tr>
                     ))

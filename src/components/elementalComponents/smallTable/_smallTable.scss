@@ -1,0 +1,33 @@
+.small-table{
+    display: none;
+    width: 100%;
+    margin: 1rem 0;
+
+    .thead{
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.6rem 1.2rem;
+        border-radius: 0.8rem 0.8rem 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.2rem;
+        font-weight: 1.8rem;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .tbody{
+        max-height: 30rem;
+        overflow: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        border-radius: 0 0 0.8rem 0.8rem;
+    }
+}
+
+@media screen and(max-width: 499px){
+    .small-table{
+        display: block;
+    }
+}

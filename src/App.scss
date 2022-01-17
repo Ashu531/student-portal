@@ -38,7 +38,6 @@ body {
   font-family: "Poppins", sans-serif;
   overflow-x: hidden;
   background: linear-gradient(107.56deg, #4530B1 0%, #772AA1 58.85%, #CA1C7A 99.48%);
-  // background-image: url('../src/assets/background.png');
 }
 
 .wrapper, .small-wrapper, .input-wrapper, .small-wrapper-colored{
@@ -96,6 +95,19 @@ body {
 }
 
 @media screen and(max-width: 499px){
+
+  body{
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .wrapper{
+    all:revert;
+    &::before{
+      content: none;
+    }
+  }
+
   .small-wrapper-colored{
     all: revert;
     &::before{
@@ -115,3 +127,6 @@ body {
 @import "../src/components/elementalComponents/modal/modal";
 @import "../src/components/elementalComponents/field/field";
 @import "../src/components/success/success";
+@import "../src/components/elementalComponents/collapsible/collapsible";
+@import "../src/components/elementalComponents/smallTable/smallTable";
+@import "../src/components/elementalComponents/collapsible/collapsibleInstallment";

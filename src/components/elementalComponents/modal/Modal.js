@@ -23,9 +23,13 @@ export default function Modal({ data, handleClose, handleSubmit }) {
                     <Field value={data.email} icon={mentionIcon}/>
                     <Field value={data.phone} icon={phoneIcon}/>
                 </div>
-                <div className='subtitle' style={{margin: '1rem 0 0'}}>Please note that, an additional covenience fee may apply</div>
                 <div className='button-container'>
-                    <Button text={`Proceed and Pay INR ${data.amount}`} size='button-small' handleClick={handleSubmit}/>
+                <div className='subtitle-2' style={{margin: '1rem 0'}}>Please note that, an additional covenience fee may apply</div>
+                    <Button 
+                        text={`Proceed and Pay INR ${data.amount}`} 
+                        classes='small-wrapper button-small button-primary' 
+                        handleClick={handleSubmit}
+                    />
                 </div>
             </div>
         </div>

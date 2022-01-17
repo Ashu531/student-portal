@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import logo from '../../assets/credenc-logo-big.png';
+import logo from '../../assets/credenc-logo.svg';
 import Button from '../elementalComponents/button/Button';
 import InputField from '../elementalComponents/inputField/InputField';
 import OtpField from '../elementalComponents/otpField/OtpField';
@@ -17,7 +17,7 @@ export default function Login() {
     const [inputValue, setInputValue] = useState('');
     const [isValid, setIsValid] = useState(false);
     const [otp, setOtp] = useState({
-        generated: true,
+        generated: false,
         values: ['', '', '', '', '', '']
     });
     const [verified, setVerified] = useState(false);
@@ -174,8 +174,8 @@ export default function Login() {
                     </div>
                 </div>
             </div>}
-            {verified && <div className='wrapper'>
-                <div className='container'>
+            {verified && 
+                <div className='wrapper container'>
                     <div className='header-container'>
                         <img src={logo} className='logo-small'/>
                         <div className='header'>Select Student</div>
@@ -195,8 +195,7 @@ export default function Login() {
                         }
                     </div>
                     <div></div>
-                </div>
-            </div>}
+                </div>}
         </div>
     )
 }

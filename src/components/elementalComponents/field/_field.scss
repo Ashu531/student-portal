@@ -10,6 +10,7 @@
     align-self: stretch;
     margin: 0.8rem 0;
     backdrop-filter: blur(12px);
+    overflow-wrap: break-word;
 
     .value{
         width: 100%;
@@ -28,5 +29,14 @@
         border-radius: 50%;
         padding: 0.4rem;
         background: rgba(255, 255, 255, 0.25);
+    }
+}
+
+@media screen and(max-width: 499px){
+    .field-container{
+        .value{
+            font-size: 1.2rem;
+            line-height: 1.8rem;
+        }
     }
 }

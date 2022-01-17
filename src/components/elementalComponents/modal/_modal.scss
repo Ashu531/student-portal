@@ -45,10 +45,25 @@
             color: rgba(255, 255, 255, 0.9);
         }
 
-        .subtitle{
+        .subtitle, .subtitle-2{
             font-size: 1.2rem;
             line-height: 1.8rem;
             color: rgba(255, 255, 255, 0.6);
+        }
+    }
+}
+
+@media screen and(max-width: 499px){
+    .modal{
+        .modal-content{
+            height: 75%;
+            width: 85%;
+
+            .subtitle-2{
+                text-align: center;
+                font-size: 1rem;
+                line-height: 1.35rem;
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../../assets/credenc-logo-big.png';
+import logo from '../../assets/credenc-logo.svg';
 import logo2 from '../../assets/credenc-text-logo.png';
 import successIcon from '../../assets/check-circle.svg';
 import Button from '../elementalComponents/button/Button';
@@ -42,8 +42,11 @@ export default function Success() {
                             <div className='value'>NEFT</div>
                         </div>
                     </div>
-                    <div style={{margin: '1.5rem 0', width: '100%'}}>
-                        <Button text='Download Receipt' handleClick={() => console.log('downloaded')} classes='button-big button-primary'/>
+                    <div className='small-wrapper' style={{margin: '1.5rem 0', width: '100%'}}>
+                        <Button 
+                            text='Download Receipt' 
+                            handleClick={() => console.log('downloaded')} 
+                            classes='button-big button-primary'/>
                     </div>
                 </div>
         </div>
