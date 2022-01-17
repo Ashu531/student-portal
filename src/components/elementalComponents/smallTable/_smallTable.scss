@@ -17,7 +17,7 @@
     }
 
     .tbody{
-        max-height: 30rem;
+        height: 50vh;
         overflow: scroll;
         &::-webkit-scrollbar {
             display: none;
