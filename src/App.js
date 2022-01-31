@@ -11,8 +11,10 @@ function App() {
         <Routes>
             <Route exact path="/login" element={<Login/>} />
             <Route exact path="/success" element={<Success/>} />
-            <Route path="/home/:token" element={<Home />} />
-            <Route path="/*" element={<Login/>} />
+            <Route element={<CheckAuthentication />}>
+              <Route exact path="/home/:token" element={<Home />} />
+              <Route eaxct path="/" element={<Home />}/>
+            </Route>
         </Routes>
     </Router>
   )
