@@ -9,19 +9,13 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Collapsible from '../elementalComponents/collapsible/Collapsible';
 import SmallTable from '../elementalComponents/smallTable/SmallTable';
+import useScript from '../../hooks/useScript';
 
 export default function Home() {
 
-    let { id, phone } = useParams();
+    let { token } = useParams();
 
-    const [installments, setInstallments] = useState([
-        {amount: "12000.0", due_date: "2022-01-20", expire_date: "2022-01-20", id: 25488, is_mandatory: "True", name: "sem1", penalty: 0, start_date: "2022-01-13", status: "overdue"},
-        {amount: "12000.0", due_date: "2022-01-20", expire_date: "2022-01-20", id: 25488, is_mandatory: "True", name: "sem1", penalty: 0, start_date: "2022-01-13", status: "overdue"},
-        {amount: "12000.0", due_date: "2022-01-20", expire_date: "2022-01-20", id: 25488, is_mandatory: "True", name: "sem1", penalty: 0, start_date: "2022-01-13", status: "due"},
-        {amount: "12000.0", due_date: "2022-01-20", expire_date: "2022-01-20", id: 25488, is_mandatory: "True", name: "sem1", penalty: 0, start_date: "2022-01-13", status: "due"},
-        {amount: "12000.0", due_date: "2022-01-20", expire_date: "2022-01-20", id: 25488, is_mandatory: "True", name: "sem1", penalty: 0, start_date: "2022-01-13", status: "paid"},
-        {amount: "12000.0", due_date: "2022-01-20", expire_date: "2022-01-20", id: 25488, is_mandatory: "True", name: "sem1", penalty: 0, start_date: "2022-01-13", status: "paid"} 
-    ]);
+    const [installments, setInstallments] = useState([]);
     const [student, setStudent] = useState({});
 
     const [selectAll, setSelectAll] = useState(false);
@@ -32,17 +26,33 @@ export default function Home() {
 
     const [studentCollapsed, setStudentCollapsed] = useState(true);
 
-    const getModalData = () => {
+    const [modalData, setModalData] = useState({});
+
+    const [easebuzzCheckout, setEasebuzzCheckout] = useState(null);
+
+    const getModalData = async () => {
+        const {ids, amount} = getSelectedInstallments();
+        console.log(ids, amount);
+        const data = await axios.post(`${API_URL}/api/kid/v1/payment/${token}/`, {
+            'ids': ids,
+            'amount': amount,
+        }).then(res => res.data)
+        .catch(err => console.log(err));
+
+        return data;
+    }
+
+    const getSelectedInstallments = () => {
+        const selectedInstallments = installments.filter(installment => installment.is_mandatory === 'True' || installment.is_mandatory === true);
+        const selectedids = selectedInstallments.map(installment => installment.id);
         return {
-            'name': student.name,
-            'email': student.email,
-            'phone': phone,
+            'ids': selectedids,
             'amount': amount
         }
     }
 
     const getData = async () => {
-        const data = await axios.get(`${API_URL}/api/kid/v1/installments/${id}/`)
+        const data = await axios.get(`${API_URL}/api/kid/v1/installments/${token}/`)
         .then(res => res.data)
         .catch(error => error.response.data);
 
@@ -93,20 +103,34 @@ export default function Home() {
         }
     }
 
-    const handleProceed = () => {
+    const handleProceed = async () => {
         if(amount > 0){
+            const {student, data} = await getModalData();
+            setModalData({
+                'student': student,
+                'key': data,
+                'amount': amount
+            });
             setConfirmationDialog(true);
         }else{
             setConfirmationDialog(false);
         }
     }
 
-    const handleProceedAndPay = () => {
-        console.log('successful');
-    }
-
     const closeModel = () => {
         setConfirmationDialog(false);
+    }
+
+    const handleProceedAndPay = () => {
+        let options = {
+            access_key: modalData.key, // access key received via Initiate Payment
+            onResponse: (response) => {
+                console.log(response);
+            },
+            theme: "#4530B1" // color hex
+        }
+        if(easebuzzCheckout)
+            easebuzzCheckout.initiatePayment(options);
     }
 
     useEffect(() => {
@@ -128,7 +152,13 @@ export default function Home() {
         const data = await getData();
         // setInstallments(data.data);
         setStudent(data.student);
+        setInstallments(data.data);
         console.log(student);
+
+        useScript('https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/easebuzz-checkout.js', () => {
+            setEasebuzzCheckout(new EasebuzzCheckout("7ITASSQJE1", 'prod'));
+        });
+
     }, [])
 
     return (
@@ -184,7 +214,7 @@ export default function Home() {
             </div>
         </div>
         {confirmationDialog && <Modal 
-            data={getModalData()} 
+            data={modalData} 
             handleSubmit={handleProceedAndPay}
             handleClose={closeModel}
         />}

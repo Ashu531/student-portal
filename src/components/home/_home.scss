@@ -139,7 +139,6 @@
 }
 
 .open-modal{
-    filter: blur(5px);
     pointer-events: none;
 }
 
@@ -147,7 +146,7 @@
     .home{
         .container{
             width: 100%;
-            height: 93%;
+            height: 89%;
             border-radius: 0;
 
             .content-container{

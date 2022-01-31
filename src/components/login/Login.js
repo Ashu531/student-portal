@@ -32,7 +32,10 @@ export default function Login() {
 
     const validateOtp = async (value) => {
         if(value.length == 6){
-            const otpVerified = await axios.post(`${API_URL}/api/kid/v1/verify_otp/`, JSON.stringify({otp: value}), {
+            const otpVerified = await axios.post(`${API_URL}/api/kid/v1/verify_otp/`, JSON.stringify({
+                'phone_number': inputValue,
+                'otp': value,
+            }), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -110,11 +113,11 @@ export default function Login() {
     }
 
     const navigateToInstallmentPage = (i) => {
-        navigate(`/home/${inputValue}/${students[i].id}`);
+        navigate(`/home/${students[i].token}`);
     }
 
     return (
-        <div className='login' style={{backgroundImage: `url(${background})`}}>
+        <div className='login' style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
             <img src={logo} className='logo'/>
             {!verified && !otp.generated &&
             <div className='wrapper container'>
@@ -127,11 +130,12 @@ export default function Login() {
                     placeholder={'Enter registered Phone Number'} 
                     validate={true}
                     validity={isValid}
+                    inputType='tel'
                     handleChange={handleInputChange}
                 />
                 <div className='bottom-container'>
                     <div className='message'>An OTP will be sent to the above number</div>
-                    <div className={isValid ? 'small-wrapper': ''} style={{margin: '1.2rem 0'}}>
+                    <div className={isValid ? 'small-wrapper': ''} style={{margin: '1.2rem 0 0'}}>
                         <Button 
                             text='Generate OTP' 
                             handleClick={handleGenerateOtpButton}
@@ -159,7 +163,7 @@ export default function Login() {
                             <Button 
                                 text={"Resend OTP"} 
                                 handleClick={handleGenerateOtpButton}
-                                counterValue={5}
+                                counterValue={20}
                                 counterText={"Resend in"}
                                 classes='button-big button-secondary'
                             />

@@ -9,6 +9,12 @@ export default function Button({
 }) {
 
     const [counter, setCounter] = useState(counterValue);
+
+    const handleButtonClick = () => {
+        setCounter(counterValue);
+        handleClick();
+    }
+
     useEffect(() => {
         const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
         return () => clearInterval(timer);
@@ -25,7 +31,7 @@ export default function Button({
             {counter == 0 &&
                 <button 
                     className={`button ${classes}`} 
-                    onClick={handleClick}
+                    onClick={handleButtonClick}
                 >
                     {text}
                 </button>}

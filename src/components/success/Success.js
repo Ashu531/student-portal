@@ -7,18 +7,18 @@ import background from '../../assets/background.png';
 
 export default function Success() {
     return (
-        <div className='success' style={{backgroundImage: `url(${background})`}}>
+        <div className='success' style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
             <img src={logo} className='logo'/>
             <img src={logo2} className='logo-right'/>
-                <div className='container'>
-                    <img src={successIcon} className='icon'/>
-                    <div className='header'>
-                        <div className='title'>Payment Successful</div>
-                        <div className='subtitle'>Your fees payment has been made!</div>
-                        <div style={{display:'flex', justifyContent:'space-evenly', margin:'1.2rem 0'}}>
+                <div className='wrapper container'>
+                    <div style={{width: '100%', display:'flex', justifyContent:'space-between', margin:'1.2rem 0'}}>
                         <img src={logo} className='header-logo-small'/>
                         <img src={logo2} className='header-logo'/>
-                        </div>
+                    </div>
+                    <div className='header'>
+                        <img src={successIcon} className='icon'/>
+                        <div className='title'>Payment Successful</div>
+                        <div className='subtitle'>Your fees payment has been made!</div>
                     </div>
                     <div className='receipt-container'>
                         <div className='pair'>

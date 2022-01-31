@@ -35,7 +35,7 @@ const configs = addBaseConfig({
       //   "U2FsdGVkX19p7zIuVPh8mW1fp9PdMxR0aGHzQ0IbJuw="
       // ),
       // LOGIN_API_URL: JSON.stringify("http://localhost:7777"),
-      API_URL: JSON.stringify("http://13.232.147.199"),
+      API_URL: JSON.stringify("http://3.109.132.146"),
     }),
     // new HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({

@@ -31,6 +31,7 @@ export default function OtpField({ handleChange, otp }) {
                     tabIndex={1}
                     onKeyUp={e => inputfocus(e)}
                     value={otp.values[0]}
+                    type='number'
                 ></input>
             </span>
             <span className='input-wrapper'>
@@ -41,6 +42,7 @@ export default function OtpField({ handleChange, otp }) {
                     tabIndex={2}
                     onKeyUp={e => inputfocus(e)}
                     value={otp.values[1]}
+                    type='number'
                 ></input>
             </span>
             <span className='input-wrapper'>
@@ -51,6 +53,7 @@ export default function OtpField({ handleChange, otp }) {
                     tabIndex={3}
                     onKeyUp={e => inputfocus(e)}
                     value={otp.values[2]}
+                    type='number'
                 ></input>
             </span>
             <span className='input-wrapper'>
@@ -61,6 +64,7 @@ export default function OtpField({ handleChange, otp }) {
                     tabIndex={4}
                     onKeyUp={e => inputfocus(e)}
                     value={otp.values[3]}
+                    type='number'
                 ></input>
             </span>
             <span className='input-wrapper'>
@@ -71,6 +75,7 @@ export default function OtpField({ handleChange, otp }) {
                     tabIndex={5}
                     onKeyUp={e => inputfocus(e)}
                     value={otp.values[4]}
+                    type='number'
                 ></input>
             </span>
             <span className='input-wrapper'>
@@ -81,6 +86,7 @@ export default function OtpField({ handleChange, otp }) {
                     tabIndex={6}
                     onKeyUp={e => inputfocus(e)}
                     value={otp.values[5]}
+                    type='number'
                 ></input>
             </span>
         </form>

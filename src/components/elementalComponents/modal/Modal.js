@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Field from '../field/Field';
 import profileIcon from '../../../assets/profile-icon.svg';
 import mentionIcon from '../../../assets/mention-icon.svg';
@@ -6,6 +6,7 @@ import phoneIcon from '../../../assets/phone-icon.svg';
 import Button from '../button/Button';
 
 export default function Modal({ data, handleClose, handleSubmit }) {
+
     return (
         <div className='modal'>
             <div className='modal-content'>
@@ -18,10 +19,10 @@ export default function Modal({ data, handleClose, handleSubmit }) {
                 </div>
                 <div className='modal-body'>
                     <div style={{textTransform: 'capitalize'}}>
-                        <Field value={data.name} icon={profileIcon}/>
+                        <Field value={data.student && data.student.name} icon={profileIcon}/>
                     </div>
-                    <Field value={data.email} icon={mentionIcon}/>
-                    <Field value={data.phone} icon={phoneIcon}/>
+                    <Field value={data.student && data.student.email} icon={mentionIcon}/>
+                    <Field value={data.student && data.student.phone} icon={phoneIcon}/>
                 </div>
                 <div className='button-container'>
                 <div className='subtitle-2' style={{margin: '1rem 0'}}>Please note that, an additional covenience fee may apply</div>
