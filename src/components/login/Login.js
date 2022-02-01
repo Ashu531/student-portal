@@ -7,6 +7,7 @@ import OtpField from '../elementalComponents/otpField/OtpField';
 import background from '../../assets/background.png';
 import caret from '../../assets/caret-right.svg';
 import axios from 'axios';
+import { saveToken } from '../../services/authService';
 
 export default function Login() {
 
@@ -113,6 +114,7 @@ export default function Login() {
     }
 
     const navigateToInstallmentPage = (i) => {
+        saveToken(students[i].token);
         navigate(`/home/${students[i].token}`);
     }
 

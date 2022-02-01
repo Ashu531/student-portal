@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Bars } from "react-loader-spinner";
-import { useParams, Outlet, Navigate, useNavigate } from "react-router-dom";
+import { Outlet, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { getToken, authenticateUser } from "../services/authService";
 import background from '../assets/background.svg';
 
 
 function CheckAuthentication() {
-    const { token } = useParams();
+    // const {token} = useParams();
+    const navigate = useNavigate();
+
+    let token = useLocation().pathname.split('/')[2];
+
 
     const [authStatus, setAuthStatus] = useState(null);
 
     const getAuthStatus = async () => {
-      if(token == null){
-        return await authenticateUser(getToken());
-      }
-      
-      return await authenticateUser(token);
+      if(!token){
+        const localToken = getToken();
+        if(localToken !== ''){
+          console.log('navigate', localToken);
+          navigate(`/home/${localToken}`);
+        }
+      } else {
+          return await authenticateUser(token);
+        }
     }
 
     useEffect( async () => {
@@ -24,7 +32,7 @@ function CheckAuthentication() {
     }, [])
 
     useEffect(() => {
-      console.log(authStatus);
+      console.log( 'authres', authStatus);
     }, [setAuthStatus]);
 
     if(authStatus == null){
