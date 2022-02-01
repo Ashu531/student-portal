@@ -4,6 +4,7 @@ import Login from './components/login/Login';
 import Home from './components/home/Home';
 import Success from './components/success/Success';
 import CheckAuthentication from './components/CheckAuthentication';
+import InitialRoute from './components/InitialRoute';
 
 function App() {
   return(
@@ -13,8 +14,8 @@ function App() {
             <Route exact path="/success" element={<Success/>} />
             <Route element={<CheckAuthentication />}>
               <Route exact path="/home/:token" element={<Home />} />
-              <Route eaxct path="/" element={<Home />}/>
             </Route>
+            <Route eaxct path="/" element={<InitialRoute />}/>
         </Routes>
     </Router>
   )

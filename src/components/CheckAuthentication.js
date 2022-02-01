@@ -1,33 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Bars } from "react-loader-spinner";
-import { Outlet, Navigate, useNavigate, useLocation } from "react-router-dom";
-import { getToken, authenticateUser } from "../services/authService";
+import { Outlet, Navigate, useParams } from "react-router-dom";
+import { authenticateUser } from "../services/authService";
 import background from '../assets/background.svg';
 
 
 function CheckAuthentication() {
-    // const {token} = useParams();
-    const navigate = useNavigate();
-
-    let token = useLocation().pathname.split('/')[2];
-
-
+    const {token} = useParams();
     const [authStatus, setAuthStatus] = useState(null);
 
-    const getAuthStatus = async () => {
-      if(!token){
-        const localToken = getToken();
-        if(localToken !== ''){
-          console.log('navigate', localToken);
-          navigate(`/home/${localToken}`);
-        }
-      }
-      
-      return await authenticateUser(token);
-    }
-
-    useEffect( async () => {
-      let authRes = await getAuthStatus();
+    useEffect(async () => {
+      let authRes = await authenticateUser(token);
       setAuthStatus(authRes);
     }, [])
 
