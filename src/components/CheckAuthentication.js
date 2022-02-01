@@ -21,9 +21,9 @@ function CheckAuthentication() {
           console.log('navigate', localToken);
           navigate(`/home/${localToken}`);
         }
-      } else {
-          return await authenticateUser(token);
-        }
+      }
+      
+      return await authenticateUser(token);
     }
 
     useEffect( async () => {

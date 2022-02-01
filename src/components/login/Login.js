@@ -119,7 +119,7 @@ export default function Login() {
     }
 
     return (
-        <div className='login' style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
+        <div className='login' style={{backgroundImage: `url(${background})`}}>
             <img src={logo} className='logo'/>
             {!verified && !otp.generated &&
             <div className='wrapper container'>
