@@ -5,15 +5,18 @@ import logo2 from '../../assets/credenc-text-logo.png';
 import Table from '../elementalComponents/table/Table';
 import Modal from '../elementalComponents/modal/Modal';
 import background from '../../assets/background.png';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Collapsible from '../elementalComponents/collapsible/Collapsible';
 import SmallTable from '../elementalComponents/smallTable/SmallTable';
 import useScript from '../../hooks/useScript';
+import { Bars } from 'react-loader-spinner';
+import { delay, logoutUser } from '../../services/authService';
 
 export default function Home() {
 
     let { token } = useParams();
+    const navigate = useNavigate();
 
     const [installments, setInstallments] = useState([]);
     const [student, setStudent] = useState({});
@@ -29,6 +32,14 @@ export default function Home() {
     const [modalData, setModalData] = useState({});
 
     const [easebuzzCheckout, setEasebuzzCheckout] = useState(null);
+
+    const [loader, setLoader] = useState(false);
+
+    const logout = async () => {
+        const loggedOut = await logoutUser();
+        if(loggedOut)
+            navigate('/login');
+    }
 
     const getModalData = async () => {
         const {ids, amount} = getSelectedInstallments();
@@ -80,8 +91,10 @@ export default function Home() {
                 let installmentList = [...installments];
                 let amount = 0;
                 installmentList.forEach((installment) => {
-                    installment['is_mandatory'] = isChecked;
-                    amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
+                    if(installment['status'] === 'due' || installment['status'] === 'overdue'){
+                        installment['is_mandatory'] = isChecked;
+                        amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
+                    }
                 });
 
                 setInstallments(installmentList);
@@ -104,6 +117,7 @@ export default function Home() {
     }
 
     const handleProceed = async () => {
+        setLoader(true);
         if(amount > 0){
             const {student, data} = await getModalData();
             setModalData({
@@ -115,6 +129,7 @@ export default function Home() {
         }else{
             setConfirmationDialog(false);
         }
+        setLoader(false);
     }
 
     const closeModel = () => {
@@ -125,7 +140,9 @@ export default function Home() {
         let options = {
             access_key: modalData.key, // access key received via Initiate Payment
             onResponse: (response) => {
-                console.log(response);
+                if(response.status === 'success'){
+                    navigate('/success', {state: response});
+                }
             },
             theme: "#4530B1" // color hex
         }
@@ -140,7 +157,7 @@ export default function Home() {
     useEffect(() => {
         let amount = 0;
         installments.forEach((installment) => {
-            if(installment['is_mandatory']){
+            if(installment['is_mandatory'] === 'True' || installment['is_mandatory'] === true){
                 amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
             }
         })
@@ -149,11 +166,19 @@ export default function Home() {
     }, [installments])
 
     useEffect(async () => {
+        setLoader(true);
         const data = await getData();
-        // setInstallments(data.data);
         setStudent(data.student);
+
+        data.data.forEach((installment, i) => {
+            if(installment['status'] !== 'due' && installment['status'] !== 'overdue'){
+                data.data[i]['is_mandatory'] = false;
+                console.log(installment);
+            }
+        });
+
         setInstallments(data.data);
-        console.log(student);
+        setLoader(false);
 
         useScript('https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/easebuzz-checkout.js', () => {
             setEasebuzzCheckout(new EasebuzzCheckout("7ITASSQJE1", 'prod'));
@@ -165,21 +190,35 @@ export default function Home() {
         <>
         <div className={`home ${confirmationDialog ? 'open-modal' : ''}`} style={{backgroundImage: `url(${background})`}}>
             <div className='wrapper container'>
-                <div className='content-container'>
+                {!loader && <div className='content-container'>
                     <div className='logo-container'>
                         <img src={logo} className='header-logo-small'/>
-                        <img src={`data:image/png;base64,${student.logo}`} className='header-logo'/>
+                        <div className='responsive-logout'>
+                            <img src={student.logo} className='header-logo'/>
+                            <Button 
+                                text='Logout' 
+                                handleClick={logout} 
+                                classes='button-white'
+                            />
+                        </div>
                     </div>
                     <div className='header-container'>
                         <div className='header'>
                             <div className='title'>Select Installments</div>
                             <div className='subtitle'>Select the installment you want to pay</div>
                         </div>
-                        <img src={logo} className='logo'/>
+                        <div className='responsive-logout-big'>
+                            <img src={logo} className='logo'/>
+                            <Button 
+                                text='Logout' 
+                                handleClick={logout} 
+                                classes='button-white'
+                            />
+                        </div>
                     </div>
                     <div className='sub-header-container'>
                         <div className='college-container'>
-                            <img src={`data:image/png;base64,${student.logo}`} className='college-logo'/>
+                            <img src={student.logo} className='college-logo'/>
                             <div className='mini-header grow'>
                                 <div className='subtitle'>College</div>
                                 <div className='title'>{student.college}</div>
@@ -204,13 +243,18 @@ export default function Home() {
                         collapsed={studentCollapsed}
                         handleClick={() => setStudentCollapsed(!studentCollapsed)}/>
                     <SmallTable list={installments} handleCheckBox={handleAmount} dependent={!studentCollapsed}/>
-                </div>
-                <div className='button-container'>
+                </div>}
+                {!loader && <div className='button-container'>
                     <Button 
                         text='Proceed' 
                         handleClick={handleProceed}
                         classes='small-wrapper button-small button-primary'/>
-                </div>
+                </div>}
+                {loader && 
+                    <div className="credenc-loader">
+                        <Bars color="#00BFFF" height={100} width={100}/>
+                    </div>
+                }
             </div>
         </div>
         {confirmationDialog && <Modal 

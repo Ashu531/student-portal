@@ -7,7 +7,8 @@ import OtpField from '../elementalComponents/otpField/OtpField';
 import background from '../../assets/background.png';
 import caret from '../../assets/caret-right.svg';
 import axios from 'axios';
-import { saveToken } from '../../services/authService';
+import { delay, saveToken } from '../../services/authService';
+import { Bars } from 'react-loader-spinner';
 
 export default function Login() {
 
@@ -22,6 +23,8 @@ export default function Login() {
         values: ['', '', '', '', '', '']
     });
     const [verified, setVerified] = useState(false);
+
+    const [loader, setLoader] = useState(false);
 
     const getOtpFromState = () => {
         return otp.values.join('');
@@ -60,9 +63,22 @@ export default function Login() {
                 'Content-Type': 'application/json'
             }
         })
-        .then(res => (res.data));
+        .then(res => (res.data))
+        .catch(err => console.log(err));
 
         return otpGenerated.status;
+    }
+
+    const resendOtp = async () => {
+        const resent = await axios.post(`${API_URL}/api/kid/v1/resend_otp/`, JSON.stringify({phone_number: inputValue}), {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => (res.data))
+        .catch(err => console.log(err));
+
+        return resent.status;
     }
 
     const getStudents = async () => {
@@ -72,15 +88,21 @@ export default function Login() {
         return students;
     }
 
-    const handleGenerateOtpButton = async () => {
-        if(isValid){
-            const otpGenerated = await sendOtp();
-
-            setOtp({...otp, generated: otpGenerated})
+    const handleGenerateOtpButton = async (resend=false) => {
+        if(resend){
+            const resend = await resendOtp();
+        } else {
+            setLoader(true);
+            if(isValid){
+                const otpGenerated = await sendOtp();
+                setOtp({...otp, generated: otpGenerated})
+            }
+            setLoader(false);
         }
     }
 
     const handleProceedButton = async () => {
+        setLoader(true);
         const isOtpValid = await validateOtp(getOtpFromState());
         if(isOtpValid){
             const studentList = await getStudents();
@@ -90,6 +112,7 @@ export default function Login() {
                 setVerified(true);
             }
         }
+        setLoader(false);
     }
 
     const getLastFourDigits = () => {
@@ -114,7 +137,6 @@ export default function Login() {
     }
 
     const navigateToInstallmentPage = (i) => {
-        saveToken(students[i].token);
         navigate(`/home/${students[i].token}`);
     }
 
@@ -138,11 +160,16 @@ export default function Login() {
                 <div className='bottom-container'>
                     <div className='message'>An OTP will be sent to the above number</div>
                     <div className={isValid ? 'small-wrapper': ''} style={{margin: '1.2rem 0 0'}}>
-                        <Button 
+                        {!loader && <Button 
                             text='Generate OTP' 
                             handleClick={handleGenerateOtpButton}
                             classes={`button-big button-primary ${isValid ? '': 'disabled'}`}
-                        />
+                        />}
+                        {loader && 
+                            <div className="credenc-loader">
+                                <Bars color="rgba(255, 255, 255, 0.7)" height={48} width={100}/>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>}
@@ -164,7 +191,7 @@ export default function Login() {
                         <div className='small-wrapper-colored' style={{margin: '0.8rem 0'}}>
                             <Button 
                                 text={"Resend OTP"} 
-                                handleClick={handleGenerateOtpButton}
+                                handleClick={() => handleGenerateOtpButton(true)}
                                 counterValue={20}
                                 counterText={"Resend in"}
                                 classes='button-big button-secondary'
@@ -172,11 +199,16 @@ export default function Login() {
                         </div>
                     </div>
                     <div className={areAllFilled() ? `small-wrapper`: ''} style={{margin: '1.2rem 0 0'}}>
-                    <Button 
+                    {!loader && <Button 
                         text='Proceed'
                         handleClick={handleProceedButton}
                         classes={`${areAllFilled() ? '' : 'disabled'} button-big button-primary`}
-                    />
+                    />}
+                    {loader && 
+                        <div className="credenc-loader">
+                            <Bars color="rgba(255, 255, 255, 0.7)" height={48} width={100}/>
+                        </div>
+                    }
                     </div>
                 </div>
             </div>}

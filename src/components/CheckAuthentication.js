@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Bars } from "react-loader-spinner";
 import { Outlet, Navigate, useParams } from "react-router-dom";
-import { authenticateUser } from "../services/authService";
-import background from '../assets/background.svg';
+import { authenticateUser, delay } from "../services/authService";
+import background from '../assets/background.png';
 
 
 function CheckAuthentication() {
@@ -20,7 +20,7 @@ function CheckAuthentication() {
 
     if(authStatus == null){
       return (
-        <div style={{width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
+        <div className="credenc-loader fullscreen-loader" style={{backgroundImage: `url(${background})`}}>
           <Bars color="#00BFFF" height={100} width={100}/>
         </div>
       );

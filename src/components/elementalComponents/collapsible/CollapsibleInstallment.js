@@ -10,10 +10,21 @@ export default function CollapsibleInstallment({ installment, index, handleCheck
         setCollapsed(!collapsed);
     }
 
+    const getDisabled = () => {
+        if(installment['status'] === 'due' || installment['status'] === 'overdue')
+            return false;
+        
+        return true;
+    }
+
     return (
         <div className='collapsible-installment' onClick={handleClick}>
             <div className='row' style={{background: `${collapsed ? '': 'rgb(255, 255, 255, 0.95)'}`}}>
-                <CheckBox setChecked={(v) => handleCheckBox(v, index)} isChecked={installment.is_mandatory}/>
+                <CheckBox 
+                    setChecked={(v) => handleCheckBox(v, index)} 
+                    isChecked={installment.is_mandatory === 'True' || installment.is_mandatory === true} 
+                    disabled={getDisabled()}
+                />
                 <div style={{flexGrow: '1', margin: '0 0 0 1.2rem'}}>
                     <div className='bold' style={{textTransform: 'capitalize'}}>
                         {installment.name}
@@ -41,11 +52,11 @@ export default function CollapsibleInstallment({ installment, index, handleCheck
                     <div className='value'>{installment.start_date}</div>
                 </div>
                 <div className='pair'>
-                    <div className='key'>Due Date</div>
+                    <div className='key'>End Date</div>
                     <div className='value'>{installment.due_date}</div>
                 </div>
                 <div className='pair'>
-                    <div className='key'>End Date</div>
+                    <div className='key'>Expire Date</div>
                     <div className='value'>{installment.expire_date}</div>
                 </div>
             </div>

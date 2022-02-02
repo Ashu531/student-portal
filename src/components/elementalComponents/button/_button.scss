@@ -18,6 +18,15 @@
     font-weight: 500 !important;
 }
 
+.button-white{
+    width: 100%;
+    background: (255, 255, 255);
+    color: #4e4e4e;
+    padding: 1.4rem 1.4rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
 .button-big{
     width: 100%;
     padding: 1.4rem 1rem;
@@ -42,6 +51,10 @@
 
 .button-secondary:active{
     background: rgba(255, 255, 255, 0.034);
+}
+
+.button-white:active{
+    background: (255, 255, 255, 0.4);
 }
 
 .disabled{
@@ -79,5 +92,14 @@
         width: 100%;
         font-size: 1.2rem;
         line-height: 1.8rem;
+    }
+
+    .button-white{
+        border-radius: 0;
+        background: none;
+        padding: 0;
+        margin: 0;
+        color: #FFFFFF;
+        border-bottom: 1px solid #FFFFFF;
     }
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Bars } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { getToken } from "../services/authService";
-import background from '../assets/background.svg';
+import background from '../assets/background.png';
 
 
 function InitialRoute() {
@@ -18,7 +18,7 @@ function InitialRoute() {
     }, []);
 
     return (
-        <div style={{width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
+        <div className="credenc-loader fullscreen-loader" style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
           <Bars color="#00BFFF" height={100} width={100}/>
         </div>
     )
