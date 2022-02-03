@@ -10,7 +10,7 @@ import axios from 'axios';
 import Collapsible from '../elementalComponents/collapsible/Collapsible';
 import SmallTable from '../elementalComponents/smallTable/SmallTable';
 import useScript from '../../hooks/useScript';
-import { Bars } from 'react-loader-spinner';
+import { Bars, TailSpin } from 'react-loader-spinner';
 import { delay, logoutUser } from '../../services/authService';
 
 export default function Home() {
@@ -38,7 +38,7 @@ export default function Home() {
     const logout = async () => {
         const loggedOut = await logoutUser();
         if(loggedOut)
-            navigate('/login');
+            navigate('/login', {replace: true});
     }
 
     const getModalData = async () => {
@@ -248,11 +248,11 @@ export default function Home() {
                     <Button 
                         text='Proceed' 
                         handleClick={handleProceed}
-                        classes='small-wrapper button-small button-primary'/>
+                        classes={`small-wrapper button-small button-primary ${amount > 0 ? '': 'disabled'}`}/>
                 </div>}
                 {loader && 
-                    <div className="credenc-loader">
-                        <Bars color="#00BFFF" height={100} width={100}/>
+                    <div className="credenc-loader" style={{background: 'none'}}>
+                        <TailSpin color="#00BFFF" height={100} width={100}/>
                     </div>
                 }
             </div>

@@ -7,8 +7,10 @@ import OtpField from '../elementalComponents/otpField/OtpField';
 import background from '../../assets/background.png';
 import caret from '../../assets/caret-right.svg';
 import axios from 'axios';
-import { delay, saveToken } from '../../services/authService';
-import { Bars } from 'react-loader-spinner';
+import { delay, getToken, saveToken } from '../../services/authService';
+import { Bars, TailSpin } from 'react-loader-spinner';
+import CheckBox from '../elementalComponents/checkBox/CheckBox';
+import TcModal from '../elementalComponents/tandc/TcModal';
 
 export default function Login() {
 
@@ -25,6 +27,23 @@ export default function Login() {
     const [verified, setVerified] = useState(false);
 
     const [loader, setLoader] = useState(false);
+
+    const [error, setError] = useState({
+        number: null,
+        otp: null,
+    });
+
+    const [tcAccepted, setTcAccepted] = useState(false);
+    const [tcModal, setTcModal] = useState({
+        open: false,
+        content: '',
+        tandc: 'Terms and Conditions',
+        pp: 'Privacy Policy'
+    })
+
+    const openTandC = (content) => {
+        setTcModal({...tcModal, open: true, content: content});
+    }
 
     const getOtpFromState = () => {
         return otp.values.join('');
@@ -45,7 +64,9 @@ export default function Login() {
                 }
             })
             .then(res => (res.data.status))
-            .catch(error => error.response.data.status);
+            .catch(err => {
+                setError({...error, otp: err.response.data.message});
+            });
 
             return otpVerified;
         }
@@ -64,9 +85,12 @@ export default function Login() {
             }
         })
         .then(res => (res.data))
-        .catch(err => console.log(err));
+        .catch(err => {
+            console.log('res', {...err});
+            setError({...error, number: err.response.data.message});
+        });
 
-        return otpGenerated.status;
+        return otpGenerated ? otpGenerated.status: otpGenerated;
     }
 
     const resendOtp = async () => {
@@ -78,12 +102,13 @@ export default function Login() {
         .then(res => (res.data))
         .catch(err => console.log(err));
 
-        return resent.status;
+        return resent ? resent.status: resent;
     }
 
     const getStudents = async () => {
         const students = await axios.get(`${API_URL}/api/kid/v1/identify/${inputValue}/`)
-        .then(res => (res.data.data));
+        .then(res => (res.data.data))
+        .catch(err => console.log(err));
 
         return students;
     }
@@ -93,6 +118,7 @@ export default function Login() {
             const resend = await resendOtp();
         } else {
             setLoader(true);
+            setError({error, number: null});
             if(isValid){
                 const otpGenerated = await sendOtp();
                 setOtp({...otp, generated: otpGenerated})
@@ -103,6 +129,8 @@ export default function Login() {
 
     const handleProceedButton = async () => {
         setLoader(true);
+        setError({error, number: null});
+        await delay(5000);
         const isOtpValid = await validateOtp(getOtpFromState());
         if(isOtpValid){
             const studentList = await getStudents();
@@ -137,8 +165,15 @@ export default function Login() {
     }
 
     const navigateToInstallmentPage = (i) => {
-        navigate(`/home/${students[i].token}`);
+        navigate(`/home/${students[i].token}`, {replace: true});
     }
+
+    useEffect(() => {
+        const token = getToken();
+        if(token && token !== ''){
+            navigate(`/home/${token}`, {replace: true});
+        }
+    }, [error]);
 
     return (
         <div className='login' style={{backgroundImage: `url(${background})`}}>
@@ -156,18 +191,32 @@ export default function Login() {
                     validity={isValid}
                     inputType='tel'
                     handleChange={handleInputChange}
+                    error={error.number}
                 />
                 <div className='bottom-container'>
+                    <div className='tandc'>
+                        <CheckBox size='2rem' isChecked={tcAccepted} setChecked={() => setTcAccepted(!tcAccepted)}/>
+                        <p>
+                            You agree to our
+                            <span onClick={() => openTandC(tcModal.tandc)}>
+                                &nbsp;Terms and Conditions&nbsp; 
+                            </span>
+                                and
+                            <span onClick={() => openTandC(tcModal.pp)}>
+                                &nbsp;Privacy Policy&nbsp;
+                            </span>
+                        </p>
+                    </div>
                     <div className='message'>An OTP will be sent to the above number</div>
                     <div className={isValid ? 'small-wrapper': ''} style={{margin: '1.2rem 0 0'}}>
                         {!loader && <Button 
                             text='Generate OTP' 
                             handleClick={handleGenerateOtpButton}
-                            classes={`button-big button-primary ${isValid ? '': 'disabled'}`}
+                            classes={`button-big button-primary ${(isValid && tcAccepted) ? '': 'disabled'}`}
                         />}
                         {loader && 
                             <div className="credenc-loader">
-                                <Bars color="rgba(255, 255, 255, 0.7)" height={48} width={100}/>
+                                <TailSpin color="rgba(255, 255, 255, 0.7)" height={28} width={100}/>
                             </div>
                         }
                     </div>
@@ -183,7 +232,11 @@ export default function Login() {
                 </div>
                 <div className='mid-container'>
                     <div className='label'>OTP</div>
-                    <OtpField handleChange={(val, i) => handleOtp(val, i)} otp={otp}/>
+                    <OtpField 
+                        handleChange={(val, i) => handleOtp(val, i)} 
+                        otp={otp} 
+                        error={error.otp}
+                    />
                 </div> 
                 <div className='bottom-container'>
                     <div className='resend-otp-container'>
@@ -206,34 +259,40 @@ export default function Login() {
                     />}
                     {loader && 
                         <div className="credenc-loader">
-                            <Bars color="rgba(255, 255, 255, 0.7)" height={48} width={100}/>
+                            <TailSpin color="rgba(255, 255, 255, 0.7)" height={28} width={100}/>
                         </div>
                     }
                     </div>
                 </div>
             </div>}
-            {verified && 
-                <div className='wrapper container'>
-                    <div className='header-container'>
-                        <img src={logo} className='logo-small'/>
-                        <div className='header'>Select Student</div>
-                        {/* <div className='subline'>Please check message on xxxxxx{getLastFourDigits()}</div> */}
-                    </div>
-                    <div className='students-container'>
-                        {
-                            students.map((student, i) => (
-                                <div className='student-card' key={i} onClick={() => navigateToInstallmentPage(i)}>
-                                    <div className='text-container'>
-                                        <div className='name'>{student.name}</div>
-                                        <div className='id'>{student.id}</div>
-                                    </div>
-                                    <img src={caret} className='icon'/>
+            {verified && <div className='wrapper container'>
+                <div className='header-container'>
+                    <img src={logo} className='logo-small'/>
+                    <div className='header'>Select Student</div>
+                    {/* <div className='subline'>Please check message on xxxxxx{getLastFourDigits()}</div> */}
+                </div>
+                <div className='students-container'>
+                    {
+                        students.map((student, i) => (
+                            <div className='student-card' key={i} onClick={() => navigateToInstallmentPage(i)}>
+                                <div className='text-container'>
+                                    <div className='name'>{student.name}</div>
+                                    <div className='id'>{student.id}</div>
                                 </div>
-                            ))
-                        }
-                    </div>
-                    <div></div>
-                </div>}
+                                <img src={caret} className='icon'/>
+                            </div>
+                        ))
+                    }
+                </div>
+                <div></div>
+            </div>}
+
+            {tcModal.open && 
+                <TcModal 
+                    content={tcModal.content} 
+                    handleClose={() => setTcModal({...tcModal, open:false})}
+                />
+            }
         </div>
     )
 }

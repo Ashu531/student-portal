@@ -17,12 +17,17 @@ export default function Success() {
     const logout = async () => {
         const loggedOut = await logoutUser();
         if(loggedOut)
-            navigate('/login');
+            navigate('/login', {replace: true});
+    }
+
+    const getTxnId = () => {
+        let length = state['txnid'].length;
+        return `${state['txnid'].substring(0, 2)}...${state['txnid'].substring(length - length/5, length)}`;
     }
 
     useEffect(() => {
         if(!state)
-            navigate('/');
+            navigate('/', {replace: true});
         else{
             console.log(state);
             credencLogo = state.merchant_logo;
@@ -32,7 +37,7 @@ export default function Success() {
     return (
         <div className='success' style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
             <img src={credencLogo} className='logo'/>
-            <img src={logo2} className='logo-right'/>
+            <img src={`https://${state.udf5}`} className='logo-right'/>
             <div className='logout-button'>
                     <Button 
                         text='Logout' 
@@ -44,7 +49,7 @@ export default function Success() {
                 <div style={{width: '100%', display:'flex', justifyContent:'space-between', alignItems: 'center', margin:'1.2rem 0'}}>
                     <img src={credencLogo} className='header-logo-small'/>
                     <div className='responsive-logout'>
-                        <img src={logo2} className='header-logo'/>
+                        <img src={`https://${state.udf5}`} className='header-logo'/>
                         <Button 
                             text='Logout' 
                             handleClick={logout} 
@@ -55,16 +60,18 @@ export default function Success() {
                 <div className='header'>
                     <img src={successIcon} className='icon'/>
                     <div className='title'>Payment Successful</div>
-                    <div className='subtitle'>{state.txnid}</div>
+                    <div className='subtitle'>Your fees payment has been made</div>
                 </div>
                 <div className='receipt-container'>
                     <div className='pair'>
                         <div className='key'>Transaction ID</div>
-                        <div className='value'>XYZ123456</div>
+                        <div className='value tooltip'>{getTxnId()}
+                            <span className='tooltiptext'>{state.txnid}</span>
+                        </div>
                     </div>
                     <div className='pair'>
                         <div className='key'>College</div>
-                        <div className='value'>Durham College</div>
+                        <div className='value'>{state.udf4}</div>
                     </div>
                     <div className='pair'>
                         <div className='key'>{`Date & Time`}</div>
@@ -81,7 +88,7 @@ export default function Success() {
                 </div>
                 <div className='small-wrapper' style={{margin: '1.5rem 0', width: '100%'}}>
                     <Button 
-                        text='Download Receipt' 
+                        text='Download Acknowledgement' 
                         handleClick={() => console.log('downloaded')} 
                         classes='button-big button-primary'/>
                 </div>

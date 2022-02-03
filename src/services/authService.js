@@ -4,6 +4,10 @@ const saveToken = (token) => {
     localStorage.setItem('credenc-fms-student-portal', token);
 }
 
+const removeToken = () => {
+    localStorage.removeItem('credenc-fms-student-portal');
+}
+
 const getToken = () => {
     console.log('getting token from localhost...');
     return localStorage.getItem('credenc-fms-student-portal');
@@ -15,9 +19,11 @@ const authenticateUser = async (token) => {
     let user = await axios.get(`${API_URL}/api/kid/v1/authentication/${token}/`)
     .then(res => res.data)
     .catch(err => console.log(err));
-    if(user.status){
+    if(user && user.status){
         saveToken(token);
         return true;
+    } else{
+        removeToken();
     }
     
     return false;
@@ -28,8 +34,8 @@ const logoutUser = async () => {
     let res = await axios.delete(`${API_URL}/api/kid/v1/logout/${getToken()}/`)
     .then(res => res.data)
     .catch(err => console.log(err));
-    if(res.status){
-        localStorage.removeItem('credenc-fms-student-portal');
+    if(res && res.status){
+        removeToken();
         return true;
     }
 

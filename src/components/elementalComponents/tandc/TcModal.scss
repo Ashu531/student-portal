@@ -1,0 +1,49 @@
+.tc{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+
+    .tc-content{
+        padding: 1.4rem 2.4rem;
+        width: 80%;
+        height: 80%;
+        background: linear-gradient(125.13deg, #4530B1 0%, #A3238D 58.33%, rgba(224, 28, 134, 0.8) 100%);
+        backdrop-filter: blur(80px);
+        border-radius: 2.4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        overflow: scroll;
+        &::-webkit-scrollbar{
+            display: none;
+        }
+        color: #FFFFFF;
+
+        .close{
+            font-size: 3.2rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            margin: 0 0 2rem auto;
+        }
+    }
+}
+
+@media screen and(max-width: 499px){
+    .tc{
+        .tc-content{
+            height: 75%;
+            width: 85%;
+            padding: 1rem 2rem;
+        }
+    }
+}
