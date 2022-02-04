@@ -91,7 +91,7 @@ export default function Home() {
                 let installmentList = [...installments];
                 let amount = 0;
                 installmentList.forEach((installment) => {
-                    if(installment['status'] === 'due' || installment['status'] === 'overdue'){
+                    if((installment['status'] === 'due' || installment['status'] === 'overdue') && installment['is_mandatory'] !== 'True'){
                         installment['is_mandatory'] = isChecked;
                         amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
                     }
@@ -108,7 +108,8 @@ export default function Home() {
 
                 let installmentList = [...installments];
                 installmentList.forEach((installment) => {
-                    installment['is_mandatory'] = isChecked;
+                    if(installment['is_mandatory'] !== 'True')
+                        installment['is_mandatory'] = isChecked;
                 });
 
                 setInstallments(installmentList);
@@ -171,9 +172,14 @@ export default function Home() {
         setStudent(data.student);
 
         data.data.forEach((installment, i) => {
+            if(data.selected){
+                const id = data.selected.find(id => id === installment['id']);
+                if(id){
+                    data.data[i]['is_mandatory'] = 'True';
+                }
+            }
             if(installment['status'] !== 'due' && installment['status'] !== 'overdue'){
                 data.data[i]['is_mandatory'] = false;
-                console.log(installment);
             }
         });
 

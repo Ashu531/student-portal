@@ -11,6 +11,7 @@
     align-items: center;
     background-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(5px);
+    font-family: "Times New Roman", Times, serif;
 
     .tc-content{
         padding: 1.4rem 2.4rem;
@@ -22,18 +23,56 @@
         display: flex;
         flex-direction: column;
         justify-content: start;
-        overflow: scroll;
-        &::-webkit-scrollbar{
-            display: none;
-        }
+        overflow-y: scroll;
+        overflow-x: hidden;
         color: #FFFFFF;
+
+        .headline{
+            font-size: 3rem;
+            line-height: 3.3rem;
+            font-weight: 600;
+            letter-spacing: 0.1rem;
+        }
+
+        .byline, p, ul li, .ol-li {
+            font-size: 1.8rem;
+            line-height: 2.3rem;
+            font-weight: normal;
+        }
+
+        p, ul li, .ol-li{
+            text-align: justify;
+        }
+
+        .byline{
+            text-align: end;
+        }
+
+        p{
+            margin: 1rem 0;
+        }
+
+        ol{
+            padding: 0 0 0 2%;
+        }
+
+        a{
+            color: #FFFFFF;
+        }
+
+        li{
+            font-size: 2rem;
+            line-height: 3rem;
+            font-weight: 600;
+            margin: 1rem 0;
+        }
 
         .close{
             font-size: 3.2rem;
             font-weight: 300;
             color: rgba(255, 255, 255, 0.6);
             cursor: pointer;
-            margin: 0 0 2rem auto;
+            margin: 0 0 0 auto;
         }
     }
 }
@@ -44,6 +83,42 @@
             height: 75%;
             width: 85%;
             padding: 1rem 2rem;
+
+            .headline{
+                font-size: 1.8rem;
+                line-height: 2.3rem;
+                font-weight: 600;
+                text-align: center;
+            }
+
+            .byline, p, ul li, .ol-li {
+                font-size: 1.2rem;
+                line-height: 2rem;
+                font-weight: normal;
+            }
+
+            p, ul li, .ol-li{
+                text-align: justify;
+            }
+
+            ul{
+                padding: 0 0 0 6%;
+            }
+
+            .byline{
+                text-align: end;
+            }
+
+            ol{
+                padding: 0 0 0 6%;
+            }
+
+            li{
+                font-size: 1.4rem;
+                line-height: 2rem;
+                font-weight: 600;
+                margin: 0.5rem 0;
+            }
         }
     }
 }

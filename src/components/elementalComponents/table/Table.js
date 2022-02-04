@@ -6,9 +6,8 @@ import currencyIconGray from '../../../assets/currency-icon-gray.svg';
 export default function Table({ list, handleCheckBox, selectAll=false}) {
 
     const getDisabled = (i) => {
-        if(list[i]['status'] === 'due' || list[i]['status'] === 'overdue')
+        if((list[i]['status'] === 'due' || list[i]['status'] === 'overdue') && list[i]['is_mandatory'] !== 'True')
             return false;
-
         
         return true;
     }

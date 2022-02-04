@@ -86,27 +86,15 @@
                 flex-direction: column;
             }
 
-            .tandc{
-                width: 100%;
-                display: flex;
-                justify-content: start;
-                align-items: center;
-                font-size: 1.2rem;
-                line-height: 1.8rem;
-                color: rgba(255, 255, 255, 0.7);
-                margin: 0 0 2rem;
-
                 p{
-                    margin: 0 0 0 1rem;
-                    text-align: start;
+                    text-align: center;
+                    color: rgba(255, 255, 255, 0.7);
 
                     span{
                         text-decoration: none;
-                        color: blanchedalmond;
                         font-weight: 700;
                     }
                 }
-            }
 
             .message{
                 text-align: center;

@@ -33,16 +33,13 @@ export default function Login() {
         otp: null,
     });
 
-    const [tcAccepted, setTcAccepted] = useState(false);
     const [tcModal, setTcModal] = useState({
         open: false,
-        content: '',
-        tandc: 'Terms and Conditions',
-        pp: 'Privacy Policy'
+        type: 'tc',
     })
 
-    const openTandC = (content) => {
-        setTcModal({...tcModal, open: true, content: content});
+    const openTandC = (type) => {
+        setTcModal({...tcModal, open: true, type: type});
     }
 
     const getOtpFromState = () => {
@@ -194,25 +191,21 @@ export default function Login() {
                     error={error.number}
                 />
                 <div className='bottom-container'>
-                    <div className='tandc'>
-                        <CheckBox size='2rem' isChecked={tcAccepted} setChecked={() => setTcAccepted(!tcAccepted)}/>
-                        <p>
-                            You agree to our
-                            <span onClick={() => openTandC(tcModal.tandc)}>
-                                &nbsp;Terms and Conditions&nbsp; 
-                            </span>
-                                and
-                            <span onClick={() => openTandC(tcModal.pp)}>
-                                &nbsp;Privacy Policy&nbsp;
-                            </span>
-                        </p>
-                    </div>
+                    <p>
+                        <span onClick={() => openTandC('tc')}>
+                            &nbsp;Terms and Conditions&nbsp; 
+                        </span>
+                            and
+                        <span onClick={() => openTandC('pp')}>
+                            &nbsp;Privacy Policy&nbsp;
+                        </span>
+                    </p>
                     <div className='message'>An OTP will be sent to the above number</div>
                     <div className={isValid ? 'small-wrapper': ''} style={{margin: '1.2rem 0 0'}}>
                         {!loader && <Button 
                             text='Generate OTP' 
                             handleClick={handleGenerateOtpButton}
-                            classes={`button-big button-primary ${(isValid && tcAccepted) ? '': 'disabled'}`}
+                            classes={`button-big button-primary ${isValid? '': 'disabled'}`}
                         />}
                         {loader && 
                             <div className="credenc-loader">
@@ -289,7 +282,7 @@ export default function Login() {
 
             {tcModal.open && 
                 <TcModal 
-                    content={tcModal.content} 
+                    type={tcModal.type}
                     handleClose={() => setTcModal({...tcModal, open:false})}
                 />
             }
