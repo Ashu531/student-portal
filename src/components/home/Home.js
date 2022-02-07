@@ -48,7 +48,7 @@ export default function Home() {
             'ids': ids,
             'amount': amount,
         }).then(res => res.data)
-        .catch(err => console.log(err));
+        .catch(err => err.response.data);
 
         return data;
     }
@@ -119,18 +119,24 @@ export default function Home() {
 
     const handleProceed = async () => {
         setLoader(true);
-        if(amount > 0){
-            const {student, data} = await getModalData();
+        const res = await getModalData();
+
+        if(res.data && res.student) {
+            const { student, data } = res;
             setModalData({
                 'student': student,
                 'key': data,
                 'amount': amount
             });
             setConfirmationDialog(true);
-        }else{
-            setConfirmationDialog(false);
+            setLoader(false);
+            return;
         }
+
         setLoader(false);
+        if(res.error && res.message){
+            confirm(`some error occurred: ${res.message}`);
+        }
     }
 
     const closeModel = () => {
@@ -141,8 +147,14 @@ export default function Home() {
         let options = {
             access_key: modalData.key, // access key received via Initiate Payment
             onResponse: (response) => {
-                if(response.status === 'success'){
-                    navigate('/success', {state: response});
+                if(response.status === 'userCancelled'){
+                    navigate('/success', {
+                        state: {
+                            ...response, 
+                            'installmentsFrontend': installments.filter(installment => installment.is_mandatory === 'True' || installment.is_mandatory === true),
+                            'studentFrontend': {...student}
+                        }
+                    });
                 }
             },
             theme: "#4530B1" // color hex

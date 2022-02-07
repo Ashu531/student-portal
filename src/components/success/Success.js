@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from '../../assets/credenc-logo.svg';
-import logo2 from '../../assets/credenc-text-logo.png';
 import successIcon from '../../assets/check-circle.svg';
 import Button from '../elementalComponents/button/Button';
 import background from '../../assets/background.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { logoutUser } from '../../services/authService';
+import { downloadPdf } from '../elementalComponents/pdf/SuccessPdf';
 
 export default function Success() {
 
@@ -89,7 +89,7 @@ export default function Success() {
                 <div className='small-wrapper' style={{margin: '1.5rem 0', width: '100%'}}>
                     <Button 
                         text='Download Acknowledgement' 
-                        handleClick={() => console.log('downloaded')} 
+                        handleClick={() => downloadPdf(state)} 
                         classes='button-big button-primary'/>
                 </div>
             </div>
