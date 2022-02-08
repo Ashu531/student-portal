@@ -147,7 +147,7 @@ export default function Home() {
         let options = {
             access_key: modalData.key, // access key received via Initiate Payment
             onResponse: (response) => {
-                if(response.status === 'userCancelled'){
+                if(response.status && response.status.toLowerCase() === 'success'){
                     navigate('/success', {
                         state: {
                             ...response, 
@@ -155,6 +155,10 @@ export default function Home() {
                             'studentFrontend': {...student}
                         }
                     });
+                } else if(response.status && response.status.toLowerCase() === 'failure'){
+                    confirm(`transaction failed!`);
+                } else if(response.status && response.status.toLowerCase() === 'usercancelled'){
+                    confirm(`transaction canceled!`);
                 }
             },
             theme: "#4530B1" // color hex
