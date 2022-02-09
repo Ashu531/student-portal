@@ -65,9 +65,10 @@ export default function Success() {
                 <div className='receipt-container'>
                     <div className='pair'>
                         <div className='key'>Transaction ID</div>
-                        <div className='value tooltip'>{getTxnId()}
+                        {/* <div className='value tooltip'>{getTxnId()}
                             <span className='tooltiptext'>{state.txnid}</span>
-                        </div>
+                        </div> */}
+                        <div className='value'>{state.txnid}</div>
                     </div>
                     <div className='pair'>
                         <div className='key'>College</div>

@@ -122,11 +122,12 @@ export default function Home() {
         const res = await getModalData();
 
         if(res.data && res.student) {
-            const { student, data } = res;
+            const { student, data, log_no: logNumber } = res;
             setModalData({
                 'student': student,
                 'key': data,
-                'amount': amount
+                'amount': amount,
+                'logNumber': logNumber,
             });
             setConfirmationDialog(true);
             setLoader(false);
@@ -140,31 +141,49 @@ export default function Home() {
     }
 
     const closeModel = () => {
+        setModalData({});
         setConfirmationDialog(false);
     }
 
-    const handleProceedAndPay = () => {
-        let options = {
-            access_key: modalData.key, // access key received via Initiate Payment
-            onResponse: (response) => {
-                if(response.status && response.status.toLowerCase() === 'success'){
-                    navigate('/success', {
-                        state: {
-                            ...response, 
-                            'installmentsFrontend': installments.filter(installment => installment.is_mandatory === 'True' || installment.is_mandatory === true),
-                            'studentFrontend': {...student}
-                        }
-                    });
-                } else if(response.status && response.status.toLowerCase() === 'failure'){
-                    confirm(`transaction failed!`);
-                } else if(response.status && response.status.toLowerCase() === 'usercancelled'){
-                    confirm(`transaction canceled!`);
-                }
-            },
-            theme: "#4530B1" // color hex
-        }
-        if(easebuzzCheckout)
-            easebuzzCheckout.initiatePayment(options);
+    const logResponse = async (res) => {
+        return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
+        .catch(err => err);
+    }
+
+    const handleProceedAndPay = async () => {
+            let options = {
+                access_key: modalData.key, // access key received via Initiate Payment
+                onResponse: (response) => {
+                    if(!response || !response.status){
+                        logResponse(response);
+                        alert(`some error occurred!`);
+                    } else if(response.status && response.status.toLowerCase() === 'success'){
+                        logResponse(response);
+                        navigate('/success', {
+                            state: {
+                                ...response, 
+                                'installmentsFrontend': installments.filter(installment => installment.is_mandatory === 'True' || installment.is_mandatory === true),
+                                'studentFrontend': {...student}
+                            }
+                        });
+                    } else if(response.status && response.status.toLowerCase() === 'failure'){
+                        logResponse(response);
+                        alert(`transaction failed!`);
+                    } else if(response.status){
+                        logResponse(response);
+                        alert(`transaction cancelled!`);
+                    }
+                },
+                theme: "#4530B1" // color hex
+            }
+            
+            try{
+                if(easebuzzCheckout)
+                    await easebuzzCheckout.initiatePayment(options);
+            } catch(err) {
+                await logResponse(err);
+                confirm(`some error occurred!`);
+            }
     }
 
     useEffect(() => {
