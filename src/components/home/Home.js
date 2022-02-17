@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Button from '../elementalComponents/button/Button';
 import logo from '../../assets/credenc-logo.svg';
-import logo2 from '../../assets/credenc-text-logo.png';
 import Table from '../elementalComponents/table/Table';
 import Modal from '../elementalComponents/modal/Modal';
 import background from '../../assets/background.png';
@@ -43,7 +42,7 @@ export default function Home() {
 
     const getModalData = async () => {
         const {ids, amount} = getSelectedInstallments();
-        console.log(ids, amount);
+        // console.log(ids, amount);
         const data = await axios.post(`${API_URL}/api/kid/v1/payment/${token}/`, {
             'ids': ids,
             'amount': amount,
@@ -186,9 +185,9 @@ export default function Home() {
             }
     }
 
-    useEffect(() => {
-        console.log(amount);
-    }, [amount])
+    // useEffect(() => {
+    //     console.log(amount);
+    // }, [amount])
 
     useEffect(() => {
         let amount = 0;
@@ -235,7 +234,7 @@ export default function Home() {
                     <div className='logo-container'>
                         <img src={logo} className='header-logo-small'/>
                         <div className='responsive-logout'>
-                            <img src={student.logo} className='header-logo'/>
+                            <img src={`data:image/png;base64, ${student.logo}`} className='header-logo'/>
                             <Button 
                                 text='Logout' 
                                 handleClick={logout} 
@@ -259,7 +258,7 @@ export default function Home() {
                     </div>
                     <div className='sub-header-container'>
                         <div className='college-container'>
-                            <img src={student.logo} className='college-logo'/>
+                            <img src={`data:image/png;base64, ${student.logo}`} className='college-logo'/>
                             <div className='mini-header grow'>
                                 <div className='subtitle'>College</div>
                                 <div className='title'>{student.college}</div>

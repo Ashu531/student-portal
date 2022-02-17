@@ -14,9 +14,9 @@ function CheckAuthentication() {
       setAuthStatus(authRes);
     }, [])
 
-    useEffect(() => {
-      console.log( 'authres', authStatus);
-    }, [setAuthStatus]);
+    // useEffect(() => {
+    //   console.log( 'authres', authStatus);
+    // }, [setAuthStatus]);
 
     if(authStatus == null){
       return (

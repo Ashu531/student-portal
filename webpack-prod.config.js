@@ -31,25 +31,21 @@ const configs = addBaseConfig({
   },
   plugins: [
     new DefinePlugin({
-      // REACT_APP_ENCRYPTION_KEY: JSON.stringify(
-      //   "U2FsdGVkX19p7zIuVPh8mW1fp9PdMxR0aGHzQ0IbJuw="
-      // ),
-      // LOGIN_API_URL: JSON.stringify("http://localhost:7777"),
-      API_URL: JSON.stringify("http://13.233.172.255"),
+      API_URL: JSON.stringify("https://fmsbackend.credenc.com"),
     }),
     // new HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       title: "React Cards",
       filename: "index.html",
       template: "./index.html",
-      // favicon: "src/assets/invoid-logo.svg",
+      favicon: "src/assets/credenc-logo.svg",
     }),
   ],
   devServer: {
     host: "0.0.0.0",
     // disableHostCheck: true,
     allowedHosts: "all",
-    port: 4444,
+    port: 4000,
     historyApiFallback: true,
     hot: true,
     static: {

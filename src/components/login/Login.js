@@ -83,7 +83,7 @@ export default function Login() {
         })
         .then(res => (res.data))
         .catch(err => {
-            console.log('res', {...err});
+            // console.log('res', {...err});
             setError({...error, number: err.response.data.message});
         });
 
@@ -132,7 +132,7 @@ export default function Login() {
         if(isOtpValid){
             const studentList = await getStudents();
             if(studentList){
-                console.log(studentList);
+                // console.log(studentList);
                 setStudents(studentList);
                 setVerified(true);
             }

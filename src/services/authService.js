@@ -9,13 +9,13 @@ const removeToken = () => {
 }
 
 const getToken = () => {
-    console.log('getting token from localhost...');
+    // console.log('getting token from localhost...');
     return localStorage.getItem('credenc-fms-student-portal');
 }
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 const authenticateUser = async (token) => {
-    console.log('sending request...');
+    // console.log('sending request...');
     let user = await axios.get(`${API_URL}/api/kid/v1/authentication/${token}/`)
     .then(res => res.data)
     .catch(err => console.log(err));
@@ -30,7 +30,7 @@ const authenticateUser = async (token) => {
 }
 
 const logoutUser = async () => {
-    console.log('logging out...');
+    // console.log('logging out...');
     let res = await axios.delete(`${API_URL}/api/kid/v1/logout/${getToken()}/`)
     .then(res => res.data)
     .catch(err => console.log(err));

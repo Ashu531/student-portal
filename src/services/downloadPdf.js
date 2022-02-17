@@ -1,11 +1,13 @@
-import React from 'react';
 import { jsPDF } from 'jspdf';
-import credencLogo from '../../../assets/credenc-text-logo.png';
+import credencLogo from '../assets/credenc-logo.png';
 
 export const downloadPdf = (state) => {
     const doc = new jsPDF('p', 'pt', 'a4', true);
     let pdfContent = `<div style="padding: 50px 20px;background: #FFF; color: #000; font-size: 16px;">
-        <img src="${credencLogo}" height="50px" style="display: block;margin-left: auto;margin-right: auto;"/>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <img src="${credencLogo}" height="50px" style="display: block;margin-left: auto;margin-right: auto;"/>
+            <img src="${`data:image/png;base64, ${state.studentFrontend.logo}`}" height="50px" style="display: block;margin-left: auto;margin-right: auto;"/>
+        </div>
         <div style="display: flex; justify-content: space-between;">
             <div>Name of student: ${state.firstname}</div>
             <div>Date of transaction: ${state.addedon}</div>
@@ -49,7 +51,7 @@ export const downloadPdf = (state) => {
                             </tr>
                             <tr style="background: #f1f1f1;">
                                 <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Total Paid</td>
-                                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${item.amount + item.penalty}</td>
+                                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${parseFloat(item.amount) + parseFloat(item.penalty)}</td>
                             </tr>
                     </table>`
                     )).join(' ')}

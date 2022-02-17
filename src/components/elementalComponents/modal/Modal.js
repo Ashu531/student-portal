@@ -25,7 +25,7 @@ export default function Modal({ data, handleClose, handleSubmit }) {
                     <Field value={data.student && data.student.phone} icon={phoneIcon}/>
                 </div>
                 <div className='button-container'>
-                <div className='subtitle-2' style={{margin: '1rem 0'}}>Please note that, an additional covenience fee may apply</div>
+                <div className='subtitle-2' style={{margin: '1rem 0'}}>Please note that, an additional convenience fee may apply</div>
                     <Button 
                         text={`Proceed and Pay INR ${data.amount}`} 
                         classes='small-wrapper button-small button-primary' 

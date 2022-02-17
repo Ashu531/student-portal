@@ -5,7 +5,7 @@ import Button from '../elementalComponents/button/Button';
 import background from '../../assets/background.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { logoutUser } from '../../services/authService';
-import { downloadPdf } from '../elementalComponents/pdf/SuccessPdf';
+import { downloadPdf } from '../../services/downloadPdf';
 
 export default function Success() {
 
@@ -29,7 +29,7 @@ export default function Success() {
         if(!state)
             navigate('/', {replace: true});
         else{
-            console.log(state);
+            // console.log(state);
             credencLogo = state.merchant_logo;
         }
     }, []);
@@ -37,7 +37,7 @@ export default function Success() {
     return (
         <div className='success' style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
             <img src={credencLogo} className='logo'/>
-            <img src={`https://${state.udf5}`} className='logo-right'/>
+            <img src={`data:image/png;base64, ${state.studentFrontend.logo}`} className='logo-right'/>
             <div className='logout-button'>
                     <Button 
                         text='Logout' 
@@ -49,7 +49,7 @@ export default function Success() {
                 <div style={{width: '100%', display:'flex', justifyContent:'space-between', alignItems: 'center', margin:'1.2rem 0'}}>
                     <img src={credencLogo} className='header-logo-small'/>
                     <div className='responsive-logout'>
-                        <img src={`https://${state.udf5}`} className='header-logo'/>
+                        <img src={`data:image/png;base64, ${state.studentFrontend.logo}`} className='header-logo'/>
                         <Button 
                             text='Logout' 
                             handleClick={logout} 
