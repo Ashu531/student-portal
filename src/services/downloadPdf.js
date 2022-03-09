@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf';
-import credencLogo from '../assets/credenc-logo.png';
+import credencLogo from '../assets/credenc-text-logo.png';
 
 export const downloadPdf = (state) => {
     const doc = new jsPDF('p', 'pt', 'a4', true);

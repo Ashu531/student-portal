@@ -26,6 +26,7 @@ export default function Success() {
     }
 
     useEffect(() => {
+        console.log('abc', state);
         if(!state)
             navigate('/', {replace: true});
         else{
@@ -35,7 +36,7 @@ export default function Success() {
     }, []);
 
     return (
-        <div className='success' style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
+        (state && <div className='success' style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
             <img src={credencLogo} className='logo'/>
             <img src={`data:image/png;base64, ${state.studentFrontend.logo}`} className='logo-right'/>
             <div className='logout-button'>
@@ -94,6 +95,6 @@ export default function Success() {
                         classes='button-big button-primary'/>
                 </div>
             </div>
-        </div>
+        </div>)
     )
 }
