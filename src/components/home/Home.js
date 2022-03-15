@@ -139,7 +139,7 @@ export default function Home() {
         }
     }
 
-    const closeModel = () => {
+    const closeModal = () => {
         setModalData({});
         setConfirmationDialog(false);
     }
@@ -167,10 +167,12 @@ export default function Home() {
                         });
                     } else if(response.status && response.status.toLowerCase() === 'failure'){
                         logResponse(response);
-                        alert(`transaction failed!`);
+                        alert(response.error_Message);
+                        closeModal();
                     } else if(response.status){
                         logResponse(response);
                         alert(`transaction cancelled!`);
+                        closeModal();
                     }
                 },
                 theme: "#4530B1" // color hex
@@ -300,7 +302,7 @@ export default function Home() {
         {confirmationDialog && <Modal 
             data={modalData} 
             handleSubmit={handleProceedAndPay}
-            handleClose={closeModel}
+            handleClose={closeModal}
         />}
         </>
     )
