@@ -10,7 +10,7 @@ function InitialRoute() {
     useEffect(() => {
         const token = getToken();
         if(token && token !== ''){
-            navigate(`/home/${token}`, {replace: true});
+            navigate(`/installments/${token}`, {replace: true});
         }
         else {
             navigate('/login', {replace: true});

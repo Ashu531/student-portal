@@ -162,13 +162,13 @@ export default function Login() {
     }
 
     const navigateToInstallmentPage = (i) => {
-        navigate(`/home/${students[i].token}`, {replace: true});
+        navigate(`/installments/${students[i].token}`, {replace: true});
     }
 
     useEffect(() => {
         const token = getToken();
         if(token && token !== ''){
-            navigate(`/home/${token}`, {replace: true});
+            navigate(`/installments/${token}`, {replace: true});
         }
     }, [error]);
 

@@ -13,7 +13,7 @@ function App() {
             <Route exact path="/login" element={<Login/>} />
             <Route exact path="/success" element={<Success/>} />
             <Route element={<CheckAuthentication />}>
-              <Route exact path="/home/:token" element={<Home />} />
+              <Route exact path="/installments/:token" element={<Home />} />
             </Route>
             <Route eaxct path="/" element={<InitialRoute />}/>
         </Routes>
