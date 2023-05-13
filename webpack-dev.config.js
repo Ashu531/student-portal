@@ -35,7 +35,7 @@ const configs = addBaseConfig({
       //   "U2FsdGVkX19p7zIuVPh8mW1fp9PdMxR0aGHzQ0IbJuw="
       // ),
       // LOGIN_API_URL: JSON.stringify("http://localhost:7777"),
-      API_URL: JSON.stringify("http://13.127.139.11"),
+      API_URL: JSON.stringify("https://fmsbuild.credenc.com"),
     }),
     // new HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
@@ -49,7 +49,7 @@ const configs = addBaseConfig({
     host: "0.0.0.0",
     // disableHostCheck: true,
     allowedHosts: "all",
-    port: 4444,
+    port: 4000,
     historyApiFallback: true,
     hot: true,
     static: {

@@ -5,6 +5,7 @@ import Home from './components/home/Home';
 import Success from './components/success/Success';
 import CheckAuthentication from './components/CheckAuthentication';
 import InitialRoute from './components/InitialRoute';
+import Autopay from './components/autopay/Autopay';
 
 function App() {
   return(
@@ -14,6 +15,7 @@ function App() {
             <Route exact path="/success" element={<Success/>} />
             <Route element={<CheckAuthentication />}>
               <Route exact path="/installments/:token" element={<Home />} />
+              <Route exact path="/autopay/:token" element={<Autopay />} />
             </Route>
             <Route eaxct path="/" element={<InitialRoute />}/>
         </Routes>

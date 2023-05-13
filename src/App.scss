@@ -37,7 +37,7 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
   overflow-x: hidden;
-  background: linear-gradient(107.56deg, #4530B1 0%, #772AA1 58.85%, #CA1C7A 99.48%);
+  // background: linear-gradient(107.56deg, #4530B1 0%, #772AA1 58.85%, #CA1C7A 99.48%);
 }
 
 .credenc-loader{
@@ -168,3 +168,5 @@ body {
 @import "../src/components/elementalComponents/smallTable/smallTable";
 @import "../src/components/elementalComponents/collapsible/collapsibleInstallment";
 @import "../src/components/elementalComponents/tandc/TcModal.scss";
+@import "../src/components/elementalComponents/header/header";
+@import "../src/components/autopay/autopay";
