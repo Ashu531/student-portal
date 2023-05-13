@@ -6,6 +6,8 @@ import Success from './components/success/Success';
 import CheckAuthentication from './components/CheckAuthentication';
 import InitialRoute from './components/InitialRoute';
 import Autopay from './components/autopay/Autopay';
+import Loan from './components/loan/Loan';
+import Transaction from './components/transaction/Transaction';
 
 function App() {
   return(
@@ -16,6 +18,8 @@ function App() {
             <Route element={<CheckAuthentication />}>
               <Route exact path="/installments/:token" element={<Home />} />
               <Route exact path="/autopay/:token" element={<Autopay />} />
+              <Route exact path="/credenc-loan/:token" element={<Loan />} />
+              <Route exact path="/transaction/:token" element={<Transaction />} />
             </Route>
             <Route eaxct path="/" element={<InitialRoute />}/>
         </Routes>
