@@ -1,0 +1,107 @@
+.partial-payment{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: auto;
+    -webkit-background-size: auto;
+    -moz-background-size: auto;
+    -o-background-size: auto;
+
+    .container{
+        width: 95%;
+        height: 90%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 3.2rem 2.4rem 1.2rem 2.4rem;
+        background: rgba(255, 255, 255, 0.18);
+        // backdrop-filter: blur(80px);
+        border-radius: 2.4rem;
+
+        .content-container{
+            width: 100%;
+            align-self: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+
+            .heading {
+                width: 100%;
+                margin: 1rem 0;
+                text-align: start;
+                font-size: 1.6rem;
+                font-weight: 600;
+                color: #000;
+            }
+
+        }
+
+        .button-container{
+            width: 100%;
+            align-self: flex-end;
+            margin-bottom: 1.2rem;
+        }
+    }
+}
+
+.open-modal{
+    pointer-events: none;
+}
+
+@media screen and(max-width: 499px){
+    .home{
+        align-items: flex-start;
+        .container{
+            width: 100%;
+            height: 85%;
+            border-radius: 0;
+            background: none;
+
+            .content-container{
+                .logo-container{
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                .header-container{
+                    margin: 0.8rem 0;
+                    
+                    .responsive-logout-big{
+                        display: none;
+                    }
+
+                    .header{
+                        width: 100%;
+
+                        .title{
+                            font-size: 2rem;
+                            line-height: 3rem;
+                        }
+
+                        .subtitle{
+                            font-size: 1.2rem;
+                        }
+                    }
+                }
+
+                .sub-header-container{
+                    display: none;
+                }
+            }
+
+            .button-container{
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media screen and(max-height: 600px){
+    .home{
+        overflow: scroll;
+        padding-top: 12%;
+    }
+}

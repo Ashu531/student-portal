@@ -3,19 +3,21 @@
     cursor: pointer;
     border: none;
     outline: none;
-    background: rgba(255, 255, 255, 0.8);
+    background: #FFFFFF;
 
     img{
         width: 2rem;
         height: 2rem;
-        margin: 0 0 0 1.2rem;
+        margin: 0;
     }
 
     .content {
         overflow: hidden;
         transition: display 1s ease-out;
-        padding: 1.8rem 4.4rem 1.8rem 3.8rem;
-        background: rgba(255, 255, 255, 0.7);
+        padding: 1.8rem 2rem;
+        background: rgba(64, 64, 64, 0.1);
+        color: rgba(64, 64, 64, 1);
+        border-radius: 0;
 
         .pair{
             width: 100%;
@@ -47,15 +49,12 @@
     }
 
     .bold{
-        font-weight: 500;
-        font-size: 1.2rem;
-        line-height: 1.8rem;
-        color: #000000;
+        font-weight: 500 !important;
     }
 
     .subline{
         font-weight: normal;
-        font-size: 1rem;
+        font-size: 1.2rem;
         line-height: 1.5rem;
         color: #000000;
     }

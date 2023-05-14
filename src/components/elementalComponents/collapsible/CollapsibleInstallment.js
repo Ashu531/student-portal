@@ -20,20 +20,26 @@ export default function CollapsibleInstallment({ installment, index, handleCheck
     return (
         <div className='collapsible-installment' onClick={handleClick}>
             <div className='row' style={{background: `${collapsed ? '': 'rgb(255, 255, 255, 0.95)'}`}}>
-                <CheckBox 
-                    setChecked={(v) => handleCheckBox(v, index)} 
-                    isChecked={installment.is_mandatory === 'True' || installment.is_mandatory === true} 
-                    disabled={getDisabled()}
-                />
-                <div style={{flexGrow: '1', margin: '0 0 0 1.2rem'}}>
-                    <div className='bold' style={{textTransform: 'capitalize'}}>
+                <div style={{flexGrow: '1'}}>
+                    <div className='subline' style={{textTransform: 'capitalize'}}>
                         {installment.name}
                     </div>
-                    <div className='subline' style={{display: !collapsed && 'none'}}>
-                        INR {installment.amount}
-                    </div>
                 </div>
-                <div className={`status ${installment.status}`}>{installment.status}</div>
+                {/* <div className={`status ${installment.status}`}>{installment.status}</div> */}
+                <div className='subline bold' style={{display: !collapsed && 'none'}}>
+                    ₹ {installment.amount}
+                </div>
+                {handleCheckBox && 
+                <div style={{margin: '0 2rem 0 1rem'}}>
+                    <CheckBox 
+                        setChecked={(v) => {
+                            handleCheckBox(v, index)
+                        }} 
+                        isChecked={installment.is_mandatory === 'True' || installment.is_mandatory === true} 
+                        disabled={getDisabled()}
+                    />
+                </div>
+                }
                 <img src={collapsed ? expandIcon : collapseIcon}/>
             </div>
             
@@ -41,7 +47,7 @@ export default function CollapsibleInstallment({ installment, index, handleCheck
             !collapsed && <div className="content">
                 <div className='pair'>
                     <div className='key'>Amount</div>
-                    <div className='value'>{installment.amount}</div>
+                    <div className='value'>₹ {installment.amount}</div>
                 </div>
                 <div className='pair'>
                     <div className='key'>Penalty</div>

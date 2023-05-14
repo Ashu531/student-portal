@@ -10,7 +10,7 @@ import Collapsible from '../elementalComponents/collapsible/Collapsible';
 import SmallTable from '../elementalComponents/smallTable/SmallTable';
 import useScript from '../../hooks/useScript';
 import { Bars, TailSpin } from 'react-loader-spinner';
-import { delay, logoutUser } from '../../services/authService';
+import { delay, getToken, logoutUser } from '../../services/authService';
 import Pair from '../elementalComponents/pair/Pair';
 import PaymentOption from '../elementalComponents/paymentOption/PaymentOption';
 import moneyIcon from '../../assets/money-icon.svg';
@@ -19,7 +19,7 @@ import coinsIcon from '../../assets/coins.svg';
 import CurrencyEthIcon from '../../assets/currency-eth.svg';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 
-export default function Home() {
+export default function PartialPayment() {
 
     let { token } = useParams();
     const navigate = useNavigate();
@@ -52,7 +52,7 @@ export default function Home() {
     const getModalData = async () => {
         const {ids, amount} = getSelectedInstallments();
         // console.log(ids, amount);
-        const data = await axios.post(`${API_URL}/api/kid/v1/payment/${token}/`, {
+        const data = await axios.post(`${API_URL}/api/kid/v1/payment/${getToken()}/`, {
             'ids': ids,
             'amount': amount,
         }).then(res => res.data)
@@ -71,7 +71,7 @@ export default function Home() {
     }
 
     const getData = async () => {
-        const data = await axios.get(`${API_URL}/api/kid/v1/installments/${token}/`)
+        const data = await axios.get(`${API_URL}/api/kid/v1/installments/${getToken()}/`)
         .then(res => res.data)
         .catch(error => error.response.data);
 
@@ -79,6 +79,7 @@ export default function Home() {
     }
 
     const handleAmount = (isChecked, i) => {
+        console.log(isChecked, i)
         if(i != -1){
             let installmentList = [...installments];
             installmentList[i]['is_mandatory'] = isChecked;
@@ -122,6 +123,29 @@ export default function Home() {
 
                 setInstallments(installmentList);
             }
+        }
+    }
+
+    const handleProceed = async () => {
+        setLoader(true);
+        const res = await getModalData();
+
+        if(res.data && res.student) {
+            const { student, data, log_no: logNumber } = res;
+            setModalData({
+                'student': student,
+                'key': data,
+                'amount': amount,
+                'logNumber': logNumber,
+            });
+            setConfirmationDialog(true);
+            setLoader(false);
+            return;
+        }
+
+        setLoader(false);
+        if(res.error && res.message){
+            confirm(`some error occurred: ${res.message}`);
         }
     }
 
@@ -180,12 +204,9 @@ export default function Home() {
             if(installment['is_mandatory'] === 'True' || installment['is_mandatory'] === true){
                 amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
             }
-
-            pendingAmount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
         })
 
         setAmount(amount);
-        setPendingAmount(pendingAmount);
     }, [installments])
 
     useEffect(async () => {
@@ -194,15 +215,18 @@ export default function Home() {
         setStudent(data.student);
 
         data.data.forEach((installment, i) => {
-            if(data.selected){
-                const id = data.selected.find(id => id === installment['id']);
-                if(id){
-                    data.data[i]['is_mandatory'] = 'True';
-                }
-            }
+            // if(data.selected){
+            //     const id = data.selected.find(id => id === installment['id']);
+            //     if(id){
+            //         data.data[i]['is_mandatory'] = 'True';
+            //     }
+            // }
             if(installment['status'] !== 'due' && installment['status'] !== 'overdue'){
                 data.data[i]['is_mandatory'] = false;
             }
+
+            data.data[i]['is_mandatory'] = false;
+
         });
 
         setInstallments(data.data);
@@ -214,46 +238,12 @@ export default function Home() {
 
     }, [])
 
-    const navigateToPaymentPage = () => {
-        navigate(`/payment`, {replace: true});
-    }
-
-    const navigateToPartialPaymentPage = () => {
-        navigate(`/partial-payment`, {replace: true});
-    }
-
     return (
         <>
-        <div className={`home ${confirmationDialog ? 'open-modal' : ''}`}>
+        <div className={`partial-payment ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='wrapper container'>
                 {!loader && <div className='content-container'>
-                    <div className='sub-header-container'>
-                        <div className='college-container'>
-                            <img src={`data:image/png;base64, ${student.logo}`} className='college-logo'/>
-                            <div className='mini-header grow'>
-                                <div className='subtitle'>College</div>
-                                <div className='title'>{student.college}</div>
-                            </div>
-                            <div className='mini-header'>
-                                <div className='subtitle'>Name</div>
-                                <div className='title'>{student.name}</div>
-                            </div>
-                            <div className='mini-header'>
-                                <div className='subtitle'>Course</div>
-                                <div className='title'>{student.course}</div>
-                            </div>
-                            <div className='mini-header'>
-                                <div className='subtitle'>Unique ID</div>
-                                <div className='title'>{student.id}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <Table list={installments} handleCheckBox={handleAmount} selectAll={selectAll}/>
-                    <Collapsible 
-                        student={student} 
-                        collapsed={studentCollapsed}
-                        handleClick={() => setStudentCollapsed(!studentCollapsed)}/>
-
+                    
                     <StudentDetails 
                         name={student.name}
                         id={student.id}
@@ -261,47 +251,24 @@ export default function Home() {
                         school={student.college}
                     />
 
+                    <div className='heading'>Select Fees</div>
+
                     <Pair 
                         radius={'1rem'}
                         bgColor={'#5654BF'}
-                        keyname={'Pending Fee :'}
-                        value={`₹ ${pendingAmount}`}
+                        keyname={'Selected Amount :'}
+                        value={`₹ ${amount}`}
                     />
-
-                    <div className='heading'>Payment Plans</div>
-                    <div className='payment-options-container'>
-                        <PaymentOption
-                            icon={moneyIcon}
-                            heading={'PAY IN FULL'}
-                            description={'Pay the whole school fee in one go!'}
-                            bgColor={'#A8CFFF'}
-                            onClick={navigateToPaymentPage}
-                        />
-                        <PaymentOption
-                            icon={handCoinsIcon}
-                            tag={'Recommended'}
-                            heading={'PAY WITH CREDENC'}
-                            description={'Pay full fee using Credenc loan!'}
-                            bgColor={'#FFD45C'}
-                        />
-                        <PaymentOption
-                            icon={CurrencyEthIcon}
-                            heading={'SET UP AUTO-PAY'}
-                            description={'Set up auto-payment at regular intervals!'}
-                            bgColor={'#E3FB72'}
-                        />
-                        <PaymentOption
-                            icon={coinsIcon}
-                            heading={'PAY INDIVIDUALLY'}
-                            description={'Break up the fees as per your convenience!'}
-                            bgColor={'#D6D6FF'}
-                            onClick={navigateToPartialPaymentPage}
-                        />
-                    </div>
                     
-                    <SmallTable list={installments} dependent={!studentCollapsed}/>
+                    <SmallTable list={installments} handleCheckBox={handleAmount} dependent={!studentCollapsed}/>
                 </div>}
 
+                {!loader && <div className='button-container'>
+                    <Button 
+                        text='Proceed' 
+                        handleClick={handleProceed}
+                        classes={`small-wrapper button-small button-primary ${amount > 0 ? '': 'disabled'}`}/>
+                </div>}
                 {loader && 
                     <div className="credenc-loader" style={{background: 'none'}}>
                         <TailSpin color="#00BFFF" height={100} width={100}/>

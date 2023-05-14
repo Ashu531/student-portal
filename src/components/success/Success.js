@@ -26,7 +26,6 @@ export default function Success() {
     }
 
     useEffect(() => {
-        console.log('abc', state);
         if(!state)
             navigate('/', {replace: true});
         else{

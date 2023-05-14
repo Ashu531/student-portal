@@ -9,7 +9,7 @@ export default function Collapsible({ student, collapsed, handleClick }) {
             {collapsed ? 
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <div className='row' style={{width: '85%'}}>
-                        <div className='field'>Name</div>
+                        <div className='field'>Student</div>
                         <div className='value'>{student.name}</div>
                     </div>
                     <img src={expandIcon}/>
@@ -28,16 +28,16 @@ export default function Collapsible({ student, collapsed, handleClick }) {
                     <div className='value'>{student.name}</div>
                 </div>
                 <div className='row'>
-                    <div className='field'>College</div>
-                    <div className='value'>{student.college}</div>
+                    <div className='field'>Admission No.</div>
+                    <div className='value'>{student.id}</div>
                 </div>
                 <div className='row'>
-                    <div className='field'>Course</div>
+                    <div className='field'>Grade</div>
                     <div className='value'>{student.course}</div>
                 </div>
                 <div className='row'>
-                    <div className='field'>Unique ID</div>
-                    <div className='value'>{student.id}</div>
+                    <div className='field'>School</div>
+                    <div className='value'>{student.college}</div>
                 </div>
             </div>
             }

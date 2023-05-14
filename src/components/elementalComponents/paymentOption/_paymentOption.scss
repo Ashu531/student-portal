@@ -1,0 +1,37 @@
+.payment-option {
+    width: 48%;
+    padding-top: 100%;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+
+    .row {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .icon {
+
+        }
+
+        .tag {
+            font-size: 0.9rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.5rem;
+            background: #FFFFFF;
+        }
+
+        .heading {
+            font-size: 1.5rem !important;
+        }
+
+        .description {
+            font-size: 1.2rem;
+            color: #333333;
+        }
+    }
+}

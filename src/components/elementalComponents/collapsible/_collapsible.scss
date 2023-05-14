@@ -1,7 +1,7 @@
 .collapsible {
     display:none;
     width: 100%;
-    background: rgba(255, 255, 255, 0.05);
+    background: #404040;
     border-radius: 8px;
     cursor: pointer;
     padding: 1.2rem;
@@ -37,14 +37,14 @@
             font-weight: 300;
             font-size: 1.2rem;
             line-height: 1.8rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: #FFFFFF;
         }
 
         .value{
             font-weight: 500;
             font-size: 1.2rem;
             line-height: 1.8rem;
-            color: #FFFFFF;
+            color: #FFFFFF !important;
             text-transform: capitalize;
         }
     }
