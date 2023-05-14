@@ -3,7 +3,7 @@ import collapseIcon from '../../../assets/caret-up-black.svg';
 import expandIcon from '../../../assets/caret-down-black.svg';
 import CheckBox from '../checkBox/CheckBox';
 
-export default function CollapsibleInstallment({ installment, index, handleCheckBox }) {
+export default function CollapsibleInstallment({ installment, index, handleCheckBox, showStatus=false }) {
 
     const [collapsed, setCollapsed] = useState(true);
     const handleClick = () => {
@@ -25,8 +25,8 @@ export default function CollapsibleInstallment({ installment, index, handleCheck
                         {installment.name}
                     </div>
                 </div>
-                {/* <div className={`status ${installment.status}`}>{installment.status}</div> */}
-                <div className='subline bold' style={{display: !collapsed && 'none'}}>
+                {showStatus && <div style={{margin: '0 1rem 0 0'}} className={`status ${installment.status}`}>{installment.status}</div>}
+                <div className='subline bold' style={{display: !collapsed && 'none', margin: handleCheckBox ? '' : '0 1rem 0 0'}}>
                     ₹ {installment.amount}
                 </div>
                 {handleCheckBox && 

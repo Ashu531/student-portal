@@ -27,10 +27,15 @@
         font-weight: 500;
         font-size: 2rem;
         line-height: 2rem;
-        color: #FFFFFF;
+        color: #404040;
     }
     .input-field:focus{
         outline: none;
+        border: 1px solid #404040
+    }
+
+    .filled {
+        border: 1px solid #404040;
     }
 }
 

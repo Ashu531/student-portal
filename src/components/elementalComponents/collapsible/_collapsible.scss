@@ -1,57 +1,75 @@
 .collapsible {
-    display:none;
+  display: none;
+  width: 100%;
+  background: #404040;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 1.2rem;
+  border: none;
+  outline: none;
+  margin: 1rem 0;
+
+  img {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .content {
+    overflow: hidden;
+    transition: display 1s ease-out;
+  }
+
+  .header {
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+    color: #ffffff;
+    margin: 0.3rem 0;
+  }
+
+  .row {
     width: 100%;
-    background: #404040;
-    border-radius: 8px;
-    cursor: pointer;
-    padding: 1.2rem;
-    border: none;
-    outline: none;
-    margin: 1rem 0;
-
-    img{
-        width: 2rem;
-        height: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.3rem 0;
+    .field {
+      font-weight: 300;
+      font-size: 1.2rem;
+      line-height: 1.8rem;
+      color: #ffffff;
     }
 
-    .content {
-        overflow: hidden;
-        transition: display 1s ease-out;
+    .value {
+      font-weight: 500;
+      font-size: 1.2rem;
+      line-height: 1.8rem;
+      color: #ffffff;
+      text-transform: capitalize;
     }
+  }
 
-    .header{
-        font-weight: bold;
-        font-size: 1.2rem;
-        line-height: 1.8rem;
-        color: #FFFFFF;
-        margin: 0.3rem 0;
+  .selectable {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 1rem;
+    font-weight: 500;
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+    color: #ffffff;
+    text-transform: capitalize;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+        color: #000;
     }
-
-    .row{
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 0.3rem 0;
-        .field{
-            font-weight: 300;
-            font-size: 1.2rem;
-            line-height: 1.8rem;
-            color: #FFFFFF;
-        }
-
-        .value{
-            font-weight: 500;
-            font-size: 1.2rem;
-            line-height: 1.8rem;
-            color: #FFFFFF !important;
-            text-transform: capitalize;
-        }
-    }
+  }
 }
 
-@media screen and(max-width: 499px){
-    .collapsible{
-        display: block;
-    }
+@media screen and(max-width: 499px) {
+  .collapsible {
+    display: block;
+  }
 }

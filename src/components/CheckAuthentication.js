@@ -20,7 +20,7 @@ function CheckAuthentication() {
 
     if(authStatus == null){
       return (
-        <div className="credenc-loader fullscreen-loader" style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
+        <div className="credenc-loader-white fullscreen-loader">
           <TailSpin color="#00BFFF" height={100} width={100}/>
         </div>
       );

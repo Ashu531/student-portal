@@ -2,32 +2,43 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../components/elementalComponents/header/Header'
 import Button from '../elementalComponents/button/Button';
 import backIcon from '../../assets/caret-right.svg';
+import axios from 'axios';
+import { getToken } from '../../services/authService';
+import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 
 export default function Autopay() {
 
+    const [student, setStudent] = useState({});
+
+    const [loader, setLoader] = useState(false);
+
+    const getData = async () => {
+        const data = await axios.get(`${API_URL}/api/kid/v1/installments/${getToken()}/`)
+        .then(res => res.data)
+        .catch(error => error.response.data);
+
+        return data;
+    }
+
+    useEffect(async () => {
+        setLoader(true);
+        const data = await getData();
+        setStudent(data.student);
+        setLoader(false);
+    }, [])
+
     return (
-        <div className='autopay'>
-           <Header
+        <>
+        <Header
              title="Auto-Pay"
            />
-           <div className='student-content'>
-                <div className='student-container'>
-                    <div className='student-label'>Student Name</div>
-                    <div className='student-name'>Nandini Mediratta</div>
-                </div>
-                <div className='student-container'>
-                    <div className='student-label'>Admission No.</div>
-                    <div className='student-detail'>ABC1234</div>
-                </div>
-                <div className='student-container'>
-                    <div className='student-label'>Grade</div>
-                    <div className='student-detail'>5-A</div>
-                </div>
-                <div className='student-container'>
-                    <div className='student-label'>School</div>
-                    <div className='student-detail'>Shikshantar Sr. Sec. School</div>
-                </div>
-           </div>
+        <div className='autopay'>
+           <StudentDetails 
+                name={student.name}
+                id={student.id}
+                grade={student.course}
+                school={student.college}
+            />
            <div className='amount-container'>
                 <div className='amount-label'>
                     Total Amount
@@ -39,11 +50,11 @@ export default function Autopay() {
            <div className='benefit-container'>
                 <span className='benefit-header'>Benefits of Auto-Pay</span>
                 <div className='benefit-list'>
-                    <ol style={{marginLeft: '-3rem'}}>
-                        <li className='benefit-text'>Convenience: Setting up auto-pay means you don't have to worry about meeting deadlines for fees payments.</li>
-                        <li className='benefit-text'>Avoiding Late Fees: You can ensure that your school fees are paid on time, which helps you avoid late fees.</li>
-                        <li className='benefit-text'>Secure and Consistent: It is ensured that your payments are consistently paid each instalment, securely.</li>
-                        <li className='benefit-text'>Customisation: You can change, modify or cancel your payments as and when required. </li>
+                    <ol style={{padding: '0 0 0 2rem'}}>
+                        <li className='benefit-text'><b>Convenience:</b> Setting up auto-pay means you don't have to worry about meeting deadlines for fees payments.</li>
+                        <li className='benefit-text'><b>Avoiding Late Fees:</b> You can ensure that your school fees are paid on time, which helps you avoid late fees.</li>
+                        <li className='benefit-text'><b>Secure and Consistent:</b> It is ensured that your payments are consistently paid each instalment, securely.</li>
+                        <li className='benefit-text'><b>Customisation:</b> You can change, modify or cancel your payments as and when required. </li>
                     </ol>
                 </div>
            </div>
@@ -71,6 +82,7 @@ export default function Autopay() {
                 </div>
             </div>
         </div>
+        </>
     )
 }
 

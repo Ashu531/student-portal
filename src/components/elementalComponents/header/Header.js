@@ -13,7 +13,7 @@ export default function Header({title,back=true}) {
     }
 
     return (
-        <div className='header'>
+        <div className='header-component'>
             <div className='heading'>
                 {
                     back && 

@@ -6,11 +6,25 @@ const saveToken = (token) => {
 
 const removeToken = () => {
     localStorage.removeItem('credenc-fms-student-portal');
+    removeStudents();
 }
 
 const getToken = () => {
     // console.log('getting token from localhost...');
     return localStorage.getItem('credenc-fms-student-portal');
+}
+
+const saveStudents = (students) => {
+    localStorage.setItem('credenc-fms-students', JSON.stringify(students));
+}
+
+const removeStudents = () => {
+    localStorage.removeItem('credenc-fms-students');
+}
+
+const getStudents = () => {
+    const students = JSON.parse(localStorage.getItem('credenc-fms-students'));
+    return students != null && students.length > 0 ? students : [];
 }
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -52,4 +66,6 @@ export {
     authenticateUser,
     delay,
     logoutUser,
+    saveStudents,
+    getStudents
 }

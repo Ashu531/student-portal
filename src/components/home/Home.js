@@ -10,7 +10,7 @@ import Collapsible from '../elementalComponents/collapsible/Collapsible';
 import SmallTable from '../elementalComponents/smallTable/SmallTable';
 import useScript from '../../hooks/useScript';
 import { Bars, TailSpin } from 'react-loader-spinner';
-import { delay, logoutUser } from '../../services/authService';
+import { delay, getStudents, getToken, logoutUser, saveToken } from '../../services/authService';
 import Pair from '../elementalComponents/pair/Pair';
 import PaymentOption from '../elementalComponents/paymentOption/PaymentOption';
 import moneyIcon from '../../assets/money-icon.svg';
@@ -22,11 +22,12 @@ import Header from '../elementalComponents/header/Header';
 
 export default function Home() {
 
-    let { token } = useParams();
+    const [token, setToken] = useState('');
     const navigate = useNavigate();
 
     const [installments, setInstallments] = useState([]);
     const [student, setStudent] = useState({});
+    const [students, setStudents] = useState([]);
 
     const [selectAll, setSelectAll] = useState(false);
 
@@ -53,7 +54,7 @@ export default function Home() {
     const getModalData = async () => {
         const {ids, amount} = getSelectedInstallments();
         // console.log(ids, amount);
-        const data = await axios.post(`${API_URL}/api/kid/v1/payment/${token}/`, {
+        const data = await axios.post(`${API_URL}/api/kid/v1/payment/${getToken()}/`, {
             'ids': ids,
             'amount': amount,
         }).then(res => res.data)
@@ -72,7 +73,7 @@ export default function Home() {
     }
 
     const getData = async () => {
-        const data = await axios.get(`${API_URL}/api/kid/v1/installments/${token}/`)
+        const data = await axios.get(`${API_URL}/api/kid/v1/installments/${getToken()}/`)
         .then(res => res.data)
         .catch(error => error.response.data);
 
@@ -189,7 +190,14 @@ export default function Home() {
         setPendingAmount(pendingAmount);
     }, [installments])
 
-    useEffect(async () => {
+    useEffect(() => {
+        if(token != ''){
+            saveToken(token);
+            initHome();
+        }
+    }, [token]);
+
+    const initHome = async () => {
         setLoader(true);
         const data = await getData();
         setStudent(data.student);
@@ -208,6 +216,13 @@ export default function Home() {
 
         setInstallments(data.data);
         setLoader(false);
+    }
+
+    useEffect(() => {
+
+        setStudents([...getStudents()]);
+        
+        initHome();
 
         useScript('https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/easebuzz-checkout.js', () => {
             setEasebuzzCheckout(new EasebuzzCheckout("7ITASSQJE1", 'prod'));
@@ -233,9 +248,7 @@ export default function Home() {
 
     return (
         <>
-        <div style={{padding: '0px 24px 0px 16px'}}>
            <Header title="Student Fee Ledger" back={false} />
-        </div>
         <div className={`home ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='wrapper container'>
                 {!loader && <div className='content-container'>
@@ -262,9 +275,12 @@ export default function Home() {
                     </div>
                     <Table list={installments} handleCheckBox={handleAmount} selectAll={selectAll}/>
                     <Collapsible 
+                        students={students}
                         student={student} 
                         collapsed={studentCollapsed}
-                        handleClick={() => setStudentCollapsed(!studentCollapsed)}/>
+                        handleClick={() => setStudentCollapsed(!studentCollapsed)}
+                        handleStudentClick={(student) => setToken(student.token)}
+                    />
 
                     <StudentDetails 
                         name={student.name}
@@ -313,7 +329,7 @@ export default function Home() {
                         />
                     </div>
                     
-                    <SmallTable list={installments} dependent={!studentCollapsed}/>
+                    <SmallTable list={installments} dependent={!studentCollapsed} showStatus={true}/>
                 </div>}
 
                 {loader && 

@@ -26,7 +26,7 @@ export default function OtpField({ handleChange, otp, error }) {
             <form className='otp-container'>
                 <span className='input-wrapper'>
                     <input 
-                        className='input-field'
+                        className={`input-field ${otp.values[0] != '' && 'filled'}`}
                         onChange={(e) => handleChange(e.target.value, 0)}
                         maxLength={1}
                         tabIndex={1}
@@ -37,7 +37,7 @@ export default function OtpField({ handleChange, otp, error }) {
                 </span>
                 <span className='input-wrapper'>
                     <input 
-                        className='input-field'
+                        className={`input-field ${otp.values[1] != '' && 'filled'}`}
                         onChange={(e) => handleChange(e.target.value, 1)}
                         maxLength={1}
                         tabIndex={2}
@@ -48,7 +48,7 @@ export default function OtpField({ handleChange, otp, error }) {
                 </span>
                 <span className='input-wrapper'>
                     <input 
-                        className='input-field'
+                        className={`input-field ${otp.values[2] != '' && 'filled'}`}
                         onChange={(e) => handleChange(e.target.value, 2)}
                         maxLength={1}
                         tabIndex={3}
@@ -59,7 +59,7 @@ export default function OtpField({ handleChange, otp, error }) {
                 </span>
                 <span className='input-wrapper'>
                     <input 
-                        className='input-field'
+                        className={`input-field ${otp.values[3] != '' && 'filled'}`}
                         onChange={(e) => handleChange(e.target.value, 3)}
                         maxLength={1}
                         tabIndex={4}
@@ -70,7 +70,7 @@ export default function OtpField({ handleChange, otp, error }) {
                 </span>
                 <span className='input-wrapper'>
                     <input 
-                        className='input-field'
+                        className={`input-field ${otp.values[4] != '' && 'filled'}`}
                         onChange={(e) => handleChange(e.target.value, 4)}
                         maxLength={1}
                         tabIndex={5}
@@ -81,7 +81,7 @@ export default function OtpField({ handleChange, otp, error }) {
                 </span>
                 <span className='input-wrapper'>
                     <input 
-                        className='input-field'
+                        className={`input-field ${otp.values[5] != '' && 'filled'}`}
                         onChange={(e) => handleChange(e.target.value, 5)}
                         maxLength={1}
                         tabIndex={6}

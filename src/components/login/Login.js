@@ -7,7 +7,7 @@ import OtpField from '../elementalComponents/otpField/OtpField';
 import background from '../../assets/background.png';
 import caret from '../../assets/caret-right.svg';
 import axios from 'axios';
-import { delay, getToken, saveToken } from '../../services/authService';
+import { delay, getToken, saveStudents, saveToken } from '../../services/authService';
 import { Bars, TailSpin } from 'react-loader-spinner';
 import CheckBox from '../elementalComponents/checkBox/CheckBox';
 import TcModal from '../elementalComponents/tandc/TcModal';
@@ -133,6 +133,7 @@ export default function Login() {
             const studentList = await getStudents();
             if(studentList){
                 // console.log(studentList);
+                saveStudents(studentList);
                 setStudents(studentList);
                 setVerified(true);
             }
@@ -173,23 +174,26 @@ export default function Login() {
     }, [error]);
 
     return (
-        <div className='login' style={{backgroundImage: `url(${background})`}}>
+        <div className='login'>
             <img src={logo} className='logo'/>
             {!verified && !otp.generated &&
             <div className='wrapper container'>
                 <div className='header-container'>
                     <img src={logo} className='logo-small'/>
-                    <div className='header'>Login</div>
-                    <div className='subline'>Let's pay your college fee</div>
                 </div>
-                <InputField 
-                    placeholder={'Enter registered Phone Number'} 
-                    validate={true}
-                    validity={isValid}
-                    inputType='tel'
-                    handleChange={handleInputChange}
-                    error={error.number}
-                />
+                <div style={{width: '100%'}}>
+                    <div className='header'>Login</div>
+                    <div className='subline' style={{marginBottom: '3rem'}}>Let's pay your fees</div>
+                
+                    <InputField 
+                        placeholder={'Enter registered Phone Number'} 
+                        validate={true}
+                        validity={isValid}
+                        inputType='tel'
+                        handleChange={handleInputChange}
+                        error={error.number}
+                    />
+                </div>
                 <div className='bottom-container'>
                     <p>
                         <span onClick={() => openTandC('tc')}>
@@ -220,10 +224,10 @@ export default function Login() {
                 <div className='wrapper container'>
                 <div className='header-container'>
                     <img src={logo} className='logo-small'/>
-                    <div className='header'>Verify OTP</div>
-                    <div className='subline'>Please check message on xxxxxx{getLastFourDigits()}</div>
                 </div>
                 <div className='mid-container'>
+                    <div className='header'>Verify OTP</div>
+                    <div className='subline'>Please check message on xxxxxx{getLastFourDigits()}</div>
                     <div className='label'>OTP</div>
                     <OtpField 
                         handleChange={(val, i) => handleOtp(val, i)} 
@@ -261,21 +265,23 @@ export default function Login() {
             {verified && <div className='wrapper container'>
                 <div className='header-container'>
                     <img src={logo} className='logo-small'/>
-                    <div className='header'>Select Student</div>
                     {/* <div className='subline'>Please check message on xxxxxx{getLastFourDigits()}</div> */}
                 </div>
-                <div className='students-container'>
-                    {
-                        students.map((student, i) => (
-                            <div className='student-card' key={i} onClick={() => navigateToInstallmentPage(i)}>
-                                <div className='text-container'>
-                                    <div className='name'>{student.name}</div>
-                                    <div className='id'>{student.id}</div>
+                <div style={{width: '100%'}}>
+                    <div className='header'>Select Student</div>
+                    <div className='students-container'>
+                        {
+                            students.map((student, i) => (
+                                <div className='student-card' key={i} onClick={() => navigateToInstallmentPage(i)}>
+                                    <div className='text-container'>
+                                        <div className='name'>{student.name}</div>
+                                        <div className='id'>{student.id}</div>
+                                    </div>
+                                    <img src={caret} className='icon'/>
                                 </div>
-                                <img src={caret} className='icon'/>
-                            </div>
-                        ))
-                    }
+                            ))
+                        }
+                    </div>
                 </div>
                 <div></div>
             </div>}

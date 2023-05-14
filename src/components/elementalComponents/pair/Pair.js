@@ -5,6 +5,7 @@ export default function Pair({
     bgColor,
     keyname, 
     value,
+    margin,
     style={}
 }) {
   return (
