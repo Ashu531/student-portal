@@ -18,7 +18,7 @@ const saveStudents = (students) => {
     localStorage.setItem('credenc-fms-students', JSON.stringify(students));
 }
 
-const removeStudents = (students) => {
+const removeStudents = () => {
     localStorage.removeItem('credenc-fms-students');
 }
 
