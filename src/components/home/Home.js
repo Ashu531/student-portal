@@ -248,7 +248,7 @@ export default function Home() {
 
     return (
         <>
-           <Header title="Student Fee Ledger" back={false} />
+        <Header title="Student Fee Ledger" back={false} />
         <div className={`home ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='wrapper container'>
                 {!loader && <div className='content-container'>

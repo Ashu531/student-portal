@@ -1,0 +1,72 @@
+.loan-success{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0px 24px;
+
+    .student-content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 20px;
+        gap: 25px;
+        background: rgba(64, 64, 64, 0.1);
+        border-radius: 8px;
+        width: 100%;
+        margin: 24px 12px ; 
+
+        .student-container{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            .student-label{
+                font-family: 'Poppins';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 18px;
+                color: #404040;
+            }
+
+            .student-name{
+                font-family: 'Poppins';
+                font-style: normal;
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 21px;
+                text-align: right;
+                color: #000000;
+            }
+
+            .student-detail{
+                font-family: 'Poppins';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 21px;
+                text-align: right;
+                color: #000000;
+            }
+        }
+    }
+
+    .button{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 12px 0px;
+        gap: 10px;
+        background: #8F14CC;
+        border-radius: 10px;
+        width: 100%;
+        margin-top: 50px;
+    }
+
+}

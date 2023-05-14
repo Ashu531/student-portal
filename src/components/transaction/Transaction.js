@@ -7,11 +7,24 @@ import TransactionStatus from '../../components/elementalComponents/transactionS
 export default function Transaction() {
     const [successIcon, setSuccessIcon] = useState(true)
 
+    useEffect(()=>{
+        _getTransactionDetail()
+    },[])
+
+    const _getTransactionDetail=async()=>{
+        const data = await axios.get(`${API_URL}/api/kid/v1/autopay/status/`)
+        .then(res => console.log(res.data))
+        .catch(error => error.response.data);
+
+        return data;
+    }
+
     return (
-        <div className='transaction'>
-           <Header
+        <>
+        <Header
              title="Transaction"
-           />
+        />
+        <div className='transaction'>
            <TransactionStatus 
              icon={successIcon} 
              title='Auto-Pay initiated!'  
@@ -40,6 +53,7 @@ export default function Transaction() {
              classes='button'
             />
         </div>
+        </>
     )
 }
 
