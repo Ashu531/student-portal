@@ -4,6 +4,7 @@ import { TailSpin } from 'react-loader-spinner';
 import useScript from '../../hooks/useScript';
 import { getToken } from '../../services/authService';
 import Button from '../elementalComponents/button/Button';
+import Header from '../elementalComponents/header/Header';
 import Modal from '../elementalComponents/modal/Modal';
 import Pair from '../elementalComponents/pair/Pair';
 import SmallTable from '../elementalComponents/smallTable/SmallTable';
@@ -160,7 +161,7 @@ useEffect(async () => {
   return (
     <>
         <div style={{padding: '0px 24px'}}>
-            <Header title="Pay Individually" />
+            <Header title="Pay In Full" />
         </div>
         <div className={`payment ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='wrapper container'>

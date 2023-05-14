@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../components/elementalComponents/header/Header'
 import Button from '../elementalComponents/button/Button';
 import backIcon from '../../assets/caret-right.svg';
+import InputField from '../elementalComponents/inputField/InputField';
 
 export default function Loan() {
 
@@ -44,15 +45,16 @@ export default function Loan() {
                 <form>
                     <div className="formDiv">
                     <label className="label">Application's Name</label>
-                    <input className="input" type="text"></input>
+                    <InputField />
                     </div>
                     <div className="formDiv">
                     <label className="label">Application's Email</label>
-                    <input className="input" type="email"></input>
+                    <InputField />
                     </div>
                     <div className="formDiv">
                     <label className="label">Application's Phone Number</label>
-                    <input className="input" type="number"></input></div>
+                    </div>
+                    <InputField />
                     <div className="formDiv">
                     <label className="label">Relationship with Student</label>
                     <select className="input" type="select"></select></div>
