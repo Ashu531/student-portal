@@ -18,6 +18,7 @@ import handCoinsIcon from '../../assets/hand-coins.svg';
 import coinsIcon from '../../assets/coins.svg';
 import CurrencyEthIcon from '../../assets/currency-eth.svg';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
+import Header from '../elementalComponents/header/Header';
 
 export default function PartialPayment() {
 
@@ -240,6 +241,9 @@ export default function PartialPayment() {
 
     return (
         <>
+        <div style={{padding: '0px 24px'}}>
+        <Header title="Pay Individually" />
+        </div>
         <div className={`partial-payment ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='wrapper container'>
                 {!loader && <div className='content-container'>

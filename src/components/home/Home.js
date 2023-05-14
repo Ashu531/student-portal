@@ -18,6 +18,7 @@ import handCoinsIcon from '../../assets/hand-coins.svg';
 import coinsIcon from '../../assets/coins.svg';
 import CurrencyEthIcon from '../../assets/currency-eth.svg';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
+import Header from '../elementalComponents/header/Header';
 
 export default function Home() {
 
@@ -222,8 +223,19 @@ export default function Home() {
         navigate(`/partial-payment`, {replace: true});
     }
 
+    const navigateToAutopay=()=>{
+        navigate(`/autopay`, {replace: true});
+    }
+
+    const navigateToLoanPage=()=>{
+        navigate(`/credenc-loan`, {replace: true});
+    }
+
     return (
         <>
+        <div style={{padding: '0px 24px 0px 16px'}}>
+           <Header title="Student Fee Ledger" back={false} />
+        </div>
         <div className={`home ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='wrapper container'>
                 {!loader && <div className='content-container'>
@@ -283,12 +295,14 @@ export default function Home() {
                             heading={'PAY WITH CREDENC'}
                             description={'Pay full fee using Credenc loan!'}
                             bgColor={'#FFD45C'}
+                            onClick={navigateToLoanPage}
                         />
                         <PaymentOption
                             icon={CurrencyEthIcon}
                             heading={'SET UP AUTO-PAY'}
                             description={'Set up auto-payment at regular intervals!'}
                             bgColor={'#E3FB72'}
+                            onClick={navigateToAutopay}
                         />
                         <PaymentOption
                             icon={coinsIcon}
