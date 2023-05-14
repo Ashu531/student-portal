@@ -144,6 +144,24 @@
                     }
                 }
             }
+
+            .heading {
+                width: 100%;
+                margin: 1rem 0;
+                text-align: start;
+                font-size: 1.6rem;
+                font-weight: 600;
+                color: #000;
+            }
+
+        }
+
+        .payment-options-container {
+            width: 100%;
+            display: flex;
+            gap: 1rem;
+            row-gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .button-container{

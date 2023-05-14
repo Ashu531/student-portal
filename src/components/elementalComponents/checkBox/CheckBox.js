@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import checkIcon from "../../../assets/check-icon.svg";
 
-export default function CheckBox({ size = "2.2rem", setChecked, isChecked=false, disabled=false }) {
+export default function CheckBox({ size = "1.8rem", setChecked, isChecked=false, disabled=false }) {
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -15,8 +15,7 @@ export default function CheckBox({ size = "2.2rem", setChecked, isChecked=false,
       style={{
         width: `${size}`,
         height: `${size}`,
-        background: `${isChecked ? "rgba(158, 60, 165, 1)" : "none"}`,
-        border: `${isChecked ? "2px solid rgba(158, 60, 165, 1)" : ""}`,
+        border: `${isChecked ? "" : "1px solid #BFBFBF"}`,
         pointerEvents: `${disabled ? 'none': ''}`
       }}
     >
