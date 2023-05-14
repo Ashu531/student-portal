@@ -4,9 +4,10 @@
     flex-direction: row;
     align-items: center;
     padding: 1.6rem 1.2rem;
-    background: rgba(42, 10, 98, 0.1);
+    background: rgba(0, 0, 0, 0.15);
     border-radius: 1rem;
     align-self: stretch;
+    border: 1px solid rgba(64, 64, 64, 0.1);
     margin: 1.2rem 0;
 
     .input-field{
@@ -18,10 +19,16 @@
         font-size: 1.4rem;
         line-height: 2.1rem;
         letter-spacing: 0.05em;
-        color: #FFFFFF;
+        color: #000000;
+
     }
     .input-field:focus{
         outline: none;
+    }
+
+    input::placeholder {
+        color: #818181;
+        font-weight: normal;
     }
 
     .icon{

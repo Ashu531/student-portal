@@ -22,7 +22,6 @@ import Header from '../elementalComponents/header/Header';
 
 export default function PartialPayment() {
 
-    let { token } = useParams();
     const navigate = useNavigate();
 
     const [installments, setInstallments] = useState([]);
@@ -241,9 +240,7 @@ export default function PartialPayment() {
 
     return (
         <>
-        <div style={{padding: '0px 24px'}}>
         <Header title="Pay Individually" />
-        </div>
         <div className={`partial-payment ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='wrapper container'>
                 {!loader && <div className='content-container'>
@@ -262,6 +259,7 @@ export default function PartialPayment() {
                         bgColor={'#5654BF'}
                         keyname={'Selected Amount :'}
                         value={`₹ ${amount}`}
+                        style={{margin: installments.length > 0 ? '' : '1rem 0'}}
                     />
                     
                     <SmallTable list={installments} handleCheckBox={handleAmount} dependent={!studentCollapsed}/>

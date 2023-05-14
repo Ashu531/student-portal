@@ -4,6 +4,7 @@ import { TailSpin } from 'react-loader-spinner';
 import useScript from '../../hooks/useScript';
 import { getToken } from '../../services/authService';
 import Button from '../elementalComponents/button/Button';
+import Header from '../elementalComponents/header/Header';
 import Modal from '../elementalComponents/modal/Modal';
 import Pair from '../elementalComponents/pair/Pair';
 import SmallTable from '../elementalComponents/smallTable/SmallTable';
@@ -148,7 +149,9 @@ useEffect(async () => {
 
     });
 
-    setInstallments(data.data);
+    const installments = data.data.filter(installment => installment['is_mandatory'] != false)
+
+    setInstallments(installments);
     setLoader(false);
 
     useScript('https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/easebuzz-checkout.js', () => {
@@ -159,9 +162,7 @@ useEffect(async () => {
 
   return (
     <>
-        <div style={{padding: '0px 24px'}}>
-            <Header title="Pay Individually" />
-        </div>
+            <Header title="Pay in Full" />
         <div className={`payment ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='wrapper container'>
                 {!loader && <div className='content-container'>
@@ -180,6 +181,7 @@ useEffect(async () => {
                         bgColor={'#5654BF'}
                         keyname={'Total Amount :'}
                         value={`₹ ${amount}`}
+                        style={{margin: installments.length > 0 ? '' : '1rem 0'}}
                     />
                     
                     <SmallTable list={installments} dependent={!studentCollapsed}/>

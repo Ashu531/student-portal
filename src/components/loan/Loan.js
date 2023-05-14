@@ -2,32 +2,43 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../components/elementalComponents/header/Header'
 import Button from '../elementalComponents/button/Button';
 import backIcon from '../../assets/caret-right.svg';
+import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
+import { getToken } from '../../services/authService';
+import axios from 'axios';
 
 export default function Loan() {
 
+    const [student, setStudent] = useState({});
+
+    const [loader, setLoader] = useState(false);
+
+    const getData = async () => {
+        const data = await axios.get(`${API_URL}/api/kid/v1/installments/${getToken()}/`)
+        .then(res => res.data)
+        .catch(error => error.response.data);
+
+        return data;
+    }
+
+    useEffect(async () => {
+        setLoader(true);
+        const data = await getData();
+        setStudent(data.student);
+        setLoader(false);
+    }, [])
+
     return (
-        <div className='loan'>
-           <Header
+        <>
+        <Header
              title="Pay With Credenc"
            />
-           <div className='student-content'>
-                <div className='student-container'>
-                    <div className='student-label'>Student Name</div>
-                    <div className='student-name'>Nandini Mediratta</div>
-                </div>
-                <div className='student-container'>
-                    <div className='student-label'>Admission No.</div>
-                    <div className='student-detail'>ABC1234</div>
-                </div>
-                <div className='student-container'>
-                    <div className='student-label'>Grade</div>
-                    <div className='student-detail'>5-A</div>
-                </div>
-                <div className='student-container'>
-                    <div className='student-label'>School</div>
-                    <div className='student-detail'>Shikshantar Sr. Sec. School</div>
-                </div>
-           </div>
+        <div className='loan'>
+           <StudentDetails 
+                name={student.name}
+                id={student.id}
+                grade={student.course}
+                school={student.college}
+            />
            <div className='amount-container'>
                 <div className='amount-label'>
                     Total Amount
@@ -65,6 +76,7 @@ export default function Loan() {
             />
            
         </div>
+        </>
     )
 }
 

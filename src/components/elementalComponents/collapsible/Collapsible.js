@@ -1,46 +1,37 @@
-import React, { useState } from 'react';
-import collapseIcon from '../../../assets/caret-up.svg';
-import expandIcon from '../../../assets/caret-down.svg';
+import React, { useState } from "react";
+import collapseIcon from "../../../assets/caret-up.svg";
+import expandIcon from "../../../assets/caret-down.svg";
 
-export default function Collapsible({ student, collapsed, handleClick }) {
-
-    return (
-        <div className='collapsible' onClick={handleClick}>
-            {collapsed ? 
-                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <div className='row' style={{width: '85%'}}>
-                        <div className='field'>Student</div>
-                        <div className='value'>{student.name}</div>
-                    </div>
-                    <img src={expandIcon}/>
-                </div>
-             :
-                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <div className='header'>Student Details</div>
-                    <img src={collapseIcon}/>
-                </div>
-            }
-            
-            {
-            !collapsed && <div className="content">
-                <div className='row'>
-                    <div className='field'>Name</div>
-                    <div className='value'>{student.name}</div>
-                </div>
-                <div className='row'>
-                    <div className='field'>Admission No.</div>
-                    <div className='value'>{student.id}</div>
-                </div>
-                <div className='row'>
-                    <div className='field'>Grade</div>
-                    <div className='value'>{student.course}</div>
-                </div>
-                <div className='row'>
-                    <div className='field'>School</div>
-                    <div className='value'>{student.college}</div>
-                </div>
-            </div>
-            }
+export default function Collapsible({
+  student,
+  students,
+  collapsed,
+  handleClick,
+  handleStudentClick
+}) {
+  return (
+    <div className="collapsible" onClick={handleClick}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div className="row" style={{ width: "85%" }}>
+          <div className="field">Student</div>
+          <div className="value">{student.name}</div>
         </div>
-    )
+        <img src={expandIcon} />
+      </div>
+
+      {!collapsed &&
+        <div style={{background: 'rgba(255, 255, 255, 0.1)', borderRadius: '0.8rem', overflow: 'hidden'}}>
+          {students.map((student) => (
+                <div className="selectable" onClick={() => handleStudentClick(student)}>{student.name}</div>
+          ))}
+      </div>
+}
+    </div>
+  );
 }
