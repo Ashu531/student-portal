@@ -33,13 +33,18 @@ html {
 }
 
 body {
-  width: 100vw;
+  // min-width: 100vw;
+  max-width: 1550px !important;
   height: 100vh;
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
   font-family: "Poppins", sans-serif;
   overflow-x: hidden;
-  // background: linear-gradient(107.56deg, #4530B1 0%, #772AA1 58.85%, #CA1C7A 99.48%);
+  background: #000000;
+}
+
+#app {
+  background-color: #FFFFFF;
 }
 
 .credenc-loader{

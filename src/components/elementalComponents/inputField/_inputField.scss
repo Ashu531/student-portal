@@ -4,7 +4,7 @@
     flex-direction: row;
     align-items: center;
     padding: 1.6rem 1.2rem;
-    // background: rgba(0, 0, 0, 0.15);
+    background: rgba(64, 64, 64, 0.1);
     border-radius: 1rem;
     align-self: stretch;
     border: 1px solid rgba(64, 64, 64, 0.1);
@@ -40,7 +40,7 @@
 @media screen and (max-width: 499px){
     .input-container{
         .input-field{
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             line-height: 1.8rem;
         }
     }

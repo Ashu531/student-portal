@@ -177,7 +177,7 @@ export default function Login() {
         <div className='login'>
             <img src={logo} className='logo'/>
             {!verified && !otp.generated &&
-            <div className='wrapper container'>
+            <div className='container'>
                 <div className='header-container'>
                     <img src={logo} className='logo-small'/>
                 </div>
@@ -238,7 +238,7 @@ export default function Login() {
                 <div className='bottom-container'>
                     <div className='resend-otp-container'>
                         <div className='message-left'>Didn't receive an OTP?</div>
-                        <div className='small-wrapper-colored' style={{margin: '0.8rem 0'}}>
+                        <div className='small-wrapper' style={{margin: '0.8rem 0'}}>
                             <Button 
                                 text={"Resend OTP"} 
                                 handleClick={() => handleGenerateOtpButton(true)}

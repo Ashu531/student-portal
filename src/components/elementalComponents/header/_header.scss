@@ -1,11 +1,11 @@
 .header-component{
-    // width: 100%;
+    width: 90%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     padding: 12px 0px;
-    margin: 2rem 2.4rem 1rem 1.6rem;
+    margin: 2rem auto 1rem auto;
 
     .heading{
         display: flex;
@@ -24,10 +24,8 @@
             font-family: 'Poppins';
             font-style: normal;
             font-weight: 600;
-            font-size: 18px;
-            line-height: 27px;
-            display: flex;
-            align-items: center;
+            font-size: 2.4rem;
+            line-height: 3.6rem;
             color: #000000;
             margin-left: 16px;
         }
@@ -37,5 +35,34 @@
         height: 28px;
         width: 32px;
         object-fit: contain;
+    }
+}
+
+
+@media screen and (max-width: 499px){
+    .header-component{
+        width: auto;
+        padding: 12px 0px;
+        margin: 2rem 2.4rem 1rem 1.6rem;
+    
+        .heading{
+    
+            .backIcon{
+                height: 20px;
+                width: 20px;
+            }
+    
+            .title{
+                font-weight: 600;
+                font-size: 18px;
+                line-height: 27px;
+                margin-left: 16px;
+            }
+        }
+    
+        .sikshaIcon{
+            height: 28px;
+            width: 32px;
+        }
     }
 }

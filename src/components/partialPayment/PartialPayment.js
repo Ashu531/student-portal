@@ -262,7 +262,10 @@ export default function PartialPayment() {
                         style={{margin: installments.length > 0 ? '' : '1rem 0'}}
                     />
                     
-                    <SmallTable list={installments} handleCheckBox={handleAmount} dependent={!studentCollapsed}/>
+                    <div style={{height: '2rem'}}></div>
+                        <Table list={installments} handleCheckBox={handleAmount} selectAll={selectAll}/>
+                        <SmallTable list={installments} handleCheckBox={handleAmount} dependent={!studentCollapsed}/>
+                    <div style={{height: '2rem'}}></div>
                 </div>}
 
                 {!loader && <div className='button-container'>
