@@ -1,25 +1,29 @@
 .table{
     width: 100%;
     border-radius: 0.8rem;
+    border: 1px solid #AEAEAE;
+    border-spacing: 0;
 
     .thead{
         width: 100%;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 0.6rem 1.2rem;
+        background: rgba(64, 64, 64, 1);
+        padding: 1.5rem;
         border-radius: 0.8rem 0.8rem 0 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
 
         th{
-            font-weight: normal;
+            font-weight: 600;
+            font-size: 1.6rem;
+            line-height: 2.4rem;
+            color: #FFFFFF;
         }
     }
 
     .tbody{
-        max-height: 25rem;
         display: block;
-        overflow: scroll;
+        // overflow: scroll;
         overflow-x: hidden;
         &::-webkit-scrollbar {
             display: none;

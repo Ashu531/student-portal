@@ -9,6 +9,7 @@ import Modal from '../elementalComponents/modal/Modal';
 import Pair from '../elementalComponents/pair/Pair';
 import SmallTable from '../elementalComponents/smallTable/SmallTable';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
+import Table from '../elementalComponents/table/Table';
 
 export default function Payment() {
 
@@ -184,7 +185,11 @@ useEffect(async () => {
                         style={{margin: installments.length > 0 ? '' : '1rem 0'}}
                     />
                     
-                    <SmallTable list={installments} dependent={!studentCollapsed}/>
+                    <div style={{height: '2rem'}}></div>
+                        <Table list={installments}/>
+                        <SmallTable list={installments} dependent={!studentCollapsed}/>
+                    <div style={{height: '2rem'}}></div>
+
                 </div>}
 
                 {!loader && <div className='button-container'>

@@ -13,47 +13,47 @@ export default function Table({ list, handleCheckBox, selectAll=false}) {
     }
 
     return (
-        <table className='table'>
+        list && list.length > 0 && <table className='table'>
             <thead>
                 <tr className='thead'>
                     <th style={{minWidth: '30%', textAlign: 'left'}}>
-                        <span style={{fontSize: '1.2rem', lineHeight: '1.8rem', color: 'rgba(255, 255, 255, 0.5)'}}>
+                        <span>
                             Installment Name
                         </span>
                     </th>
                     <th style={{minWidth: '10%', textAlign: 'right'}}>
-                        <span style={{fontSize: '1.2rem', lineHeight: '1.8rem', color: 'rgba(255, 255, 255, 0.5)'}}>
+                        <span>
                             Amount
                         </span>
                     </th>
                     <th style={{minWidth: '10%', textAlign: 'right'}}>
-                        <span style={{fontSize: '1.2rem', lineHeight: '1.8rem', color: 'rgba(255, 255, 255, 0.5)'}}>
+                        <span>
                             Penalty
                         </span>
                     </th>
                     <th style={{minWidth: '10%', textAlign: 'right'}}>
-                        <span style={{fontSize: '1.2rem', lineHeight: '1.8rem', color: 'rgba(255, 255, 255, 0.5)'}}>
+                        <span>
                             Start Date
                         </span>
                     </th>
                     <th style={{minWidth: '10%', textAlign: 'right'}}>
-                        <span style={{fontSize: '1.2rem', lineHeight: '1.8rem', color: 'rgba(255, 255, 255, 0.5)'}}>
+                        <span>
                             End Date
                         </span>
                     </th>
                     <th style={{minWidth: '10%', textAlign: 'right'}}>
-                        <span style={{fontSize: '1.2rem', lineHeight: '1.8rem', color: 'rgba(255, 255, 255, 0.5)'}}>
+                        <span>
                             Expire Date
                         </span>
                     </th>
                     <th style={{minWidth: '10%', textAlign: 'center'}}>
-                        <span style={{fontSize: '1.2rem', lineHeight: '1.8rem', color: 'rgba(255, 255, 255, 0.5)'}}>
+                        <span>
                             Status
                         </span>
                     </th>
-                    <th>
+                    {handleCheckBox && <th>
                         <CheckBox setChecked={(v) => handleCheckBox(v, -1)} isChecked={selectAll}/>
-                    </th>
+                    </th>}
                 </tr>
             </thead>
             <tbody className='tbody'>
@@ -96,13 +96,13 @@ export default function Table({ list, handleCheckBox, selectAll=false}) {
                                 {listItem.status}
                             </span>
                         </td>
-                        <td>
+                        {handleCheckBox && <td>
                             <CheckBox 
                                 setChecked={(v) => handleCheckBox(v, i)} 
                                 isChecked={listItem.is_mandatory === 'True' || listItem.is_mandatory === true} 
                                 disabled={getDisabled(i)}
                             />
-                        </td>
+                        </td>}
                     </tr>
                     ))
                 }

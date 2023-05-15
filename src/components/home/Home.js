@@ -250,30 +250,8 @@ export default function Home() {
         <>
         <Header title="Student Fee Ledger" back={false} />
         <div className={`home ${confirmationDialog ? 'open-modal' : ''}`}>
-            <div className='wrapper container'>
+            <div className='container'>
                 {!loader && <div className='content-container'>
-                    <div className='sub-header-container'>
-                        <div className='college-container'>
-                            <img src={`data:image/png;base64, ${student.logo}`} className='college-logo'/>
-                            <div className='mini-header grow'>
-                                <div className='subtitle'>College</div>
-                                <div className='title'>{student.college}</div>
-                            </div>
-                            <div className='mini-header'>
-                                <div className='subtitle'>Name</div>
-                                <div className='title'>{student.name}</div>
-                            </div>
-                            <div className='mini-header'>
-                                <div className='subtitle'>Course</div>
-                                <div className='title'>{student.course}</div>
-                            </div>
-                            <div className='mini-header'>
-                                <div className='subtitle'>Unique ID</div>
-                                <div className='title'>{student.id}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <Table list={installments} handleCheckBox={handleAmount} selectAll={selectAll}/>
                     <Collapsible 
                         students={students}
                         student={student} 
@@ -328,7 +306,8 @@ export default function Home() {
                             onClick={navigateToPartialPaymentPage}
                         />
                     </div>
-                    
+                    <div style={{height: '2rem'}}></div>
+                    <Table list={installments} selectAll={selectAll}/>
                     <SmallTable list={installments} dependent={!studentCollapsed} showStatus={true}/>
                 </div>}
 
