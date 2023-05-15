@@ -8,6 +8,14 @@ import { getToken } from '../../services/authService';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
+import Select from 'react-select';
+
+const relations = [
+    { value: 'Father', label: 'Father' },
+    { value: 'Mother', label: 'Mother' },
+    { value: 'Brother', label: 'Brother' },
+    { value: 'Sister', label: 'Sister' },
+  ];
 
 export default function Loan() {
 
@@ -31,6 +39,7 @@ export default function Loan() {
     }
 
     const handleSubmit=async()=>{
+        console.log(name,email,relation)
         if(name.length > 4 && email.length > 8 && relation.length > 4){
             let response = await axios.post(`${API_URL}/api/kid/v1/loan/${getToken()}/`, {
                 'name': name,
@@ -73,8 +82,8 @@ export default function Loan() {
         setMobileNumber(e)
     }
 
-    const _handleRelation=()=>{
-         setRelation(document.getElementById("relation").value)
+    const handleRelation=(e)=>{
+         setRelation(e.value)
     }
 
     return (
@@ -125,14 +134,13 @@ export default function Loan() {
                         </div>
                         
                         <div className="formDiv" style={ window.innerWidth > 500 ? {marginTop: 0} : null }>
-                           <label className="label">Relationship with Student</label>
-                            <select className="relation" id='rel' onClick={(e)=>_handleRelation(e)}>
-                                    <option value="" disabled selected>Select Relationship</option>
-                                    <option value="Father">Father</option>
-                                    <option value="Mother">Mother</option>
-                                    <option value="Sister">Sister</option>
-                                    <option value="Brother">Brother</option>
-                            </select>
+                        <label className="label">Relationship</label>
+                        <Select
+                            defaultValue={relation}
+                            onChange={(e)=>handleRelation(e)}
+                            options={relations}
+                            styles={select}
+                        />
                         </div>
                         </div>
                     </form>
@@ -150,6 +158,11 @@ export default function Loan() {
         }
         </>
     )
+}
+
+const select = {
+    height: 54,
+    width: '40%'
 }
 
 
