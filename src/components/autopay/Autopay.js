@@ -6,7 +6,7 @@ import axios from 'axios';
 import { getToken } from '../../services/authService';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 import useScript from '../../hooks/useScript';
-
+import moment from 'moment'
 
 export default function Autopay() {
 
@@ -48,10 +48,23 @@ export default function Autopay() {
 
     const _getPaymentDetails=async()=>{
         const data = await axios.get(`${API_URL}/api/kid/v1/autopay/installments/${getToken()}/`)
-        .then(res => setPaymentDetailData(res.data.data))
+        .then(res => {
+            setPaymentDetailData(res.data.data)
+            console.log(res.data.data)
+            _getPaymentOptions(res.data.data)
+        })
         .catch(error => error.response.data);
 
         return data;
+    }
+
+    const _getPaymentOptions=(data)=>{
+        let amount = 0;
+        data.forEach((item,index)=>{
+            console.log(item.amount)
+            amount = amount + item.amount
+        })
+        console.log(amount)
     }
 
     const handleProceed=()=>{
@@ -64,6 +77,7 @@ export default function Autopay() {
            }).then(res => {
                let url = res.data.url
                window.location.href = url
+            //    console.log(url,"url+++")
            })
             .catch(err => err.response.data);
     }
@@ -119,14 +133,28 @@ export default function Autopay() {
                     </div>
                     {
                         paymentDetailData && paymentDetailData.map((item,index)=>{
-                            console.log(item)
+                            let amount = 0;
+                            item?.data.forEach((data,i)=>{
+                                amount = amount + data.amount
+                            })
+
+                            let minDate = item?.data[0]?.start_date
+
+                            item?.data.forEach((data,i)=>{
+                                console.log(data)
+                                let temp = data?.start_date
+                                if(moment(temp).isAfter(minDate)){
+                                    minDate = temp;
+                                }
+                            })
+
                             return(
                                 <div className='quarter-container' key={index}>
                                     <div className='quarter-header'>
                                         <span className='quarter-label'>{item.name}</span>
-                                        <span className='quarter-label'>2021 JAN 16</span>
-                                        <span className='quarter-label' style={{fontWeight: 700}}>₹ 54,500</span>
-                                        <img src={backIcon} height={20} width={20} style={item.id == paymentOpen.paymentID && paymentOpen.openPayment === true && item.data.length > 0 ? {transform: 'rotate(-90deg)'} : {transform: 'rotate(90deg)'}} onClick={()=>handleToggle(item)} />
+                                        <span className='quarter-label'>{moment(minDate).format("MMM Do YY")}</span>
+                                        <span className='quarter-label' style={{fontWeight: 700}}>₹ {amount}</span>
+                                        <img src={backIcon} height={20} width={20} style={item.id == paymentOpen.paymentID && paymentOpen.openPayment === true && item.data.length > 0 ? {transform: 'rotate(-90deg)',cursor: 'pointer'} : {transform: 'rotate(90deg)',cursor: 'pointer'}} onClick={()=>handleToggle(item)} />
                                     </div>
                                     {  item.id == paymentOpen.paymentID && paymentOpen.openPayment === true &&
                                         item.data.map((el,i)=>{
@@ -148,22 +176,22 @@ export default function Autopay() {
                     
                 </div>
             }
-
-            {       
+            <div className='button-container'> 
+            {      
                !autopay ? 
                     <Button 
                         text='Proceed' 
-                        classes='button'
+                        classes={`small-wrapper button-small button-primary ${totalAmount > 0 ? '': 'disabled'}`}
                         handleClick={()=>handleProceed()}
                     />
                     : 
                     <Button 
                         text='Set up Auto-Pay' 
-                        classes='button'
+                        classes={`small-wrapper button-small button-primary ${totalAmount > 0 ? '': 'disabled'}`}
                         handleClick={()=>handleAutopay()}
                     />
            }
-            
+             </div>
         </div>
         </>
     )

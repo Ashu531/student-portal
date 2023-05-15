@@ -107,37 +107,43 @@ export default function Loan() {
                    <div>
                        <h2 className="loan-application-heading">Loan Application</h2>
                    </div>
-                    <form>
-                        <div className="formDiv">
-                        <label className="label">Application's Name</label>
-                        <InputField handleChange={(e)=>handleName(e)} />
+                    <form className='form'>
+                        <div className='form-content'>
+                            <div className="formDiv">
+                                <label className="label">Application's Name</label>
+                                <InputField handleChange={(e)=>handleName(e)} maxLength={30} />
+                            </div>
+                            <div className="formDiv">
+                                <label className="label">Application's Email</label>
+                                <InputField handleChange={(e)=>handleEmail(e)} />
+                            </div>
                         </div>
+                        <div className='form-content'>
                         <div className="formDiv">
-                        <label className="label">Application's Email</label>
-                        <InputField handleChange={(e)=>handleEmail(e)} />
+                            <label className="label">Application's Phone Number</label>
+                            <InputField handleChange={(e)=>handleMobileNumber(e)} maxLength={10} />
                         </div>
-                        <div className="formDiv">
-                        <label className="label">Application's Phone Number</label>
-                        </div>
-                        <InputField handleChange={(e)=>handleMobileNumber(e)} />
-                        <div className="formDiv">
-                            <label className="label" for='relation'>Relationship with Student</label>
-                            <select className="relation" id='relation' onClick={(e)=>_handleRelation(e)}>
+                        
+                        <div className="formDiv" style={ window.innerWidth > 500 ? {marginTop: 0} : null }>
+                           <label className="label">Relationship with Student</label>
+                            <select className="relation" id='rel' onClick={(e)=>_handleRelation(e)}>
+                                    <option value="" disabled selected>Select Relationship</option>
                                     <option value="Father">Father</option>
                                     <option value="Mother">Mother</option>
                                     <option value="Sister">Sister</option>
                                     <option value="Brother">Brother</option>
                             </select>
                         </div>
+                        </div>
                     </form>
                </div>
-              
+              <div className='button-container'>
                 <Button 
                  text='Proceed' 
                  classes='button'
                  handleClick={()=>handleSubmit()}
                 />
-               
+              </div>
             </div>
         
             </>

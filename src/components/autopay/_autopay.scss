@@ -125,7 +125,6 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        padding: 12px 118px;
         gap: 10px;
         background: #8F14CC;
         border-radius: 10px;
@@ -191,6 +190,7 @@
                     font-size: 14px;
                     line-height: 21px;
                     color: #404040;
+                    width: 25%;
                 }
             }
 
@@ -225,4 +225,18 @@
             }
         }
     }
+    .button-container{
+        width: 40%;
+        align-self: flex-end;
+        margin-bottom: 1.2rem;
+    }
+}
+@media screen and(max-width: 499px){
+.autopay{
+    .button-container{
+        width: 100%;
+        align-self: flex-end;
+        margin-bottom: 1.2rem;
+    }
+}
 }
