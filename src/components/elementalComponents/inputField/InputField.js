@@ -8,7 +8,7 @@ export default function InputField({
     handleChange,
     validity,
     error,
-    maxLength=20,
+    maxLength=255,
     width='',
     height='',
     margin='',
