@@ -71,7 +71,7 @@ export default function PartialPayment() {
     }
 
     const getData = async () => {
-        const data = await axios.get(`${API_URL}/api/kid/v1/installments/${getToken()}/`)
+        const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
         .then(res => res.data)
         .catch(error => error.response.data);
 
@@ -150,7 +150,6 @@ export default function PartialPayment() {
     }
 
     const closeModal = () => {
-        setModalData({});
         setConfirmationDialog(false);
     }
 
@@ -165,9 +164,11 @@ export default function PartialPayment() {
                 onResponse: (response) => {
                     if(!response || !response.status){
                         logResponse(response);
+                        closeModal();
                         alert(`some error occurred!`);
                     } else if(response.status && response.status.toLowerCase() === 'success'){
                         logResponse(response);
+                        closeModal();
                         navigate('/success', {
                             state: {
                                 ...response, 
@@ -177,12 +178,13 @@ export default function PartialPayment() {
                         });
                     } else if(response.status && response.status.toLowerCase() === 'failure'){
                         logResponse(response);
+                        closeModal();
                         alert(response.error_Message);
                         closeModal();
                     } else if(response.status){
                         logResponse(response);
-                        alert(`transaction cancelled!`);
                         closeModal();
+                        alert(`transaction cancelled!`);
                     }
                 },
                 theme: "#4530B1" // color hex
@@ -196,6 +198,13 @@ export default function PartialPayment() {
                 confirm(`some error occurred!`);
             }
     }
+
+
+    useEffect(() => {
+        if(!confirmationDialog)  {
+            setModalData({});
+        }
+    }, [confirmationDialog])
 
     useEffect(() => {
         let amount = 0;
@@ -247,7 +256,7 @@ export default function PartialPayment() {
                     
                     <StudentDetails 
                         name={student.name}
-                        id={student.id}
+                        id={student.prn}
                         grade={student.course}
                         school={student.college}
                     />
@@ -264,7 +273,7 @@ export default function PartialPayment() {
                     
                     <div style={{height: '2rem'}}></div>
                         <Table list={installments} handleCheckBox={handleAmount} selectAll={selectAll}/>
-                        <SmallTable list={installments} handleCheckBox={handleAmount} dependent={!studentCollapsed}/>
+                        <SmallTable list={installments} handleCheckBox={handleAmount}/>
                     <div style={{height: '2rem'}}></div>
                 </div>}
 
@@ -272,7 +281,9 @@ export default function PartialPayment() {
                     <Button 
                         text='Proceed' 
                         handleClick={handleProceed}
-                        classes={`small-wrapper button-small button-primary ${amount > 0 ? '': 'disabled'}`}/>
+                        classes={`small-wrapper button-small button-primary ${amount > 0 ? '': 'disabled'}`}
+                        align='flex-end'
+                    />
                 </div>}
                 {loader && 
                     <div className="credenc-loader" style={{background: 'none'}}>

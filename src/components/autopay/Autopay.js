@@ -97,7 +97,7 @@ export default function Autopay() {
         <div className='autopay'>
            <StudentDetails 
                 name={student.name}
-                id={student.id}
+                id={student.prn}
                 grade={student.course}
                 school={student.college}
             />

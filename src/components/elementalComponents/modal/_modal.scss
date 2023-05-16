@@ -16,12 +16,15 @@
         padding: 2.4rem;
         width: 56rem;
         height: 39.1rem;
-        background: linear-gradient(125.13deg, #4530B1 0%, #A3238D 58.33%, rgba(224, 28, 134, 0.8) 100%);
+        // background: linear-gradient(125.13deg, #4530B1 0%, #A3238D 58.33%, rgba(224, 28, 134, 0.8) 100%);
         backdrop-filter: blur(80px);
         border-radius: 2.4rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        border: 1px solid #404040;
+        background-color: rgba(255, 255, 255, 1);
+        color: #000000;
 
         .modal-header{
             display: flex;
@@ -31,26 +34,61 @@
             .close{
                 font-size: 3.2rem;
                 font-weight: 300;
-                color: rgba(255, 255, 255, 0.6);
                 cursor: pointer;
             }
         }
 
+        .student-details {
+            margin: 0 0 1rem 0;
+            overflow: hidden;
+            transition: display 1s ease-out;
+            background-color: rgba(64, 64, 64, 0.1);
+            padding: 1rem 2rem;
+            border-radius: 0.8rem;
+            color: rgba(64, 64, 64, 1);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+        
+            .row{
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin: 0.6rem 0;
+
+                .field{
+                    font-weight: 300;
+                    font-size: 1.2rem;
+                    line-height: 1.8rem;
+                }
+        
+                .value{
+                    font-weight: 500;
+                    font-size: 1.4rem;
+                    line-height: 1.8rem;
+                    color: #000000;
+                    text-transform: capitalize;
+                }
+            }
+        
+        }
+
         .button-container{
             width: 100%;
+            text-align: center;
         }
 
         .title{
             font-weight: 600;
             font-size: 1.6rem;
             line-height: 2.4rem;
-            color: rgba(255, 255, 255, 0.9);
         }
 
         .subtitle, .subtitle-2{
             font-size: 1.2rem;
             line-height: 1.8rem;
-            color: rgba(255, 255, 255, 0.6);
         }
     }
 }
@@ -58,7 +96,7 @@
 @media screen and(max-width: 499px){
     .modal{
         .modal-content{
-            height: 75%;
+            height: 50%;
             width: 85%;
 
             .subtitle-2{

@@ -6,6 +6,7 @@ export default function Button({
     classes='',
     counterValue=0,
     counterText='',
+    align='center'
 }) {
 
     const [counter, setCounter] = useState(counterValue);
@@ -21,7 +22,7 @@ export default function Button({
     }, [counter]);
 
     return (
-        <div style={{width: '100%', display:'flex', justifyContent: 'flex-end'}}>
+        <div style={{width: '100%', display:'flex', justifyContent: align}}>
             {counter > 0 &&
                 <button 
                     className={`button ${classes} disabled`}

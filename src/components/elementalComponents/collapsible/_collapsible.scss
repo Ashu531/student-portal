@@ -1,13 +1,11 @@
 .collapsible {
   display: block;
+  max-width: 49.9rem;
   width: 100%;
-  background: #404040;
   border-radius: 8px;
   cursor: pointer;
-  padding: 1.2rem;
-  border: none;
+  overflow: hidden;
   outline: none;
-  margin: 1rem 0;
 
   img {
     width: 2rem;
@@ -24,15 +22,17 @@
     font-size: 1.2rem;
     line-height: 1.8rem;
     color: #ffffff;
-    margin: 0.3rem 0;
   }
 
-  .row {
+  .collapsible-row {
+    background: #404040;
     width: 100%;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 0.3rem 0;
+    padding: 0.6rem 1.2rem;
+
     .field {
       font-weight: 300;
       font-size: 1.2rem;
@@ -42,10 +42,36 @@
 
     .value {
       font-weight: 500;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       line-height: 1.8rem;
       color: #ffffff;
       text-transform: capitalize;
+    }
+  }
+
+  .dropdown-container{
+    border: 1px solid #CACACA;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    overflow: hidden;
+
+    .dropdown {
+      background: #ffffff;
+      margin: 0;
+
+      &:nth-child(even){
+        border-top: 1px solid #CACACA;
+        border-bottom: 1px solid #CACACA;
+      }
+
+      .value {
+        color: #000000;
+        font-weight: 500;
+      }
+
+      &:hover {
+        background: #CACACA;
+      }
     }
   }
 
@@ -65,11 +91,5 @@
         background-color: rgba(255, 255, 255, 0.4);
         color: #000;
     }
-  }
-}
-
-@media screen and(max-width: 499px) {
-  .collapsible {
-    display: block;
   }
 }

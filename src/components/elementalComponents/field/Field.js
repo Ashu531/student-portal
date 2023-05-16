@@ -15,7 +15,7 @@ export default function Field({
 }) {
 
     return (
-        <div className='small-wrapper field-container' style={{width, height, margin}}>
+        <div className='field-container' style={{width, height, margin}}>
             {icon && <img className='icon' src={icon}/>}
             <div className='value'>{value}</div>
         </div>

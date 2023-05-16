@@ -26,12 +26,16 @@ export default function Home() {
     const navigate = useNavigate();
 
     const [installments, setInstallments] = useState([]);
+    const [adhocInstallments, setAdhocInstallments] = useState([]);
+
+    
     const [student, setStudent] = useState({});
     const [students, setStudents] = useState([]);
 
     const [selectAll, setSelectAll] = useState(false);
 
     const [amount, setAmount] = useState(0);
+    const [adhocAmount, setAdhocAmount] = useState(0);
 
     const [pendingAmount, setPendingAmount] = useState(0);
 
@@ -51,6 +55,23 @@ export default function Home() {
             navigate('/login', {replace: true});
     }
 
+    const getData = async () => {
+        const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
+        .then(res => res.data)
+        .catch(error => error.response.data);
+
+        return data;
+    }
+
+    const getSelectedInstallments = () => {
+        const selectedInstallments = adhocInstallments.filter(installment => installment.is_mandatory === 'True' || installment.is_mandatory === true);
+        const selectedids = selectedInstallments.map(installment => installment.id);
+        return {
+            'ids': selectedids,
+            'amount': adhocAmount
+        }
+    }
+
     const getModalData = async () => {
         const {ids, amount} = getSelectedInstallments();
         // console.log(ids, amount);
@@ -63,42 +84,48 @@ export default function Home() {
         return data;
     }
 
-    const getSelectedInstallments = () => {
-        const selectedInstallments = installments.filter(installment => installment.is_mandatory === 'True' || installment.is_mandatory === true);
-        const selectedids = selectedInstallments.map(installment => installment.id);
-        return {
-            'ids': selectedids,
-            'amount': amount
+    const handleProceed = async () => {
+        setLoader(true);
+        const res = await getModalData();
+
+        if(res.data && res.student) {
+            const { student, data, log_no: logNumber } = res;
+            setModalData({
+                'student': student,
+                'key': data,
+                'amount': adhocAmount,
+                'logNumber': logNumber,
+            });
+            setConfirmationDialog(true);
+            setLoader(false);
+            return;
         }
-    }
 
-    const getData = async () => {
-        const data = await axios.get(`${API_URL}/api/kid/v1/installments/${getToken()}/`)
-        .then(res => res.data)
-        .catch(error => error.response.data);
-
-        return data;
+        setLoader(false);
+        if(res.error && res.message){
+            confirm(`some error occurred: ${res.message}`);
+        }
     }
 
     const handleAmount = (isChecked, i) => {
         if(i != -1){
-            let installmentList = [...installments];
+            let installmentList = [...adhocInstallments];
             installmentList[i]['is_mandatory'] = isChecked;
-            setInstallments(installmentList);
+            setAdhocInstallments(installmentList);
 
             let newAmount = amount;
             if(isChecked){
-                newAmount += parseFloat(installments[i]['amount']) + parseFloat(installments[i]['penalty']);
+                newAmount += parseFloat(adhocInstallments[i]['amount']) + parseFloat(adhocInstallments[i]['penalty']);
             } else {
-                newAmount -= parseFloat(installments[i]['amount']) + parseFloat(installments[i]['penalty']);
+                newAmount -= parseFloat(adhocInstallments[i]['amount']) + parseFloat(adhocInstallments[i]['penalty']);
                 setSelectAll(isChecked);
             }
-            setAmount(newAmount);
+            setAdhocAmount(newAmount);
         } else {
             if(isChecked){
                 setSelectAll(isChecked);
 
-                let installmentList = [...installments];
+                let installmentList = [...adhocInstallments];
                 let amount = 0;
                 installmentList.forEach((installment) => {
                     if((installment['status'] === 'due' || installment['status'] === 'overdue') && installment['is_mandatory'] !== 'True'){
@@ -107,28 +134,27 @@ export default function Home() {
                     }
                 });
 
-                setInstallments(installmentList);
-                setAmount(amount);
+                setAdhocInstallments(installmentList);
+                setAdhocAmount(amount);
                 
             } else {
                 setSelectAll(isChecked);
 
                 let amount = 0;
-                setAmount(amount);
+                setAdhocAmount(amount);
 
-                let installmentList = [...installments];
+                let installmentList = [...adhocInstallments];
                 installmentList.forEach((installment) => {
                     if(installment['is_mandatory'] !== 'True')
                         installment['is_mandatory'] = isChecked;
                 });
 
-                setInstallments(installmentList);
+                setAdhocInstallments(installmentList);
             }
         }
     }
 
     const closeModal = () => {
-        setModalData({});
         setConfirmationDialog(false);
     }
 
@@ -149,7 +175,7 @@ export default function Home() {
                         navigate('/success', {
                             state: {
                                 ...response, 
-                                'installmentsFrontend': installments.filter(installment => installment.is_mandatory === 'True' || installment.is_mandatory === true),
+                                'installmentsFrontend': adhocInstallments.filter(installment => installment.is_mandatory === 'True' || installment.is_mandatory === true),
                                 'studentFrontend': {...student}
                             }
                         });
@@ -175,6 +201,13 @@ export default function Home() {
             }
     }
 
+
+    useEffect(() => {
+        if(!confirmationDialog)  {
+            setModalData({});
+        }
+    }, [confirmationDialog])
+
     useEffect(() => {
         let amount = 0;
         let pendingAmount = 0;
@@ -191,9 +224,21 @@ export default function Home() {
     }, [installments])
 
     useEffect(() => {
+        let amount = 0;
+        adhocInstallments.forEach((installment) => {
+            if(installment['is_mandatory'] === 'True' || installment['is_mandatory'] === true){
+                amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
+            }
+        })
+
+        setAdhocAmount(amount);
+    }, [adhocInstallments])
+
+    useEffect(() => {
         if(token != ''){
             saveToken(token);
             initHome();
+            window.history.replaceState(null, "", `/installments/${token}`)
         }
     }, [token]);
 
@@ -215,6 +260,16 @@ export default function Home() {
         });
 
         setInstallments(data.data);
+
+        data.adhoc.forEach((installment, i) => {
+            if(installment['is_mandatory'] !== 'True'){
+                data.adhoc[i]['is_mandatory'] = true;
+            } else {
+                data.adhoc[i]['is_mandatory'] = false;
+            }
+        });
+        setAdhocInstallments(data.adhoc);
+
         setLoader(false);
     }
 
@@ -252,21 +307,80 @@ export default function Home() {
         <div className={`home ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='container'>
                 {!loader && <div className='content-container'>
-                    <Collapsible 
-                        students={students}
-                        student={student} 
-                        collapsed={studentCollapsed}
-                        handleClick={() => setStudentCollapsed(!studentCollapsed)}
-                        handleStudentClick={(student) => setToken(student.token)}
+
+                    <div className='hideOnDesktop'>
+                        <Collapsible 
+                            title={'Student'}
+                            students={students}
+                            student={student} 
+                            collapsed={studentCollapsed}
+                            handleClick={() => setStudentCollapsed(!studentCollapsed)}
+                            handleStudentClick={(student) => setToken(student.token)}
+                        />
+                    </div>
+
+                    <div className='hideOnMobile'>
+                        <div className="student-details" style={{background: '#404040', alignItems: 'flex-start', justifyContent: 'flex-end', padding: '1rem 2rem', position: 'relative', overflow: 'visible'}}>
+                            <div className="row">
+                                <div className="field" style={{color: '#FFFFFF'}}>School</div>
+                                <div className="value" style={{color: '#FFFFFF'}}>{student.college}</div>
+                            </div>
+                            <div style={{position: 'absolute', left: '0'}}>
+                                <Collapsible 
+                                    width={'20rem'}
+                                    title={'Student'}
+                                    students={students}
+                                    student={student} 
+                                    collapsed={studentCollapsed}
+                                    handleClick={() => setStudentCollapsed(!studentCollapsed)}
+                                    handleStudentClick={(student) => setToken(student.token)}
+                                />
+                            </div>
+                            <div className="row">
+                                <div className="field" style={{color: '#FFFFFF'}}>Grade</div>
+                                <div className="value" style={{color: '#FFFFFF'}}>{student.course}</div>
+                            </div>
+                            <div className="row">
+                                <div className="field" style={{color: '#FFFFFF'}}>Admission No.</div>
+                                <div className="value" style={{color: '#FFFFFF'}}>{student.prn}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    
+                    <div className='hideOnDesktop'>
+                        <StudentDetails 
+                            name={student.name}
+                            id={student.prn}
+                            grade={student.course}
+                            school={student.college}
+                        />
+                    </div>
+
+                    <Table 
+                        heading={'Add-Ons'}
+                        list={adhocInstallments} 
+                        handleCheckBox={handleAmount} 
+                        selectAll={selectAll}
                     />
 
-                    <StudentDetails 
-                        name={student.name}
-                        id={student.id}
-                        grade={student.course}
-                        school={student.college}
+                    <SmallTable 
+                        heading={'Add-Ons'}
+                        list={adhocInstallments} 
+                        handleCheckBox={handleAmount}
                     />
 
+                    {adhocAmount > 0 && <div className='button-container'>
+                        <Button 
+                            text={`Pay ₹ ${adhocAmount} Now `} 
+                            handleClick={handleProceed}
+                            classes={`button-small button-primary`}
+                            align={'flex-end'}
+                        />
+                    </div>}
+
+                    <div style={{height: '1rem'}}></div>
                     <Pair 
                         radius={'1rem'}
                         bgColor={'#5654BF'}
@@ -308,7 +422,16 @@ export default function Home() {
                     </div>
                     <div style={{height: '2rem'}}></div>
                     <Table list={installments} selectAll={selectAll}/>
-                    <SmallTable list={installments} dependent={!studentCollapsed} showStatus={true}/>
+                    <SmallTable list={installments} showStatus={true}/>
+
+                    <div className='button-container'>
+                        <Button 
+                            text='LOGOUT' 
+                            handleClick={logout}
+                            classes={`button-small button-primary`}
+                            align={'flex-end'}
+                        />
+                    </div>
                 </div>}
 
                 {loader && 

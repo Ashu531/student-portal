@@ -48,7 +48,7 @@ const getSelectedInstallments = () => {
 }
 
 const getData = async () => {
-    const data = await axios.get(`${API_URL}/api/kid/v1/installments/${getToken()}/`)
+    const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
     .then(res => res.data)
     .catch(error => error.response.data);
 
@@ -79,7 +79,6 @@ const handleProceed = async () => {
 }
 
 const closeModal = () => {
-    setModalData({});
     setConfirmationDialog(false);
 }
 
@@ -127,6 +126,12 @@ const handleProceedAndPay = async () => {
 }
 
 useEffect(() => {
+    if(!confirmationDialog)  {
+        setModalData({});
+    }
+}, [confirmationDialog])
+
+useEffect(() => {
     let amount = 0;
     installments.forEach((installment) => {
         amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
@@ -170,7 +175,7 @@ useEffect(async () => {
 
                     <StudentDetails
                         name={student.name}
-                        id={student.id}
+                        id={student.prn}
                         grade={student.course}
                         school={student.college}
                     />
@@ -187,7 +192,7 @@ useEffect(async () => {
                     
                     <div style={{height: '2rem'}}></div>
                         <Table list={installments}/>
-                        <SmallTable list={installments} dependent={!studentCollapsed}/>
+                        <SmallTable list={installments}/>
                     <div style={{height: '2rem'}}></div>
 
                 </div>}
@@ -196,7 +201,9 @@ useEffect(async () => {
                     <Button 
                         text='Proceed' 
                         handleClick={handleProceed}
-                        classes={`small-wrapper button-small button-primary ${amount > 0 ? '': 'disabled'}`}/>
+                        classes={`small-wrapper button-small button-primary ${amount > 0 ? '': 'disabled'}`}
+                        align='flex-end'
+                    />
                 </div>}
                 {loader && 
                     <div className="credenc-loader" style={{background: 'none'}}>

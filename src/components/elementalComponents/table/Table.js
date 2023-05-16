@@ -3,7 +3,7 @@ import CheckBox from '../checkBox/CheckBox';
 import currencyIconBlack from '../../../assets/currency-icon-black.svg';
 import currencyIconGray from '../../../assets/currency-icon-gray.svg';
 
-export default function Table({ list, handleCheckBox, selectAll=false}) {
+export default function Table({ heading='Installments', list, handleCheckBox, selectAll=false}) {
 
     const getDisabled = (i) => {
         if((list[i]['status'] === 'due' || list[i]['status'] === 'overdue') && list[i]['is_mandatory'] !== 'True')
@@ -18,7 +18,7 @@ export default function Table({ list, handleCheckBox, selectAll=false}) {
                 <tr className='thead'>
                     <th style={{minWidth: '30%', textAlign: 'left'}}>
                         <span>
-                            Installment Name
+                            {heading}
                         </span>
                     </th>
                     <th style={{minWidth: '10%', textAlign: 'right'}}>

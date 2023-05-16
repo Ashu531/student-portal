@@ -99,7 +99,7 @@ export default function Loan() {
         <div className='loan'>
                <StudentDetails 
                     name={student.name}
-                    id={student.id}
+                    id={student.prn}
                     grade={student.course}
                     school={student.college}
                 />

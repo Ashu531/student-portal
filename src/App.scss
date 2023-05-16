@@ -144,7 +144,25 @@ body {
   }
 }
 
+.hideOnDesktop{
+  display: none;
+}
+
+.hideOnMobile{
+  display: block;
+  width: 100%;
+}
+
 @media screen and(max-width: 499px){
+
+  .hideOnMobile{
+    display: none;
+  }
+
+  .hideOnDesktop{
+    display: block;
+    width: 100%;
+  }
 
   body{
     &::-webkit-scrollbar {
