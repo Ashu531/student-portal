@@ -33,14 +33,14 @@ html {
 }
 
 body {
-  // min-width: 100vw;
-  max-width: 1550px !important;
+  width: 100vw;
+  // max-width: 1550px !important;
   height: 100vh;
   padding: 0;
   margin: 0 auto;
   font-family: "Poppins", sans-serif;
   overflow-x: hidden;
-  background: #000000;
+  // background: #000000;
 }
 
 #app {

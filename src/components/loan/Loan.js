@@ -8,6 +8,14 @@ import { getToken } from '../../services/authService';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
+import Select from 'react-select';
+
+const relations = [
+    { value: 'Father', label: 'Father' },
+    { value: 'Mother', label: 'Mother' },
+    { value: 'Brother', label: 'Brother' },
+    { value: 'Sister', label: 'Sister' },
+  ];
 
 export default function Loan() {
 
@@ -31,6 +39,7 @@ export default function Loan() {
     }
 
     const handleSubmit=async()=>{
+        console.log(name,email,relation)
         if(name.length > 4 && email.length > 8 && relation.length > 4){
             let response = await axios.post(`${API_URL}/api/kid/v1/loan/${getToken()}/`, {
                 'name': name,
@@ -73,8 +82,8 @@ export default function Loan() {
         setMobileNumber(e)
     }
 
-    const _handleRelation=()=>{
-         setRelation(document.getElementById("relation").value)
+    const handleRelation=(e)=>{
+         setRelation(e.value)
     }
 
     return (
@@ -107,43 +116,53 @@ export default function Loan() {
                    <div>
                        <h2 className="loan-application-heading">Loan Application</h2>
                    </div>
-                    <form>
-                        <div className="formDiv">
-                        <label className="label">Application's Name</label>
-                        <InputField handleChange={(e)=>handleName(e)} />
+                    <form className='form'>
+                        <div className='form-content'>
+                            <div className="formDiv">
+                                <label className="label">Application's Name</label>
+                                <InputField handleChange={(e)=>handleName(e)} maxLength={30} />
+                            </div>
+                            <div className="formDiv">
+                                <label className="label">Application's Email</label>
+                                <InputField handleChange={(e)=>handleEmail(e)} />
+                            </div>
                         </div>
+                        <div className='form-content'>
                         <div className="formDiv">
-                        <label className="label">Application's Email</label>
-                        <InputField handleChange={(e)=>handleEmail(e)} />
+                            <label className="label">Application's Phone Number</label>
+                            <InputField handleChange={(e)=>handleMobileNumber(e)} maxLength={10} />
                         </div>
-                        <div className="formDiv">
-                        <label className="label">Application's Phone Number</label>
+                        
+                        <div className="formDiv" style={ window.innerWidth > 500 ? {marginTop: 0} : null }>
+                        <label className="label">Relationship</label>
+                        <Select
+                            defaultValue={relation}
+                            onChange={(e)=>handleRelation(e)}
+                            options={relations}
+                            styles={select}
+                        />
                         </div>
-                        <InputField handleChange={(e)=>handleMobileNumber(e)} />
-                        <div className="formDiv">
-                            <label className="label" for='relation'>Relationship with Student</label>
-                            <select className="relation" id='relation' onClick={(e)=>_handleRelation(e)}>
-                                    <option value="Father">Father</option>
-                                    <option value="Mother">Mother</option>
-                                    <option value="Sister">Sister</option>
-                                    <option value="Brother">Brother</option>
-                            </select>
                         </div>
                     </form>
                </div>
-              
+              <div className='button-container'>
                 <Button 
                  text='Proceed' 
                  classes='button'
                  handleClick={()=>handleSubmit()}
                 />
-               
+              </div>
             </div>
         
             </>
         }
         </>
     )
+}
+
+const select = {
+    height: 54,
+    width: '40%'
 }
 
 
