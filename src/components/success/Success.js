@@ -35,9 +35,8 @@ export default function Success() {
     }, []);
 
     return (
-        (state && <div className='success' style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}}>
+        (state && <div className='success'>
             <img src={credencLogo} className='logo'/>
-            <img src={`data:image/png;base64, ${state.studentFrontend.logo}`} className='logo-right'/>
             <div className='logout-button'>
                     <Button 
                         text='Logout' 

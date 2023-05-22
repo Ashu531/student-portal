@@ -12,7 +12,10 @@ export default function Collapsible({
   handleStudentClick
 }) {
   return (
-    <div className="collapsible" onClick={handleClick} style={width ? {width: width} : {}}>
+    <div className="collapsible" onClick={handleClick} style = {{
+      boxShadow: collapsed ? 'none' : '0px 4px 4px rgba(0, 0, 0, 0.25)',
+      width: width 
+    }}>
         <div className="collapsible-row">
           <div>
             <div className="field">{title}</div>

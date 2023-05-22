@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { TailSpin } from 'react-loader-spinner';
+import { useNavigate } from 'react-router';
 import useScript from '../../hooks/useScript';
 import { getToken } from '../../services/authService';
 import Button from '../elementalComponents/button/Button';
@@ -12,6 +13,8 @@ import StudentDetails from '../elementalComponents/studentDetails/StudentDetails
 import Table from '../elementalComponents/table/Table';
 
 export default function Payment() {
+
+  const navigate = useNavigate();
 
   const [installments, setInstallments] = useState([]);
   const [student, setStudent] = useState({});

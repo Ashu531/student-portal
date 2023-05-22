@@ -4,9 +4,11 @@ import Button from '../elementalComponents/button/Button';
 import backIcon from '../../assets/caret-right.svg';
 import TransactionStatus from '../../components/elementalComponents/transactionStatus/TransactionStatus'
 import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function Transaction() {
 
+    const navigate = useNavigate();
     const [urlQuery,setUrlQuery] = useState([])
     const [studentData,setStudentData] = useState({
 
@@ -111,6 +113,7 @@ useEffect(() => {
             <Button 
              text='Back To Dashboard' 
              classes='button'
+             handleClick={()=> navigate(`/`, {replace: true})}
             />
         </div>
         </>

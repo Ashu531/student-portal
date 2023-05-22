@@ -15,11 +15,18 @@ import LoanSuccess from './components/elementalComponents/loan-success/LoanSucce
 function App() {
   return(
     <>
-      <div style={{width: '100%', height: '2rem', background: '#F19C37'}}></div>
+      <div style={{
+        width: '100%', 
+        height: '2rem', 
+        background: '#F19C37', 
+        position: 'sticky',
+        top: '0',
+        zIndex: 99
+      }}></div>
       <Router>
           <Routes>
               <Route exact path="/login" element={<Login/>} />
-              {/* <Route exact path="/success" element={<Success/>} /> */}
+              <Route exact path="/success" element={<Success/>} />
               <Route element={<CheckAuthentication />}>
                 <Route exact path="/installments/:token" element={<Home />} />
                 <Route exact path="/autopay/:token" element={<Autopay />} />
