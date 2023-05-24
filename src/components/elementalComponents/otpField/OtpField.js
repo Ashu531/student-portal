@@ -33,6 +33,7 @@ export default function OtpField({ handleChange, otp, error }) {
                         onKeyUp={e => inputfocus(e)}
                         value={otp.values[0]}
                         type='tel'
+                        autoFocus
                     ></input>
                 </span>
                 <span className='input-wrapper'>

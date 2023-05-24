@@ -150,7 +150,7 @@ useEffect(async () => {
 
     data.data.forEach((installment, i) => {
 
-        if(installment['status'] !== 'due' && installment['status'] !== 'overdue'){
+        if(installment['status'] !== 'due' && installment['status'] !== 'overdue' && installment['status'] !== 'upcoming'){
             data.data[i]['is_mandatory'] = false;
         } else {
             data.data[i]['is_mandatory'] = true;
@@ -158,7 +158,7 @@ useEffect(async () => {
 
     });
 
-    const installments = data.data.filter(installment => installment['is_mandatory'] != false)
+    const installments = data.data.filter(installment => installment['status'] != 'paid' )
 
     setInstallments(installments);
     setLoader(false);

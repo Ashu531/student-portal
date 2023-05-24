@@ -11,7 +11,7 @@ export default function CollapsibleInstallment({ installment, index, handleCheck
     }
 
     const getDisabled = () => {
-        if((installment['status'] === 'due' || installment['status'] === 'overdue') && installment['is_mandatory'] !== 'True')
+        if((installment['status'] === 'due' || installment['status'] === 'overdue' || installment['status'] === 'upcoming') && installment['is_mandatory'] !== 'True')
             return false;
         
         return true;
