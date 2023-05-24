@@ -19,7 +19,9 @@ import coinsIcon from '../../assets/coins.svg';
 import CurrencyEthIcon from '../../assets/currency-eth.svg';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 import Header from '../elementalComponents/header/Header';
-import Stepper from 'react-stepper-horizontal';
+import step1 from '../../assets/step1.svg';
+import step2 from '../../assets/step2.svg';
+import step3 from '../../assets/step3.svg'
 
 export default function Home() {
 
@@ -47,6 +49,7 @@ export default function Home() {
     const [modalData, setModalData] = useState({});
 
     const [easebuzzCheckout, setEasebuzzCheckout] = useState(null);
+    const [dashboardType,setDashboardType] = useState({})
 
     const [loader, setLoader] = useState(false);
 
@@ -247,6 +250,7 @@ export default function Home() {
         setLoader(true);
         const data = await getData();
         setStudent(data.student);
+        setDashboardType(data.dashboard_type)
 
         data.data.forEach((installment, i) => {
             if(data.selected){
@@ -367,12 +371,13 @@ export default function Home() {
                             The fee has been paid in full. Summary of the same is given below.
                         </div>    
                     </div> */}
-                    {/* <div className='steps'>
-                        <Stepper 
-                            steps={ [{title: 'Applied'}, {title: 'Approved'}, {title: 'Disbursed'}] } 
-                            activeStep={1} 
-                        />
-                     </div> */}
+                    {
+                        dashboardType.name === 'loan' && 
+                        <div className='steps'>
+                            <img src={dashboardType.status === 'applied' ? step1  : dashboardType.status === 'approved' ? step2 : step3 } width={'100%'} style={{objectFit: 'contain'}}/>
+                        </div>
+                    }
+                    
 
                     <Table 
                         heading={'Add-Ons'}
