@@ -19,6 +19,7 @@ import coinsIcon from '../../assets/coins.svg';
 import CurrencyEthIcon from '../../assets/currency-eth.svg';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 import Header from '../elementalComponents/header/Header';
+import Stepper from 'react-stepper-horizontal';
 
 export default function Home() {
 
@@ -357,6 +358,21 @@ export default function Home() {
                             school={student.college}
                         />
                     </div>
+
+                    {/* <div className='paid-status'>
+                        <div className='icon-circle'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
+                        </div>
+                        <div className='status-text'>
+                            The fee has been paid in full. Summary of the same is given below.
+                        </div>    
+                    </div> */}
+                    {/* <div className='steps'>
+                        <Stepper 
+                            steps={ [{title: 'Applied'}, {title: 'Approved'}, {title: 'Disbursed'}] } 
+                            activeStep={1} 
+                        />
+                     </div> */}
 
                     <Table 
                         heading={'Add-Ons'}
