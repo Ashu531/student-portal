@@ -31,7 +31,7 @@ export default function Loan() {
     const [loanData,setLoanData] = useState({})
 
     const getData = async () => {
-        const data = await axios.get(`${API_URL}/api/kid/v1/installments/${getToken()}/`)
+        const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
         .then(res => res.data)
         .catch(error => error.response.data);
 

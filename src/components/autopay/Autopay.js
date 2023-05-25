@@ -14,6 +14,7 @@ export default function Autopay() {
     const [totalAmount,setTotalAmount] = useState(0)
     const [autopay,setAutopay] = useState(false);
     const [paymentDetailData,setPaymentDetailData] = useState([])
+    const [installments,setInstallments] = useState([])
     const [loader, setLoader] = useState(false);
     const [easebuzzCheckout, setEasebuzzCheckout] = useState(null);
     const [paymentOpen,setpaymentOpen] = useState({
@@ -22,22 +23,30 @@ export default function Autopay() {
     })
 
     const getData = async () => {
-        const data = await axios.get(`${API_URL}/api/kid/v1/installments/${getToken()}/`)
+        const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
         .then(res => res.data)
         .catch(error => error.response.data);
 
         return data;
     }
 
+    useEffect(() => {
+        let amount = 0;     
+        installments.forEach((installment) => {
+            amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
+        })
+    
+        setTotalAmount(amount);
+    }, [installments])
+
     useEffect(async () => {
         setLoader(true);
         const data = await getData();
+
         setStudent(data.student);
-        let amount = 0;
-        data.data.forEach((installment,index)=>{
-                amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
-        })
-        setTotalAmount(amount);
+
+        setInstallments(data.data);
+
         setLoader(false);
         _getPaymentDetails()
 
