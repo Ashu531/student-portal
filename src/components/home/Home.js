@@ -51,6 +51,8 @@ export default function Home() {
     const [easebuzzCheckout, setEasebuzzCheckout] = useState(null);
     const [dashboardType,setDashboardType] = useState({})
 
+    const [nonPaidStatus,setNonPaidStatus] = useState(false)
+
     const [loader, setLoader] = useState(false);
 
     const logout = async () => {
@@ -274,7 +276,7 @@ export default function Home() {
             }
         });
         setAdhocInstallments(data.adhoc);
-
+        getAdhocData(data.data)
         setLoader(false);
     }
 
@@ -289,6 +291,14 @@ export default function Home() {
         });
 
     }, [])
+
+    const getAdhocData=(data)=>{
+        data.forEach((item,index)=>{
+            if(item.status != 'paid'){
+                setNonPaidStatus(true)
+            }
+        })
+    }
 
     const navigateToPaymentPage = () => {
         navigate(`/payment`, {replace: true});
@@ -363,14 +373,18 @@ export default function Home() {
                         />
                     </div>
 
-                    {/* <div className='paid-status'>
-                        <div className='icon-circle'>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
+                    {
+                        !nonPaidStatus && 
+                        <div className='paid-status'>
+                            <div className='icon-circle'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
+                            </div>
+                            <div className='status-text'>
+                                The fee has been paid in full. Summary of the same is given below.
+                            </div>    
                         </div>
-                        <div className='status-text'>
-                            The fee has been paid in full. Summary of the same is given below.
-                        </div>    
-                    </div> */}
+                    }
+                    
                     {
                         dashboardType.name === 'loan' && 
                         <div className='steps'>
