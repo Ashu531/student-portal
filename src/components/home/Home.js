@@ -31,6 +31,8 @@ export default function Home() {
     const [installments, setInstallments] = useState([]);
     const [adhocInstallments, setAdhocInstallments] = useState([]);
 
+    const [paymentPlans, setPaymentPlans] = useState([]);
+
     
     const [student, setStudent] = useState({});
     const [students, setStudents] = useState([]);
@@ -277,6 +279,9 @@ export default function Home() {
         });
         setAdhocInstallments(data.adhoc);
         getAdhocData(data.data)
+
+        setPaymentPlans(data.plans);
+
         setLoader(false);
     }
 
@@ -318,7 +323,7 @@ export default function Home() {
 
     return (
         <>
-        <Header title="Student Fee Ledger" back={false} />
+        <Header title="Student Fee Ledger" back={false} icon={student.logo} />
         <div className={`home ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='container'>
                 {!loader && <div className='content-container'>
@@ -425,35 +430,53 @@ export default function Home() {
 
                     <div className='heading'>Payment Plans</div>
                     <div className='payment-options-container'>
-                        <PaymentOption
-                            icon={moneyIcon}
-                            heading={'PAY IN FULL'}
-                            description={'Pay the whole school fee in one go!'}
-                            bgColor={'#A8CFFF'}
-                            onClick={navigateToPaymentPage}
-                        />
-                        <PaymentOption
-                            icon={handCoinsIcon}
-                            tag={'Recommended'}
-                            heading={'PAY WITH CREDENC'}
-                            description={'Pay full fee using Credenc loan!'}
-                            bgColor={'#FFD45C'}
-                            onClick={navigateToLoanPage}
-                        />
-                        <PaymentOption
-                            icon={CurrencyEthIcon}
-                            heading={'SET UP AUTO-PAY'}
-                            description={'Set up auto-payment at regular intervals!'}
-                            bgColor={'#E3FB72'}
-                            onClick={navigateToAutopay}
-                        />
-                        <PaymentOption
-                            icon={coinsIcon}
-                            heading={'PAY INDIVIDUALLY'}
-                            description={'Break up the fees as per your convenience!'}
-                            bgColor={'#D6D6FF'}
-                            onClick={navigateToPartialPaymentPage}
-                        />
+                        {paymentPlans.map((plan, index) => {
+                            if(plan === "full"){
+                                return <PaymentOption
+                                    key={index}
+                                    icon={moneyIcon}
+                                    heading={'PAY IN FULL'}
+                                    description={'Pay the whole school fee in one go!'}
+                                    bgColor={'#A8CFFF'}
+                                    onClick={navigateToPaymentPage}
+                                />
+                            }
+
+                            if(plan === "individual"){
+                                return <PaymentOption
+                                    icon={coinsIcon}
+                                    heading={'PAY INDIVIDUALLY'}
+                                    description={'Break up the fees as per your convenience!'}
+                                    bgColor={'#D6D6FF'}
+                                    onClick={navigateToPartialPaymentPage}
+                                />
+                            }
+
+                            if(plan === "loan"){
+                                return <PaymentOption
+                                    icon={handCoinsIcon}
+                                    tag={'Recommended'}
+                                    heading={'PAY WITH CREDENC'}
+                                    description={'Pay full fee using Credenc loan!'}
+                                    bgColor={'#FFD45C'}
+                                    onClick={navigateToLoanPage}
+                                />
+                            }
+
+                            if(plan === "autopay"){
+                                return <PaymentOption
+                                    icon={CurrencyEthIcon}
+                                    heading={'SET UP AUTO-PAY'}
+                                    description={'Set up auto-payment at regular intervals!'}
+                                    bgColor={'#E3FB72'}
+                                    onClick={navigateToAutopay}
+                                />
+                            }
+
+                            return ''
+                        })}
+                        
+
                     </div>
                     <div style={{height: '2rem'}}></div>
                     <Table list={installments} selectAll={selectAll}/>

@@ -102,6 +102,7 @@ export default function Autopay() {
         <>
         <Header
              title="Auto-Pay"
+             icon={student.logo}
            />
         <div className='autopay'>
            <StudentDetails 

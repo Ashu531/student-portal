@@ -4,7 +4,7 @@ import shikshaIcon from '../../../assets/shikshaIcon.svg'
 import { useParams, useNavigate } from 'react-router-dom';
 import { getToken } from '../../../services/authService';
 
-export default function Header({title,back=true}) {
+export default function Header({title, back=true, icon}) {
 
     const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ export default function Header({title,back=true}) {
                 <span className="title">{title}</span>
             </div>
             <div className='sikshaIcon'>
-                <img src={shikshaIcon} alt='shikshaIcon' height={32} width={28} />
+                {icon && <img src={`data:image/png;base64, ${icon}`} className='shikshaIcon' height={32}/>}
             </div>
         </div>
     )

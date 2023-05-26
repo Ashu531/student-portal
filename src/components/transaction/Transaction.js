@@ -72,6 +72,7 @@ useEffect(() => {
         <>
         <Header
              title="Transaction"
+             icon={student.logo}
         />
         <div className='transaction'>
            <TransactionStatus 

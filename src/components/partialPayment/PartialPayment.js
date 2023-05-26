@@ -242,7 +242,7 @@ export default function PartialPayment() {
 
     return (
         <>
-        <Header title="Pay Individually" />
+        <Header title="Pay Individually" icon={student.logo} />
         <div className={`partial-payment ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='wrapper container'>
                 {!loader && <div className='content-container'>
