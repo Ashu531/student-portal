@@ -95,6 +95,7 @@ export default function Loan() {
         <>
         <Header
              title="Pay With Credenc"
+             icon={student.logo}
            />
         <div className='loan'>
                <StudentDetails 

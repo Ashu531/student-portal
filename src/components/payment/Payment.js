@@ -171,7 +171,7 @@ useEffect(async () => {
 
   return (
     <>
-            <Header title="Pay in Full" />
+            <Header title="Pay in Full" icon={student.logo} />
         <div className={`payment ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='wrapper container'>
                 {!loader && <div className='content-container'>
