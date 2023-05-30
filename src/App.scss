@@ -45,6 +45,7 @@ body {
 
 #app {
   background-color: #FFFFFF;
+  height: 100%;
 }
 
 .credenc-loader{
@@ -217,3 +218,5 @@ body {
 @import "../src/components/partialPayment/partialPayment";
 @import "../src/components/elementalComponents/studentDetails/studentDetails";
 @import "../src/components/elementalComponents/loan-success/loansuccess";
+@import "../src/components/signup/signup";
+@import "../src/components/elementalComponents/instituteForm/instituteForm";

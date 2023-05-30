@@ -14,8 +14,6 @@ export default function Transaction() {
 
     })
 
-    console.log("hbwfjehbwjhbvj")
-
 
     const getTransactionDetail=async(queryList)=>{
         if(queryList[0]?.name == 'app_id'){
@@ -30,18 +28,15 @@ export default function Transaction() {
     }
 
     useEffect(() => {
-        console.log("student data", studentData);
 }, [studentData])
 
 useEffect(() => {
-    console.log("data", urlQuery);
 }, [urlQuery])
 
     const getParams=()=>{
         let urlQueryParams= []
         let params = window.location.search
         let url = params.substring(1,params.length)
-        console.log(url,"url")
         // let url = 'app_id=1684141351252-5612-3686bd1c&status=failure'
         const query_params = url.split('&');
         let queryArray = [];
