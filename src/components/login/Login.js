@@ -262,10 +262,34 @@ export default function Login() {
                     </div>
                 </div>
             </div>}
+            {/* {
+                <div className='wrapper container'>
+                    <div className='header-container'>
+                        <img src={logo} className='logo-small'/>
+                    </div>
+                    <div style={{width: '100%'}}>
+                        <div className='header'>Institute Information</div>
+                        <div className='subline' style={{marginBottom: '3rem'}}>Enter information, as applicable!</div>
+                        <div className='students-container'>
+                            {
+                                students.map((student, i) => (
+                                    <div className='student-card' key={i} onClick={() => navigateToInstallmentPage(i)}>
+                                        <div className='text-container'>
+                                            <div className='name'>{student.name}</div>
+                                            <div className='id'>{student.id}</div>
+                                        </div>
+                                        <img src={caret} className='icon'/>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                    <div></div>
+                </div>
+            } */}
             {verified && <div className='wrapper container'>
                 <div className='header-container'>
                     <img src={logo} className='logo-small'/>
-                    {/* <div className='subline'>Please check message on xxxxxx{getLastFourDigits()}</div> */}
                 </div>
                 <div style={{width: '100%'}}>
                     <div className='header'>Select Student</div>
