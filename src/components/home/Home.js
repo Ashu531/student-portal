@@ -390,13 +390,6 @@ export default function Home() {
                         </div>
                     }
                     
-                    {
-                        dashboardType.name === 'loan' && 
-                        <div className='steps'>
-                            <img src={dashboardType.status === 'applied' ? step1  : dashboardType.status === 'approved' ? step2 : step3 } width={'100%'} style={{objectFit: 'contain'}}/>
-                        </div>
-                    }
-                    
 
                     <Table 
                         heading={'Add-Ons'}
@@ -427,6 +420,13 @@ export default function Home() {
                         keyname={'Pending Fee :'}
                         value={`₹ ${pendingAmount}`}
                     />
+
+                    {
+                        dashboardType.name === 'loan' && 
+                        <div className='steps'>
+                            <img src={dashboardType.status === 'applied' ? step1  : dashboardType.status === 'approved' ? step2 : step3 } width={'100%'} style={{objectFit: 'contain'}}/>
+                        </div>
+                    }
 
                     <div className='heading'>Payment Plans</div>
                     <div className='payment-options-container'>
