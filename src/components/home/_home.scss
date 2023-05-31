@@ -20,6 +20,39 @@
         // backdrop-filter: blur(80px);
         border-radius: 2.4rem;
 
+        .paid-status{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 10px 15px;
+            gap: 10px;
+            background: #A8CFFF;
+            border-radius: 10px;
+            width: 100%;
+
+            .icon-circle{
+                background: #000000;
+                width: 25px;
+                height: 25px;
+                border-radius: 15px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .status-text{
+                font-family: 'Poppins';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 21px;
+                color: #000000;
+            }
+        }
+
+        .steps{
+            width: 100%;
+        }
+
         .content-container{
             width: 100%;
             align-self: center;
