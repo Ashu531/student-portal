@@ -12,6 +12,7 @@ import Payment from './components/payment/Payment';
 import PartialPayment from './components/partialPayment/PartialPayment';
 import LoanSuccess from './components/elementalComponents/loan-success/LoanSuccess';
 import Signup from './components/signup/Signup';
+import AdhocSuccess from './components/adhocSuccess/AdhocSuccess';
 
 function App() {
   return(
@@ -42,6 +43,7 @@ function App() {
                 <Route exact path="/partial-payment/:token" element={<PartialPayment />}/>
                 <Route path="/partial-payment" element={<PartialPayment />}/>
               </Route>
+              <Route path="/adhoc-success" element={<AdhocSuccess/>} />
               <Route path="/adhoc/*" element={<Signup />}/>
               <Route path="/*" element={<InitialRoute />}/>
           </Routes>
