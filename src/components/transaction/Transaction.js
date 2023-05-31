@@ -14,28 +14,20 @@ export default function Transaction() {
 
     })
 
-    console.log("hbwfjehbwjhbvj")
-
-
     const getTransactionDetail=async(queryList)=>{
         if(queryList[0]?.name == 'app_id'){
             const data = await axios.get(`${API_URL}/api/kid/v1/autopay/status/${queryList[0]?.value}/`)
-            .then(res => 
+            .then(res => {
+                console.log("coming+++")
                 setStudentData(res.data.student)
+            }
+                
             )
             .catch(error => error.response.data);
     
             // return data;
         }
     }
-
-    useEffect(() => {
-        console.log("student data", studentData);
-}, [studentData])
-
-useEffect(() => {
-    console.log("data", urlQuery);
-}, [urlQuery])
 
     const getParams=()=>{
         let urlQueryParams= []
@@ -72,7 +64,7 @@ useEffect(() => {
         <>
         <Header
              title="Transaction"
-             icon={student.logo}
+             icon={studentData?.college?.logo}
         />
         <div className='transaction'>
            <TransactionStatus 
