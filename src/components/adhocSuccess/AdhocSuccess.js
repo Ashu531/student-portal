@@ -33,7 +33,7 @@ export default function AdhocSuccess() {
             credencLogo = state.merchant_logo;
         }
     }, []);
-
+    
     return (
         (state && <div className='success'>
             <img src={credencLogo} className='logo'/>

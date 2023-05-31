@@ -6,6 +6,8 @@ import axios from 'axios';
 import Select from 'react-select';
 import constant from '../../../config/constant'
 import useScript from '../../../hooks/useScript';
+import Modal from '../../elementalComponents/modal/Modal';
+import { useNavigate } from 'react-router';
 
 const relations = [
     { value: 'Father', label: 'Father' },
@@ -31,6 +33,10 @@ export default function InstituteForm({
     const [loader, setLoader] = useState(false);
     const [easebuzzCheckout, setEasebuzzCheckout] = useState(null);
     const [modalData, setModalData] = useState({});
+    const [student,setStudent] = useState({})
+    const [installment,setInstallment] = useState([])
+
+    const navigate = useNavigate();
 
     useEffect(() => {
        getFieldData()
@@ -172,6 +178,8 @@ export default function InstituteForm({
                     navigate('/adhoc-success', {
                         state: {
                             ...response,
+                            'installmentsFrontend': installment,
+                            'studentFrontend': {...student},
                         }
                     });
                 } else if(response.status && response.status.toLowerCase() === 'failure'){
@@ -197,7 +205,7 @@ export default function InstituteForm({
     }
 
     const getModalData = async () => {
-        console.log(instituteDetails)
+
         let data = {
             name: '',
             email: '',
@@ -214,14 +222,23 @@ export default function InstituteForm({
                 data.name = item.value
             }else if(item.label === 'Phone Number'){
                 data.phone_number = item.value
+            }else if(item.label === 'Email'){
+                data.email = item.value
+            }else if(item.label === 'Parent Name'){
+                data.parent_name = item.value
+            }
+            else if(item.label === 'Enrollment Number'){
+                data.uid = item.value
             }
         })
+
+        data.slug = slug;
 
         Object.keys(data).forEach(
             key => (data[key] == null || data[key] == '') && delete data[key],
         );
         
-        const response = await axios.post(`${API_URL}/api/fees/v2/adhoc/student/`,{data}).
+        const response = await axios.post(`${API_URL}/api/fees/v2/adhoc/student/`,data).
         then(res => res.data)
         .catch(err => err.response.data);
     
@@ -237,14 +254,17 @@ export default function InstituteForm({
     const handleProceed = async () => {
         setLoader(true);
         const res = await getModalData();
-    console.log(res,"res+++")
+
         if(res.data && res.student) {
-            const { student, data, log_no: logNumber } = res;
+            const { student, data, log_no: logNumber,installment } = res;
             setModalData({
                 'student': student,
                 'key': data,
                 'logNumber': logNumber,
+                'amount': adhocData?.amount
             });
+            setInstallment(installment)
+            setStudent(student)
             setConfirmationDialog(true);
             setLoader(false);
             return;
