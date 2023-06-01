@@ -136,7 +136,7 @@ export default function Home() {
                 let installmentList = [...adhocInstallments];
                 let amount = 0;
                 installmentList.forEach((installment) => {
-                    if((installment['status'] === 'due' || installment['status'] === 'overdue') && installment['is_mandatory'] !== 'True'){
+                    if((installment['status'] === 'due' || installment['status'] === 'overdue' || installment['status'] === 'upcoming') && installment['is_mandatory'] !== 'True'){
                         installment['is_mandatory'] = isChecked;
                         amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
                     }
@@ -224,7 +224,9 @@ export default function Home() {
                 amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
             }
 
-            pendingAmount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
+            if(installment['status'] !== 'paid'){
+                pendingAmount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
+            }
         })
 
         setAmount(amount);
@@ -272,8 +274,6 @@ export default function Home() {
 
         data.adhoc.forEach((installment, i) => {
             if(installment['is_mandatory'] !== 'True'){
-                data.adhoc[i]['is_mandatory'] = true;
-            } else {
                 data.adhoc[i]['is_mandatory'] = false;
             }
         });
@@ -390,13 +390,6 @@ export default function Home() {
                         </div>
                     }
                     
-                    {
-                        dashboardType.name === 'loan' && 
-                        <div className='steps'>
-                            <img src={dashboardType.status === 'applied' ? step1  : dashboardType.status === 'approved' ? step2 : step3 } width={'100%'} style={{objectFit: 'contain'}}/>
-                        </div>
-                    }
-                    
 
                     <Table 
                         heading={'Add-Ons'}
@@ -427,6 +420,13 @@ export default function Home() {
                         keyname={'Pending Fee :'}
                         value={`₹ ${pendingAmount}`}
                     />
+
+                    {
+                        dashboardType.name === 'loan' && 
+                        <div className='steps'>
+                            <img src={dashboardType.status === 'applied' ? step1  : dashboardType.status === 'approved' ? step2 : step3 } width={'100%'} style={{objectFit: 'contain'}}/>
+                        </div>
+                    }
 
                     <div className='heading'>Payment Plans</div>
                     <div className='payment-options-container'>
