@@ -27,7 +27,7 @@ function App() {
       }}></div>
       <Router>
           <Routes>
-              <Route exact path="/login" element={<Login/>} />
+              <Route path="/login/*" element={<Login/>} />
               <Route path="/adhoc" element={<Signup/>} />
               <Route exact path="/success" element={<Success/>} />
               <Route element={<CheckAuthentication />}>

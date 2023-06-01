@@ -11,6 +11,7 @@ import { delay, getToken, saveStudents, saveToken } from '../../services/authSer
 import { Bars, TailSpin } from 'react-loader-spinner';
 import CheckBox from '../elementalComponents/checkBox/CheckBox';
 import TcModal from '../elementalComponents/tandc/TcModal';
+import InstituteForm from '../elementalComponents/instituteForm/InstituteForm';
 
 export default function Login() {
 
@@ -25,7 +26,7 @@ export default function Login() {
         values: ['', '', '', '', '', '']
     });
     const [verified, setVerified] = useState(false);
-
+    
     const [loader, setLoader] = useState(false);
 
     const [error, setError] = useState({
@@ -37,6 +38,8 @@ export default function Login() {
         open: false,
         type: 'tc',
     })
+
+    const [signUpState,setSignUpState] = useState(false)
 
     const openTandC = (type) => {
         setTcModal({...tcModal, open: true, type: type});
@@ -60,7 +63,7 @@ export default function Login() {
                     'Content-Type': 'application/json'
                 }
             })
-            .then(res => (res.data.status))
+            .then(res => (res.data))
             .catch(err => {
                 setError({...error, otp: err.response.data.message});
             });
@@ -76,7 +79,20 @@ export default function Login() {
     }
 
     const sendOtp = async () => {
-        const otpGenerated = await axios.post(`${API_URL}/api/kid/v1/send_otp/`, JSON.stringify({phone_number: inputValue}), {
+
+        let params = window.location.pathname
+        let urlSlug = params.substring(7,params.length)
+
+        let data = {
+            'phone_number': inputValue,
+            'college_slug': urlSlug
+        }
+
+        Object.keys(data).forEach(
+            key => (data[key] == null || data[key] == '') && delete data[key],
+        );
+
+        const otpGenerated = await axios.post(`${API_URL}/api/kid/v1/send_otp/`,data, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -129,16 +145,25 @@ export default function Login() {
         setError({error, number: null});
         await delay(5000);
         const isOtpValid = await validateOtp(getOtpFromState());
-        if(isOtpValid){
-            const studentList = await getStudents();
-            if(studentList){
-                // console.log(studentList);
-                saveStudents(studentList);
-                setStudents(studentList);
-                setVerified(true);
+        if(isOtpValid.signup === false){
+            if(isOtpValid.status){
+                handleApplicationData()
+            }
+        }else{
+            if(isOtpValid.status){
+                setSignUpState(true)
             }
         }
         setLoader(false);
+    }
+
+    const handleApplicationData=async()=>{
+        const studentList = await getStudents();
+        if(studentList){
+            saveStudents(studentList);
+            setStudents(studentList);
+            setVerified(true);
+        }
     }
 
     const getLastFourDigits = () => {
@@ -172,6 +197,76 @@ export default function Login() {
             navigate(`/installments/${token}`, {replace: true});
         }
     }, [error]);
+
+    const handleFormSubmit=(details)=>{
+
+        let data = {
+            name: '',
+            email: '',
+            phone_number : '',
+            parent_name : '',
+            parent_number :  '',
+            prn : '',
+            college_slug : '',
+            batch_id: ''
+        };
+
+     
+
+            details && details.forEach((item,index)=>{
+                if(item.label === 'Name'){
+                    data.name = item.value
+                }else if(item.label === 'Phone Number'){
+                    data.phone_number = item.value
+                }else if(item.label === 'Email'){
+                    data.email = item.value
+                }else if(item.label === 'Parent Name'){
+                    data.parent_name = item.value
+                }
+                else if(item.label === 'Parent Number'){
+                    data.parent_number = item.value
+                }
+                else if(item.label === 'Enrollment Number'){
+                    data.prn = item.value
+                }
+                else if(item.label === 'Batch'){
+                    data.batch_id = item.id
+                }
+            })
+
+            let params = window.location.pathname
+            let urlSlug = params.substring(7,params.length)
+
+            if(urlSlug?.length > 0){
+                data.college_slug = urlSlug
+            }
+
+            Object.keys(data).forEach(
+                key => (data[key] == null || data[key] == '') && delete data[key],
+            );
+
+            submitSignupData(data)
+            
+        }
+
+    const submitSignupData=async(data)=>{
+        const response = await axios.post(`${API_URL}/api/kid/v1/signup/`,data)
+        .then(res => {
+            try{
+                    if(res.data.signup === false){
+                        setSignUpState(false)
+                        handleApplicationData()
+                    }
+            }catch(err) {
+                console.log(err,'error')
+            }
+            
+        })
+        .catch(err => {
+            alert(err.response.data.error)
+        });
+
+    }
 
     return (
         <div className='login'>
@@ -220,7 +315,7 @@ export default function Login() {
                 </div>
             </div>}
 
-            {!verified && otp.generated &&
+            {!verified && otp.generated && !signUpState &&
                 <div className='wrapper container'>
                 <div className='header-container'>
                     <img src={logo} className='logo-small'/>
@@ -262,31 +357,19 @@ export default function Login() {
                     </div>
                 </div>
             </div>}
-            {/* {
-                <div className='wrapper container'>
-                    <div className='header-container'>
-                        <img src={logo} className='logo-small'/>
-                    </div>
-                    <div style={{width: '100%'}}>
-                        <div className='header'>Institute Information</div>
-                        <div className='subline' style={{marginBottom: '3rem'}}>Enter information, as applicable!</div>
-                        <div className='students-container'>
-                            {
-                                students.map((student, i) => (
-                                    <div className='student-card' key={i} onClick={() => navigateToInstallmentPage(i)}>
-                                        <div className='text-container'>
-                                            <div className='name'>{student.name}</div>
-                                            <div className='id'>{student.id}</div>
-                                        </div>
-                                        <img src={caret} className='icon'/>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </div>
-                    <div></div>
+            {
+                signUpState &&
+                <div style={{width: '100%'}}>
+                    <InstituteForm 
+                        title="Institute Information"
+                        description='Enter information, as applicable!'
+                        onlySignUp={true}
+                        handleFormSubmit={(details)=>handleFormSubmit(details)}
+                        mobileNumber={inputValue}
+                    />
                 </div>
-            } */}
+            }
+            
             {verified && <div className='wrapper container'>
                 <div className='header-container'>
                     <img src={logo} className='logo-small'/>

@@ -12,7 +12,9 @@ export default function InputField({
     width='',
     height='',
     margin='',
-    inputType='text'
+    inputType='text',
+    value='',
+    disabled=false,
 }) {
 
     return (
@@ -25,6 +27,8 @@ export default function InputField({
                     onChange={(e) => handleChange(e.target.value)}
                     maxLength={maxLength}
                     type={inputType}
+                    defaultValue={value}
+                    disabled={disabled}
                 ></input>
                 {validate && validity && <img className='icon' src={check}/>}
             </div>

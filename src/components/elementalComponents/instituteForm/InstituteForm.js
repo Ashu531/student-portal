@@ -18,7 +18,10 @@ const relations = [
 
 export default function InstituteForm({
     title,
-    description
+    description,
+    onlySignUp,
+    handleFormSubmit,
+    mobileNumber
 }) {
 
     const [relation,setRelation] = useState('')
@@ -61,7 +64,12 @@ export default function InstituteForm({
         let params = window.location.pathname
         let url = params.substring(7,params.length)
         setSlug(url)
-        const data = await axios.get(`${API_URL}/api/fees/v2/adhoc/link/${url}/`)
+
+        let urldata = {
+            'domain': onlySignUp ? 'signup' : 'adhoc'
+        }
+
+        const data = await axios.post(`${API_URL}/api/fees/v2/fetch/link/${url}/`,urldata)
         .then(res => {
             setRequiredField(res.data.data)
             setAdhocData(res.data.adhoc)
@@ -112,7 +120,8 @@ export default function InstituteForm({
         if(item.label === 'Grade'){
             details[0] = {
                 'label': item.label,
-                 'selectedValue' : e.value,
+                 'value' : e.value,
+                 'id' : e.id
             }
             
             setBatchId(e.id)
@@ -124,7 +133,8 @@ export default function InstituteForm({
         }else{
             details[1] = {
                 'label': item.label,
-                 'selectedValue' : e.value,
+                 'value' : e.value,
+                 'id' : e.id
             }
             setDropDownDetails(details)
         }
@@ -227,6 +237,9 @@ export default function InstituteForm({
             }else if(item.label === 'Parent Name'){
                 data.parent_name = item.value
             }
+            else if(item.label === 'Parent Number'){
+                data.parent_number = item.value
+            }
             else if(item.label === 'Enrollment Number'){
                 data.uid = item.value
             }
@@ -276,6 +289,22 @@ export default function InstituteForm({
         }
     }
 
+    const handleSignupForm=()=>{
+        let details = [...instituteDetails];
+        dropDownDetails?.length > 0 && dropDownDetails?.map((item,index)=>{
+           details.push(item)
+        })
+
+        if(mobileNumber?.length > 0){
+            let data = {
+                'label': 'Phone Number',
+                'value' : mobileNumber
+            }
+            details.push(data)
+        }
+        handleFormSubmit(details)
+    }
+
     return (
         <div className='institute'>
             <div className='institute-container'>
@@ -300,7 +329,12 @@ export default function InstituteForm({
                                      : item.type === 2 ? 
                                         <div className="formDiv" key={index}>
                                             <label className="label">{item.label}</label>
-                                            <InputField handleChange={(e)=>handleField(item,e)} maxLength={10} />
+                                            <InputField 
+                                              handleChange={(e)=>handleField(item,e)} 
+                                              maxLength={10} 
+                                              value={item.label == 'Phone Number' ? mobileNumber : ''} 
+                                              disabled={item.label == 'Phone Number'} 
+                                              />
                                         </div>
                                     :
                                         <div className="formDiv" key={index}>
@@ -317,24 +351,34 @@ export default function InstituteForm({
                         </div>
                     </form>
                </div>
-               
-                <div className='button-container'>
-                    <Button 
-                    text='Apply For Loan' 
-                    classes='button'
-                    handleClick={()=>handleLoanSubmit()}
-                    />
-                    <div className='divider'/>
-                    {
-                        !loader && 
+               {
+                   onlySignUp ? 
+                   <div className='button-container'>
                         <Button 
-                            text={`Pay In Full (₹${adhocData?.amount})`} 
+                            text='Submit' 
                             classes='button'
-                            handleClick={()=>handleProceed()}
+                            handleClick={()=>handleSignupForm()}
                         />
-                    }
-                    
-                </div>
+                    </div> :
+                    <div className='button-container'>
+                        <Button 
+                        text='Apply For Loan' 
+                        classes='button'
+                        handleClick={()=>handleLoanSubmit()}
+                        />
+                        <div className='divider'/>
+                        {
+                            !loader && 
+                            <Button 
+                                text={`Pay In Full (₹${adhocData?.amount})`} 
+                                classes='button'
+                                handleClick={()=>handleProceed()}
+                            />
+                        }
+                        
+                    </div>
+               }
+                
                </div>
                {confirmationDialog && <Modal 
                     data={modalData} 
