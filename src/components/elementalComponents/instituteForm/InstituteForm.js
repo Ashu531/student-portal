@@ -38,6 +38,7 @@ export default function InstituteForm({
     const [modalData, setModalData] = useState({});
     const [student,setStudent] = useState({})
     const [installment,setInstallment] = useState([])
+    const [buttonData,setButtonData] = useState([])
 
     const navigate = useNavigate();
 
@@ -73,6 +74,7 @@ export default function InstituteForm({
         .then(res => {
             setRequiredField(res.data.data)
             setAdhocData(res.data.adhoc)
+            setButtonData(res.data.button)
             // getDropdownData(res.data.data)
         })
         .catch(error => error.response.data);
@@ -253,7 +255,10 @@ export default function InstituteForm({
         
         const response = await axios.post(`${API_URL}/api/fees/v2/adhoc/student/`,data).
         then(res => res.data)
-        .catch(err => err.response.data);
+        .catch(err => {
+            err.response.data
+            alert(err.response.data.message)
+        });
     
         return response;
     }
@@ -305,6 +310,18 @@ export default function InstituteForm({
         handleFormSubmit(details)
     }
 
+    const handleButtonClick=(data)=>{
+
+        if(data.action === 13){
+            handleProceed()
+        }else if(data.action === 14){
+            handleLoanSubmit()
+        }else if(data.action === 15){
+            handleSignupForm()
+        }
+
+    }
+
     return (
         <div className='institute'>
             <div className='institute-container'>
@@ -314,7 +331,7 @@ export default function InstituteForm({
                        <p className='institute-application-subheading'>{description}</p>
                        {
                            adhocData?.amount_name?.length > 0 &&
-                           <p className='institute-application-subheading'>{adhocData?.amount_name}</p>
+                           <p className='institute-application-header'>{adhocData?.amount_name}</p>
                        }
                    </div>
                     <form className='form'>
@@ -332,8 +349,8 @@ export default function InstituteForm({
                                             <InputField 
                                               handleChange={(e)=>handleField(item,e)} 
                                               maxLength={10} 
-                                              value={item.label == 'Phone Number' ? mobileNumber : ''} 
-                                              disabled={item.label == 'Phone Number'} 
+                                              value={item.label == 'Phone Number' && onlySignUp === true ? mobileNumber : ''} 
+                                              disabled={item.label == 'Phone Number' && onlySignUp === true} 
                                               />
                                         </div>
                                     :
@@ -351,7 +368,7 @@ export default function InstituteForm({
                         </div>
                     </form>
                </div>
-               {
+               {/* {
                    onlySignUp ? 
                    <div className='button-container'>
                         <Button 
@@ -366,18 +383,35 @@ export default function InstituteForm({
                         classes='button'
                         handleClick={()=>handleLoanSubmit()}
                         />
-                        <div className='divider'/>
-                        {
-                            !loader && 
+                    <div className='divider'/>
                             <Button 
                                 text={`Pay In Full (₹${adhocData?.amount})`} 
                                 classes='button'
                                 handleClick={()=>handleProceed()}
-                            />
-                        }
+                    />
                         
                     </div>
-               }
+               } */}
+
+               <div className='button-container'>
+                   {buttonData?.length > 0 && buttonData.map((item,index)=>{
+                       return(
+                        <>
+                        <Button 
+                            text={item.text} 
+                            classes='button'
+                            handleClick={()=>handleButtonClick(item)}
+                            key={index}
+                        />
+                        {
+                            index !== buttonData?.length - 1 && <div className='divider' />
+                        }
+                        
+                        </>
+                       )
+                   })}
+                        
+               </div>
                 
                </div>
                {confirmationDialog && <Modal 
