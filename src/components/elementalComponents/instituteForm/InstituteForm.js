@@ -280,7 +280,7 @@ export default function InstituteForm({
         <div className='institute'>
             <div className='institute-container'>
             <div className="institute-application">
-                   <div>
+                   <div className='institute-header-content'>
                        <p className="institute-application-heading">{title}</p>
                        <p className='institute-application-subheading'>{description}</p>
                        {
