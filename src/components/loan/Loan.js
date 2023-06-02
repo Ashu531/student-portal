@@ -11,6 +11,7 @@ import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
 import Select from 'react-select';
 
 const relations = [
+    { value: 'Self', label: 'Self' },
     { value: 'Father', label: 'Father' },
     { value: 'Mother', label: 'Mother' },
     { value: 'Brother', label: 'Brother' },
@@ -40,7 +41,7 @@ export default function Loan() {
 
     const handleSubmit=async()=>{
         console.log(name,email,relation)
-        if(name.length > 4 && email.length > 8 && relation.length > 4){
+        if(name.length > 4 && email.length > 8 && relation.length > 3){
             let response = await axios.post(`${API_URL}/api/kid/v1/loan/${getToken()}/`, {
                 'name': name,
                 'email': email,

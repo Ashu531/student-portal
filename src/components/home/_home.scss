@@ -52,6 +52,15 @@
         .steps{
             width: 100%;
             margin: 32px 0px;
+
+            .steps-header{
+                font-family: 'Poppins';
+                font-style: normal;
+                font-weight: 600;
+                font-size: 18px;
+                line-height: 27px;
+                color: #000000;
+            }
         }
 
         .content-container{

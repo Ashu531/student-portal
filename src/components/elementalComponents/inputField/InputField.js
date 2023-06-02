@@ -32,7 +32,7 @@ export default function InputField({
                 ></input>
                 {validate && validity && <img className='icon' src={check}/>}
             </div>
-            {error && <div className='error'>
+              {error && <div className='error'>
                 {error}
             </div>}
         </div>

@@ -190,7 +190,7 @@
                     font-size: 14px;
                     line-height: 21px;
                     color: #404040;
-                    width: 25%;
+                    width: 35%;
                 }
             }
 
@@ -233,6 +233,9 @@
 }
 @media screen and(max-width: 499px){
 .autopay{
+
+    padding: 0px 24px;
+
     .button-container{
         width: 100%;
         align-self: flex-end;

@@ -66,6 +66,7 @@ export default function Login() {
             .then(res => (res.data))
             .catch(err => {
                 setError({...error, otp: err.response.data.message});
+                setLoader(false)
             });
 
             return otpVerified;
@@ -75,6 +76,9 @@ export default function Login() {
     const handleOtp = (val, i) => {
         let values = [...otp.values];
         values[i] = val;
+        if(values[values.length - 1] === ''){
+            setError({...error,otp: ''})
+        }
         setOtp({...otp, values: values});
     }
 
@@ -107,6 +111,8 @@ export default function Login() {
     }
 
     const resendOtp = async () => {
+        let resendState = ['','','','','','']
+        setOtp({...otp,values: resendState})
         const resent = await axios.post(`${API_URL}/api/kid/v1/resend_otp/`, JSON.stringify({phone_number: inputValue}), {
             headers: {
                 'Content-Type': 'application/json'
@@ -175,6 +181,7 @@ export default function Login() {
         if(value.length < 10){
             setInputValue(value);
             setIsValid(false);
+            setError({...error,number: ''})
         }
         
         if(value.length == 10){
@@ -284,9 +291,10 @@ export default function Login() {
                         placeholder={'Enter registered Phone Number'} 
                         validate={true}
                         validity={isValid}
-                        inputType='tel'
+                        inputType="tel"
                         handleChange={handleInputChange}
                         error={error.number}
+                        maxLength={10}
                     />
                 </div>
                 <div className='bottom-container'>

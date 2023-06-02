@@ -30,8 +30,12 @@ export default function LoanSuccess({loanData}) {
                     <div className='student-detail'>{loanData.loan_partner}</div>
                 </div>
                 <div className='student-container'>
-                    <div className='student-label'>Date & Time</div>
-                    <div className='student-detail'>{moment(loanData.timestamp).format('MMMM Do YYYY, h:mm:ss a')}</div>
+                    <div className='student-label'>Date</div>
+                    <div className='student-detail'>{moment(loanData.timestamp).format('LL')}</div>
+                </div>
+                <div className='student-container'>
+                    <div className='student-label'>Time</div>
+                    <div className='student-detail'>{moment(loanData.timestamp).format('HH:mm:ss')}</div>
                 </div>
            </div>
             <Button 
