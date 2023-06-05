@@ -199,7 +199,7 @@ export default function Autopay() {
                !autopay ? 
                     <Button 
                         text='Proceed' 
-                        classes={`small-wrapper button-small button-primary ${totalAmount > 0 ? '': 'disabled'}`}
+                        classes={`small-wrapper button-small button-primary ${totalAmount > 5 ? '': 'disabled'}`}
                         handleClick={()=>handleProceed()}
                     />
                     : 

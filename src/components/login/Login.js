@@ -54,10 +54,15 @@ export default function Login() {
     }
 
     const validateOtp = async (value) => {
+        
+        let params = window.location.pathname
+        let urlSlug = params.substring(7,params.length)
+
         if(value.length == 6){
             const otpVerified = await axios.post(`${API_URL}/api/kid/v1/verify_otp/`, JSON.stringify({
                 'phone_number': inputValue,
                 'otp': value,
+                'college_slug': urlSlug
             }), {
                 headers: {
                     'Content-Type': 'application/json'
@@ -113,7 +118,14 @@ export default function Login() {
     const resendOtp = async () => {
         let resendState = ['','','','','','']
         setOtp({...otp,values: resendState})
-        const resent = await axios.post(`${API_URL}/api/kid/v1/resend_otp/`, JSON.stringify({phone_number: inputValue}), {
+        let params = window.location.pathname
+        let urlSlug = params.substring(7,params.length)
+        const resent = await axios.post(`${API_URL}/api/kid/v1/resend_otp/`, 
+        JSON.stringify({
+            phone_number: inputValue,
+            college_slug: urlSlug
+        }), 
+        {
             headers: {
                 'Content-Type': 'application/json'
             }
