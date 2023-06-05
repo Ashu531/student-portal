@@ -216,9 +216,7 @@ export default function Login() {
             prn : '',
             college_slug : '',
             batch_id: ''
-        };
-
-     
+        }; 
 
             details && details.forEach((item,index)=>{
                 if(item.label === 'Name'){
@@ -238,6 +236,8 @@ export default function Login() {
                 }
                 else if(item.label === 'Batch'){
                     data.batch_id = item.id
+                }else{
+                    data[`${item.label}`] = item.value
                 }
             })
 

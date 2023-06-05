@@ -39,6 +39,7 @@ export default function InstituteForm({
     const [student,setStudent] = useState({})
     const [installment,setInstallment] = useState([])
     const [buttonData,setButtonData] = useState([])
+    const [collegeData,setCollegeData] = useState({})
 
     const navigate = useNavigate();
 
@@ -75,6 +76,9 @@ export default function InstituteForm({
             setRequiredField(res.data.data)
             setAdhocData(res.data.adhoc)
             setButtonData(res.data.button)
+            if(res?.data?.college?.length > 0){
+                setCollegeData(res?.data?.college[0])
+            }
             // getDropdownData(res.data.data)
         })
         .catch(error => error.response.data);
@@ -170,9 +174,7 @@ export default function InstituteForm({
 
 
     const handleLoanSubmit=()=>{
-       let data = {
-
-       }
+       console.log(instituteDetails,"instituteDetails")
 
 
     }
@@ -244,6 +246,8 @@ export default function InstituteForm({
             }
             else if(item.label === 'Enrollment Number'){
                 data.uid = item.value
+            }else{
+                data[`${item.label}`]=item.value
             }
         })
 
@@ -327,13 +331,17 @@ export default function InstituteForm({
             <div className='institute-container'>
             <div className="institute-application">
                    <div className='institute-header-content'>
-                       <p className="institute-application-heading">{title}</p>
-                       <p className='institute-application-subheading'>{description}</p>
+                       <p className="institute-application-heading">{collegeData?.name}</p>
                        {
                            adhocData?.amount_name?.length > 0 &&
                            <p className='institute-application-header'>{adhocData?.amount_name}</p>
                        }
+                       <p className='institute-application-subheading'>{description}</p>
+                       <div className='college-icon'>
+                            <img src={collegeData?.logo} alt='college_logo' height={32} width={62} />
+                        </div>
                    </div>
+                   
                     <form className='form'>
                         <div className='form-content'>
                             {requiredField && requiredField.map((item,index)=>{

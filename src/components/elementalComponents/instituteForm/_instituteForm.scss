@@ -110,7 +110,24 @@
         align-items: center;
         text-align: center;
         color: #000000;
+        
     }
+
+    .institute-header-content{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+        .college-icon{
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+    }
+
     .institute-application-subheading{
         font-family: 'Poppins';
         font-style: normal;
