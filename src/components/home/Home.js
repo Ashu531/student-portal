@@ -65,13 +65,7 @@ export default function Home() {
 
     const getData = async () => {
         const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
-        .then(res => {
-            if(res.status === 401){
-                navigate('/login')
-            }else{
-                res.data
-            }
-        })
+        .then(res => res.data)
         .catch(error => error.response.data);
 
         return data;
@@ -261,7 +255,13 @@ export default function Home() {
     const initHome = async () => {
         setLoader(true);
         const data = await getData();
-        setStudent(data.student);
+
+        if(data.status_code === 401){
+            navigate('/login')
+        }else{
+            setStudent(data.student);
+        }
+
         setDashboardType(data.dashboard_type)
 
         data.data.forEach((installment, i) => {
@@ -329,7 +329,7 @@ export default function Home() {
 
     return (
         <>
-        <Header title="Student Fee Ledger" back={false} icon={student.logo} />
+        <Header title="Student Fee Ledger" back={false} icon={student?.logo} />
         <div className={`home ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='container'>
                 {!loader && <div className='content-container'>

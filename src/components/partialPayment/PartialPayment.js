@@ -72,13 +72,7 @@ export default function PartialPayment() {
 
     const getData = async () => {
         const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
-        .then(res => {
-            if(res.status === 401){
-                navigate('/login')
-            }else{
-                res.data
-            }
-        })
+        .then(res => res.data)
         .catch(error => error.response.data);
 
         return data;
@@ -227,7 +221,12 @@ export default function PartialPayment() {
     useEffect(async () => {
         setLoader(true);
         const data = await getData();
-        setStudent(data.student);
+        
+        if(data.status_code === 401){
+            navigate('/login')
+        }else{
+            setStudent(data.student);
+        }
 
         data.data.forEach((installment, i) => {
 

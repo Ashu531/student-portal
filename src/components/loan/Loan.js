@@ -33,13 +33,7 @@ export default function Loan() {
 
     const getData = async () => {
         const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
-        .then(res => {
-            if(res.status === 401){
-                navigate('/login')
-            }else{
-                res.data
-            }
-        })
+        .then(res => res.data)
         .catch(error => error.response.data);
 
         return data;
@@ -68,7 +62,13 @@ export default function Loan() {
     useEffect(async () => {
         setLoader(true);
         const data = await getData();
-        setStudent(data.student);
+
+        if(data.status_code === 401){
+            navigate('/login')
+        }else{
+            setStudent(data.student);
+        }
+        
         let amount = 0;
         data.data.forEach((installment,index)=>{
                 amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
