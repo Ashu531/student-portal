@@ -72,7 +72,13 @@ export default function PartialPayment() {
 
     const getData = async () => {
         const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
-        .then(res => res.data)
+        .then(res => {
+            if(res.status === 401){
+                navigate('/login')
+            }else{
+                res.data
+            }
+        })
         .catch(error => error.response.data);
 
         return data;

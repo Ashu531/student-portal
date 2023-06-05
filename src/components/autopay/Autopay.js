@@ -24,7 +24,13 @@ export default function Autopay() {
 
     const getData = async () => {
         const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
-        .then(res => res.data)
+        .then(res => {
+            if(res.status === 401){
+                navigate('/login')
+            }else{
+                res.data
+            }
+        })
         .catch(error => error.response.data);
 
         return data;
@@ -58,9 +64,13 @@ export default function Autopay() {
     const _getPaymentDetails=async()=>{
         const data = await axios.get(`${API_URL}/api/kid/v1/autopay/installments/${getToken()}/`)
         .then(res => {
-            setPaymentDetailData(res.data.data)
-            console.log(res.data.data)
-            _getPaymentOptions(res.data.data)
+            if(res.status === 401){
+                navigate('/login')
+            }else{
+                setPaymentDetailData(res.data.data)
+                _getPaymentOptions(res.data.data)
+            }
+            
         })
         .catch(error => error.response.data);
 
