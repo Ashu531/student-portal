@@ -6,9 +6,10 @@ import InputField from '../elementalComponents/inputField/InputField';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 import { getToken } from '../../services/authService';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
 import Select from 'react-select';
+import Switch from "react-switch";
 
 const relations = [
     { value: 'Self', label: 'Self' },
@@ -18,6 +19,13 @@ const relations = [
     { value: 'Sister', label: 'Sister' },
   ];
 
+  const tenures = [
+    { value: 3, label: '3 Months' },
+    { value: 6, label: '6 Months' },
+    { value: 9, label: '9 Months' },
+    { value: 12, label: '12 Months' },
+  ];
+
 export default function Loan() {
 
     const [student, setStudent] = useState({});
@@ -25,11 +33,15 @@ export default function Loan() {
     const [email,setEmail] = useState('')
     const [mobileNumber,setMobileNumber] = useState('')
     const [relation,setRelation] = useState('')
-    const [totalAmount,setTotalAmount] = useState(0)
+    const [totalAmount,setTotalAmount] = useState('')
     const navigate = useNavigate();
     const [loanSuccess,setLoanSuccess] = useState(false);
     const [loader, setLoader] = useState(false);
     const [loanData,setLoanData] = useState({})
+    const [tenure,setTenure] = useState(0)
+    const [remark,setRemark] = useState('');
+    const [applicantName,setApplicantName] = useState('')
+    const [nameChecked,setNameChecked] = useState(false)
 
     const getData = async () => {
         const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
@@ -40,15 +52,21 @@ export default function Loan() {
     }
 
     const handleSubmit=async()=>{
-        console.log(name,email,relation)
-        if(name.length > 4 && email.length > 8 && relation.length > 3){
-            let response = await axios.post(`${API_URL}/api/kid/v1/loan/${getToken()}/`, {
-                'name': name,
-                'email': email,
-                'phone_number': mobileNumber,
-                'relation': relation,
-                'amount': String(totalAmount)
-               }).then(res => {
+        let data = {
+            'name': name,
+            'email': email,
+            'phone_number': mobileNumber,
+            'relation': relation,
+            'amount': String(totalAmount),
+            'remark': remark,
+            'tenure': tenure,
+            'course_name': student.course_id,
+            'applicant_name': applicantName,
+            'college': student.college
+        }
+
+        if(name.length > 4 && email.length > 8){
+            let response = await axios.post(`${API_URL}/api/kid/v1/loan/${getToken()}/`, data).then(res => {
                 if(res.data.status){
                     setLoanSuccess(true)
                     setLoanData(res.data.data)
@@ -93,6 +111,29 @@ export default function Loan() {
          setRelation(e.value)
     }
 
+    const handleTenure=(e)=>{
+        setTenure(e.value)
+    }
+
+    const handleRemark=(e)=>{
+        setRemark(e)
+    }
+
+    const handleBorrowerName=(e)=>{
+        setApplicantName(e)
+    }
+
+    const handleBorrowerToggle=()=>{
+        let tempCheck = nameChecked 
+        setNameChecked(!nameChecked);
+        console.log(tempCheck,name)
+        if(!tempCheck){
+            setApplicantName(name)
+        }else{
+            setApplicantName('')
+        }
+    }
+
     return (
         <>
         {
@@ -127,7 +168,13 @@ export default function Loan() {
                     <form className='form'>
                         <div className='form-content'>
                             <div className="formDiv">
-                                <label className="label">Application's Name</label>
+                                <div className='toggle-content'>
+                                    <label className="label">Application's Name</label>
+                                    <div className='toggle-content'>
+                                        <Switch onChange={()=>handleBorrowerToggle()} checked={nameChecked} />
+                                        <p style={{marginLeft: 5,fontSize: 12}}>Name same as borrower</p>
+                                    </div>
+                                </div>
                                 <InputField handleChange={(e)=>handleName(e)} maxLength={30} />
                             </div>
                             <div className="formDiv">
@@ -136,20 +183,55 @@ export default function Loan() {
                             </div>
                         </div>
                         <div className='form-content'>
-                        <div className="formDiv">
-                            <label className="label">Application's Phone Number</label>
-                            <InputField handleChange={(e)=>handleMobileNumber(e)} maxLength={10} />
+                            <div className="formDiv">
+                                <label className="label">Borrower Name</label>
+                                <InputField handleChange={(e)=>handleBorrowerName(e)} maxLength={30}  value={applicantName} />
+                            </div>
+                            <div className="formDiv">
+                                <label className="label">College/Institute Name</label>
+                                <InputField value={student.college} disabled={true} />
+                            </div>
                         </div>
-                        
-                        <div className="formDiv" style={ window.innerWidth > 500 ? {marginTop: 0} : null }>
-                        <label className="label">Relationship</label>
-                        <Select
-                            defaultValue={relation}
-                            onChange={(e)=>handleRelation(e)}
-                            options={relations}
-                            styles={select}
-                        />
+                        <div className='form-content'>
+                            <div className="formDiv">
+                                <label className="label">Application's Phone Number</label>
+                                <InputField handleChange={(e)=>handleMobileNumber(e)} maxLength={10} />
+                            </div>
+                            
+                            <div className="formDiv" style={ window.innerWidth > 500 ? {marginTop: 0} : null }>
+                                <label className="label">Relationship</label>
+                                <Select
+                                    defaultValue={relation}
+                                    onChange={(e)=>handleRelation(e)}
+                                    options={relations}
+                                    styles={select}
+                                />
+                            </div>
                         </div>
+                        <div className='form-content'>
+                            <div className="formDiv">
+                                <label className="label">Course</label>
+                                <InputField value={student.course} disabled={true}/>
+                            </div>
+                            <div className="formDiv">
+                                <label className="label">Course Fee</label>
+                                <InputField value={totalAmount} disabled={true} />
+                            </div>
+                        </div>
+                        <div className='form-content'>
+                            <div className="formDiv" style={ window.innerWidth > 500 ? {marginTop: 0} : null }>
+                                <label className="label">Tenure</label>
+                                <Select
+                                    defaultValue={tenure}
+                                    onChange={(e)=>handleTenure(e)}
+                                    options={tenures}
+                                    styles={select}
+                                />
+                            </div>
+                            <div className="formDiv">
+                                <label className="label">Remark</label>
+                                <InputField handleChange={(e)=>handleRemark(e)} />
+                            </div>
                         </div>
                     </form>
                </div>

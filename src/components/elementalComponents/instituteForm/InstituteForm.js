@@ -21,7 +21,9 @@ export default function InstituteForm({
     description,
     onlySignUp,
     handleFormSubmit,
-    mobileNumber
+    mobileNumber,
+    closeApplyForLoan,
+    openApplyForLoan
 }) {
 
     const [relation,setRelation] = useState('')
@@ -175,8 +177,7 @@ export default function InstituteForm({
 
     const handleLoanSubmit=()=>{
        console.log(instituteDetails,"instituteDetails")
-
-
+       openApplyForLoan(instituteDetails,collegeData,adhocData);
     }
 
 
