@@ -68,7 +68,6 @@ export default function Signup() {
     const handleBorrowerToggle=()=>{
         let tempCheck = nameChecked 
         setNameChecked(!nameChecked);
-        console.log(tempCheck,name)
         if(!tempCheck){
             setApplicantName(name)
         }else{
