@@ -320,7 +320,11 @@ export default function InstituteForm({
         if(data.action === 13){
             handleProceed()
         }else if(data.action === 14){
-            handleLoanSubmit()
+            if(instituteDetails.length === requiredField.length - 2){
+                handleLoanSubmit()
+            }else{
+                alert("Fill all the fields")
+            }
         }else if(data.action === 15){
             handleSignupForm()
         }
