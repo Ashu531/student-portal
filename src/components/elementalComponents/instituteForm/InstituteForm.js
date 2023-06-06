@@ -343,7 +343,7 @@ export default function InstituteForm({
                         </div>
                    </div>
                    
-                    <form className='form'>
+                    
                         <div className='form-content'>
                             {requiredField && requiredField.map((item,index)=>{
                                 return(
@@ -375,7 +375,6 @@ export default function InstituteForm({
                                 )
                             })}
                         </div>
-                    </form>
                </div>
                {/* {
                    onlySignUp ? 
