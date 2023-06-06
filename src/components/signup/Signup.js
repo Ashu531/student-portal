@@ -191,7 +191,7 @@ export default function Signup() {
                                     <label className="label">Applicant's Name</label>
                                     <div className='toggle-content'>
                                         <Switch onChange={()=>handleBorrowerToggle()} checked={nameChecked} height={18} width={36}/>
-                                        <p style={{marginLeft: 5,fontSize: 12}}>Name same as borrower</p>
+                                        <p style={{marginLeft: 5,fontSize: 11}}>Name same as borrower</p>
                                     </div>
                                 </div>
                                 <InputField handleChange={(e)=>handleName(e)} maxLength={30} value={name} />
@@ -212,16 +212,6 @@ export default function Signup() {
                             </div>
                         </div>
                         <div className='form-content'>
-                            <div className="formDiv">
-                                <label className="label">Applicant's Phone Number</label>
-                                <InputField handleChange={(e)=>handleMobileNumber(e)} inputType="tel" maxLength={10} />
-                            </div>
-                            <div className="formDiv">
-                                <label className="label">Course Fee</label>
-                                <InputField value={adhocData?.amount}/>
-                            </div>
-                        </div>
-                        <div className='form-content'>
                         <div className="formDiv" style={ window.innerWidth > 500 ? {marginTop: 0} : null }>
                                 <label className="label">Tenure</label>
                                 <Select
@@ -230,6 +220,16 @@ export default function Signup() {
                                     options={tenures}
                                     styles={select}
                                 />
+                            </div>
+                            <div className="formDiv">
+                                <label className="label">Course Fee</label>
+                                <InputField value={adhocData?.amount}/>
+                            </div>
+                        </div>
+                        <div className='form-content'>
+                            <div className="formDiv">
+                                <label className="label">Applicant's Phone Number</label>
+                                <InputField handleChange={(e)=>handleMobileNumber(e)} inputType="tel" maxLength={10} />
                             </div>
                             <div className="formDiv">
                                 <label className="label">Remark</label>

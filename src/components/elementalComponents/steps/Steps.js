@@ -11,11 +11,11 @@ export default function Steps({status}) {
 
     useEffect(()=>{
       if(status === 'applied'){
-        setStepStatus(0)
-      }else if(status === 'approved'){
         setStepStatus(1)
-      }else{
+      }else if(status === 'approved'){
         setStepStatus(2)
+      }else{
+        setStepStatus(3)
       }
     },[])
 

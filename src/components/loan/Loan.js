@@ -146,7 +146,7 @@ export default function Loan() {
              icon={student.logo}
            />
         <div className='loan'>
-            <div style={window.innerWidth > 500 ? {minHeight: '12rem'} : {minHeight: '15rem'}}>
+            <div style={window.innerWidth > 500 ? {minHeight: '12rem',width: '100%',display:'flex',justifyContent:'center',alignItems:'center'} : {minHeight: '15rem',width:'100%'}}>
                 <StudentDetails 
                         name={student.name}
                         id={student.prn}
@@ -175,7 +175,7 @@ export default function Loan() {
                                     <label className="label" style={{marginBottom: 0}}>Applicant's Name</label>
                                     <div className='toggle-content'>
                                         <Switch onChange={()=>handleBorrowerToggle()} checked={nameChecked} height={18} width={36} />
-                                        <p style={{marginLeft: 5,fontSize: 12}}>Name same as borrower</p>
+                                        <p style={{marginLeft: 5,fontSize: 11}}>Name same as borrower</p>
                                     </div>
                                 </div>
                                 <InputField handleChange={(e)=>handleName(e)} maxLength={30} />
@@ -212,16 +212,6 @@ export default function Loan() {
                             </div>
                         </div>
                         <div className='form-content'>
-                            <div className="formDiv">
-                                <label className="label">Course</label>
-                                <InputField value={student.course} disabled={true}/>
-                            </div>
-                            <div className="formDiv">
-                                <label className="label">Course Fee</label>
-                                <InputField value={totalAmount} disabled={true} />
-                            </div>
-                        </div>
-                        <div className='form-content'>
                             <div className="formDiv" style={ window.innerWidth > 500 ? {marginTop: 0} : null }>
                                 <label className="label">Tenure</label>
                                 <Select
@@ -230,6 +220,16 @@ export default function Loan() {
                                     options={tenures}
                                     styles={select}
                                 />
+                            </div>
+                            <div className="formDiv">
+                                <label className="label">Course Fee</label>
+                                <InputField value={totalAmount} disabled={true} />
+                            </div>
+                        </div>
+                        <div className='form-content'>
+                        <div className="formDiv">
+                                <label className="label">Course</label>
+                                <InputField value={student.course} disabled={true}/>
                             </div>
                             <div className="formDiv">
                                 <label className="label">Remark</label>
