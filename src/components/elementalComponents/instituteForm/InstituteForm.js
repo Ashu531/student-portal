@@ -339,7 +339,7 @@ export default function InstituteForm({
                        }
                        <p className='institute-application-subheading'>{description}</p>
                        <div className='college-icon'>
-                            <img src={collegeData?.logo} alt='college_logo' height={32} width={62} />
+                            <img src={collegeData?.logo} alt='college_logo' height={32} width={62} style={{objectFit:"contain"}} />
                         </div>
                    </div>
                    

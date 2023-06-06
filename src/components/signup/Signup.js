@@ -140,7 +140,7 @@ export default function Signup() {
                 "email" : email,
                 "tenure" : tenure,
                 "remark" : remark,
-                "college" : collegeInfo.id,
+                "college" : collegeInfo.college_id,
                 "name" : applicantName,
                 "amount": adhocData.amount
 

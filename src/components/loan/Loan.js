@@ -62,7 +62,7 @@ export default function Loan() {
             'tenure': tenure,
             'course_name': student.course_id,
             'applicant_name': applicantName,
-            'college': student.college
+            'college': student.college_id
         }
 
         if(name.length > 4 && email.length > 8){
@@ -146,12 +146,15 @@ export default function Loan() {
              icon={student.logo}
            />
         <div className='loan'>
-               <StudentDetails 
-                    name={student.name}
-                    id={student.prn}
-                    grade={student.course}
-                    school={student.college}
+            <div style={window.innerWidth > 500 ? {minHeight: '12rem'} : {minHeight: '15rem'}}>
+                <StudentDetails 
+                        name={student.name}
+                        id={student.prn}
+                        grade={student.course}
+                        school={student.college}
                 />
+            </div>
+               
                <div className='amount-container'>
                     <div className='amount-label'>
                         Total Amount
@@ -169,9 +172,9 @@ export default function Loan() {
                         <div className='form-content'>
                             <div className="formDiv">
                                 <div className='toggle-content'>
-                                    <label className="label">Applicant's Name</label>
+                                    <label className="label" style={{marginBottom: 0}}>Applicant's Name</label>
                                     <div className='toggle-content'>
-                                        <Switch onChange={()=>handleBorrowerToggle()} checked={nameChecked} />
+                                        <Switch onChange={()=>handleBorrowerToggle()} checked={nameChecked} height={18} width={36} />
                                         <p style={{marginLeft: 5,fontSize: 12}}>Name same as borrower</p>
                                     </div>
                                 </div>

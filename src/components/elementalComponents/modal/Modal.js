@@ -7,7 +7,7 @@ import Button from '../button/Button';
 import StudentDetails from '../studentDetails/StudentDetails';
 
 export default function Modal({ data, handleClose, handleSubmit }) {
-
+console.log(data)
     return (
         <div className='modal'>
             <div className='modal-content'>

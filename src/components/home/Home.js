@@ -22,6 +22,7 @@ import Header from '../elementalComponents/header/Header';
 import step1 from '../../assets/step1.svg';
 import step2 from '../../assets/step2.svg';
 import step3 from '../../assets/step3.svg'
+import Steps from '../elementalComponents/steps/Steps';
 
 export default function Home() {
 
@@ -427,13 +428,22 @@ export default function Home() {
                         value={`₹ ${pendingAmount}`}
                     />
 
-                    {
+                    {/* {
                         dashboardType.name === 'loan' && 
                         <div className='steps'>
                             <div className='steps-header'>Loan Status</div>
                             <img src={dashboardType.status === 'applied' ? step1  : dashboardType.status === 'approved' ? step2 : step3 } width={'100%'} style={{objectFit:'contain',marginTop: 12}} />
                         </div>
+                    } */}
+                    {
+                        dashboardType.name === 'loan' && 
+                        <div className='steps'>
+                                <div className='steps-header'>Loan Status</div>
+                                <Steps status={dashboardType.status} />
+                        </div>
                     }
+                   
+                    
 
                     <div className='heading'>Payment Plans</div>
                     <div className='payment-options-container'>
