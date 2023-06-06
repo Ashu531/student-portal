@@ -160,6 +160,8 @@ export default function Signup() {
             if(res.data.status){
                setLoanData(res.data.data)
                setLoanSuccess(true)
+            }else{
+                alert(res.data.message)
             }
            })
         .catch(err => err.response.data);
@@ -188,7 +190,7 @@ export default function Signup() {
                             <div className='toggle-content'>
                                     <label className="label">Applicant's Name</label>
                                     <div className='toggle-content'>
-                                        <Switch onChange={()=>handleBorrowerToggle()} checked={nameChecked} />
+                                        <Switch onChange={()=>handleBorrowerToggle()} checked={nameChecked} height={18} width={36}/>
                                         <p style={{marginLeft: 5,fontSize: 12}}>Name same as borrower</p>
                                     </div>
                                 </div>
@@ -212,7 +214,7 @@ export default function Signup() {
                         <div className='form-content'>
                             <div className="formDiv">
                                 <label className="label">Applicant's Phone Number</label>
-                                <InputField handleChange={(e)=>handleMobileNumber(e)} maxLength={10} />
+                                <InputField handleChange={(e)=>handleMobileNumber(e)} inputType="tel" maxLength={10} />
                             </div>
                             <div className="formDiv">
                                 <label className="label">Course Fee</label>

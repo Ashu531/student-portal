@@ -198,7 +198,7 @@ export default function Loan() {
                         <div className='form-content'>
                             <div className="formDiv">
                                 <label className="label">Applicant's Phone Number</label>
-                                <InputField handleChange={(e)=>handleMobileNumber(e)} maxLength={10} />
+                                <InputField handleChange={(e)=>handleMobileNumber(e)} maxLength={10} inputType="tel" />
                             </div>
                             
                             <div className="formDiv" style={ window.innerWidth > 500 ? {marginTop: 0} : null }>

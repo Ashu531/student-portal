@@ -360,6 +360,7 @@ export default function InstituteForm({
                                               maxLength={10} 
                                               value={item.label == 'Phone Number' && onlySignUp === true ? mobileNumber : ''} 
                                               disabled={item.label == 'Phone Number' && onlySignUp === true} 
+                                              inputType="tel"
                                               />
                                         </div>
                                     :
