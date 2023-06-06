@@ -187,7 +187,7 @@ export default function Signup() {
                         <div className='form-content'>
                             <div className="formDiv">
                             <div className='toggle-content'>
-                                    <label className="label">Application's Name</label>
+                                    <label className="label">Applicant's Name</label>
                                     <div className='toggle-content'>
                                         <Switch onChange={()=>handleBorrowerToggle()} checked={nameChecked} />
                                         <p style={{marginLeft: 5,fontSize: 12}}>Name same as borrower</p>
@@ -196,7 +196,7 @@ export default function Signup() {
                                 <InputField handleChange={(e)=>handleName(e)} maxLength={30} value={name} />
                             </div>
                             <div className="formDiv">
-                                <label className="label">Application's Email</label>
+                                <label className="label">Applicant's Email</label>
                                 <InputField handleChange={(e)=>handleEmail(e)} />
                             </div>
                         </div>
@@ -206,13 +206,13 @@ export default function Signup() {
                                 <InputField handleChange={(e)=>handleBorrowerName(e)} value={applicantName} maxLength={30} />
                             </div>
                             <div className="formDiv">
-                                <label className="label">College/Institute Name</label>
+                                <label className="label">School/Institute Name</label>
                                 <InputField value={collegeInfo.name} disabled={true} />
                             </div>
                         </div>
                         <div className='form-content'>
                             <div className="formDiv">
-                                <label className="label">Application's Phone Number</label>
+                                <label className="label">Applicant's Phone Number</label>
                                 <InputField handleChange={(e)=>handleMobileNumber(e)} maxLength={10} />
                             </div>
                             <div className="formDiv">

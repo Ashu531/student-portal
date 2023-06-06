@@ -169,7 +169,7 @@ export default function Loan() {
                         <div className='form-content'>
                             <div className="formDiv">
                                 <div className='toggle-content'>
-                                    <label className="label">Application's Name</label>
+                                    <label className="label">Applicant's Name</label>
                                     <div className='toggle-content'>
                                         <Switch onChange={()=>handleBorrowerToggle()} checked={nameChecked} />
                                         <p style={{marginLeft: 5,fontSize: 12}}>Name same as borrower</p>
@@ -178,7 +178,7 @@ export default function Loan() {
                                 <InputField handleChange={(e)=>handleName(e)} maxLength={30} />
                             </div>
                             <div className="formDiv">
-                                <label className="label">Application's Email</label>
+                                <label className="label">Applicant's Email</label>
                                 <InputField handleChange={(e)=>handleEmail(e)} />
                             </div>
                         </div>
@@ -188,13 +188,13 @@ export default function Loan() {
                                 <InputField handleChange={(e)=>handleBorrowerName(e)} maxLength={30}  value={applicantName} />
                             </div>
                             <div className="formDiv">
-                                <label className="label">College/Institute Name</label>
+                                <label className="label">School/Institute Name</label>
                                 <InputField value={student.college} disabled={true} />
                             </div>
                         </div>
                         <div className='form-content'>
                             <div className="formDiv">
-                                <label className="label">Application's Phone Number</label>
+                                <label className="label">Applicant's Phone Number</label>
                                 <InputField handleChange={(e)=>handleMobileNumber(e)} maxLength={10} />
                             </div>
                             
