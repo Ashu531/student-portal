@@ -176,7 +176,6 @@ export default function InstituteForm({
 
 
     const handleLoanSubmit=()=>{
-       console.log(instituteDetails,"instituteDetails")
        openApplyForLoan(instituteDetails,collegeData,adhocData);
     }
 
@@ -315,15 +314,49 @@ export default function InstituteForm({
         handleFormSubmit(details)
     }
 
+    const validateEmail = (email) => {
+        let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if(email.match(mailformat)) return true
+        else return false
+    };
+
+    const validateNumber=(number)=>{
+        let numformat = /^[0-9]+$/;
+        if(number.match(numformat)) return true
+        else return false
+    }
+
+    const validateAlphabet=(alpha)=>{
+        let aplhaformat = /^[a-zA-Z]+$/;
+        if(alpha.match(aplhaformat)) return true
+        else return false
+    }
+
     const handleButtonClick=(data)=>{
 
         if(data.action === 13){
             handleProceed()
         }else if(data.action === 14){
-            if(instituteDetails.length === requiredField.length - 2){
+            if(instituteDetails.length > requiredField.length - 3){
+                instituteDetails && instituteDetails.forEach((item,index)=>{
+                    if(item.label === 'Email'){
+                        let status = validateEmail(item.value)
+                        if(!status) alert('Please Enter valid Email')
+                    }else if(item.label === 'Phone Number'){
+                        let status = validateNumber(item.value)
+                        if(!status) alert('Please Enter valid Mobile Number')
+                    }else if(item.label === 'Parent Number'){
+                        let status = validateNumber(item.value)
+                        if(!status) alert('Please Enter valid Parent Number')
+                    }else if(item.label === 'Name'){
+                        let status = validateAlphabet(item.value)
+                        if(!status) alert('Please Enter valid Name')
+                    }
+                })
                 handleLoanSubmit()
-            }else{
-                alert("Fill all the fields")
+            }
+            else{
+                alert("All the fields are mandatory to fill")
             }
         }else if(data.action === 15){
             handleSignupForm()

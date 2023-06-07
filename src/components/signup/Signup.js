@@ -129,10 +129,6 @@ export default function Signup() {
                 data.slug = url;
             }
 
-            Object.keys(data).forEach(
-                key => (data[key] == null || data[key] == '') && delete data[key],
-            );
-
         let applicantData = {
 
                 "student_name" : name,
@@ -146,13 +142,20 @@ export default function Signup() {
 
         }
 
-        Object.keys(applicantData).forEach(
-            key => (applicantData[key] == null || applicantData[key] == '') && delete applicantData[key],
-        );
+        let emailStatus = validateEmail(email)
 
-        data['applicant'] = applicantData;
-        submitData(data)
-        
+        let mobileStatus = validateNumber(mobileNumber)
+
+        if(!emailStatus) alert('Please enter valid email')
+        else if(!mobileStatus) alert('Please enter valid phone number')
+        else {
+            Object.keys(applicantData).forEach(
+                key => (applicantData[key] == null || applicantData[key] == '') && delete applicantData[key],
+            );
+    
+            data['applicant'] = applicantData;
+            submitData(data)
+        }
     }
 
     const submitData=async(data)=>{
@@ -169,6 +172,18 @@ export default function Signup() {
 
     const goBack=()=>{
         closeApplyForLoan()
+    }
+
+    const validateEmail = (email) => {
+        let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if(email.match(mailformat)) return true
+        else return false
+    };
+
+    const validateNumber=(number)=>{
+        let numformat = /^[0-9]+$/;
+        if(number.match(numformat)) return true
+        else return false
     }
 
     return (

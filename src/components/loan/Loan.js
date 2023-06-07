@@ -65,16 +65,35 @@ export default function Loan() {
             'college': student.college_id
         }
 
-        if(name.length > 4 && email.length > 8){
-            let response = await axios.post(`${API_URL}/api/kid/v1/loan/${getToken()}/`, data).then(res => {
+        let emailStatus = validateEmail(email)
+
+        let mobileStatus = validateNumber(mobileNumber)
+
+        if(!emailStatus) alert('Please enter valid email')
+        else if(!mobileStatus) alert('Please enter valid phone number')
+        else{
+            await axios.post(`${API_URL}/api/kid/v1/loan/${getToken()}/`, data).then(res => {
                 if(res.data.status){
                     setLoanSuccess(true)
                     setLoanData(res.data.data)
                 }
-               })
-                .catch(err => err.response.data);
+            }).catch(err => err.response.data);
         }
+
+        
        
+    }
+
+    const validateEmail = (email) => {
+        let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if(email.match(mailformat)) return true
+        else return false
+    };
+
+    const validateNumber=(number)=>{
+        let numformat = /^[0-9]+$/;
+        if(number.match(numformat)) return true
+        else return false
     }
 
     useEffect(async () => {
@@ -188,7 +207,7 @@ export default function Loan() {
                         <div className='form-content'>
                             <div className="formDiv">
                                 <label className="label">Borrower Name</label>
-                                <InputField handleChange={(e)=>handleBorrowerName(e)} maxLength={30}  value={applicantName} />
+                                <InputField handleChange={(e)=>handleBorrowerName(e)} maxLength={30} />
                             </div>
                             <div className="formDiv">
                                 <label className="label">School/Institute Name</label>
