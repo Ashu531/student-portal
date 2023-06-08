@@ -149,11 +149,15 @@ export default function InstituteForm({
     }
 
     const getAcademicYearValue=async()=>{
-        await axios.get(`${API_URL}/api/fees/v2/adhoc/batches/${batchId}/`)
-        .then(res => {
-            setDropDownOptions(res.data.data)
-        })
-        .catch(error => error.response.data);
+        if(batchId){
+            await axios.get(`${API_URL}/api/fees/v2/adhoc/batches/${batchId}/`)
+            .then(res => {
+                setDropDownOptions(res.data.data)
+            })
+            .catch(error => error.response.data);
+        }else{
+            setDropDownOptions([])
+        }
     }
 
     const getGradeData=async(e)=>{
@@ -395,8 +399,8 @@ export default function InstituteForm({
                                             <InputField 
                                               handleChange={(e)=>handleField(item,e)} 
                                               maxLength={10} 
-                                              value={item.label == 'Phone Number' && onlySignUp === true ? mobileNumber : ''} 
-                                              disabled={item.label == 'Phone Number' && onlySignUp === true} 
+                                            //   value={(item.label == 'Phone Number' && onlySignUp === true) && mobileNumber} 
+                                            //   disabled={item.label == 'Phone Number' && onlySignUp === true} 
                                               inputType="tel"
                                               />
                                         </div>

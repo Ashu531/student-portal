@@ -173,10 +173,13 @@
         align-items: center;
         padding: 0 2.4rem;
         overflow: scroll;
+        margin-left:auto;
+        margin-right:auto;
 
         .institute-container{
             position: relative;
             width: 100%;
+            height: 100% !important;
             border-radius: 0;
             border: none;
             box-shadow: none;
@@ -187,7 +190,6 @@
             align-items: center;
             padding: 32px 0px;
             gap: 12px;  
-            width: 100%;
             flex: 1;
 
             .button{

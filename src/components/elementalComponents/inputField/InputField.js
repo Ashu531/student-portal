@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import check from '../../../assets/check-circle.svg';
 
 export default function InputField({
@@ -13,9 +13,15 @@ export default function InputField({
     height='',
     margin='',
     inputType='text',
-    value='',
+    value,
     disabled=false,
 }) {
+
+    const [currentValue,setCurrentValue] = useState('')
+
+    useEffect(()=>{
+        setCurrentValue(value)
+    },[value])
 
     return (
         <div style={{ width: '100%' }}>
@@ -27,7 +33,7 @@ export default function InputField({
                     onChange={(e) => handleChange(e.target.value)}
                     maxLength={maxLength}
                     type={inputType}
-                    defaultValue={value}
+                    value={currentValue}
                     disabled={disabled}
                 ></input>
                 {validate && validity && <img className='icon' src={check}/>}

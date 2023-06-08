@@ -186,6 +186,15 @@ export default function Signup() {
         else return false
     }
 
+    useEffect(()=>{
+        console.log(nameChecked)
+        if(nameChecked){
+            handleBorrowerName(name)
+        }else{
+            setApplicantName(applicantName)
+        }
+    },[nameChecked])
+
     return (
         <div className='signup'>
 
@@ -260,13 +269,13 @@ export default function Signup() {
                         />
                     </div>
               </div> :
-              <InstituteForm
-                title="Institute Information"
-                description='Enter information, as applicable!'
-                onlySignUp={false}
-                openApplyForLoan={(data,collegeData,adhocData)=>openApplyForLoan(data,collegeData,adhocData)}
-                closeApplyForLoan={()=>closeApplyForLoan()}
-             />
+                <InstituteForm
+                    title="Institute Information"
+                    description='Enter information, as applicable!'
+                    onlySignUp={false}
+                    openApplyForLoan={(data,collegeData,adhocData)=>openApplyForLoan(data,collegeData,adhocData)}
+                    closeApplyForLoan={()=>closeApplyForLoan()}
+                />
           }
         </div>
     )

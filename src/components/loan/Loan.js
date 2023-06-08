@@ -153,6 +153,17 @@ export default function Loan() {
         }
     }
 
+    useEffect(()=>{
+        console.log(nameChecked)
+        if(nameChecked){
+            console.log("comh++")
+            handleBorrowerName(name)
+            // setApplicantName(name)
+        }else{
+            setApplicantName(applicantName)
+        }
+    },[nameChecked])
+
     return (
         <>
         {
@@ -207,7 +218,7 @@ export default function Loan() {
                         <div className='form-content'>
                             <div className="formDiv">
                                 <label className="label">Borrower Name</label>
-                                <InputField handleChange={(e)=>handleBorrowerName(e)} maxLength={30} />
+                                <InputField handleChange={(e)=>handleBorrowerName(e)} maxLength={30} value={applicantName} disabled={nameChecked} />
                             </div>
                             <div className="formDiv">
                                 <label className="label">School/Institute Name</label>
