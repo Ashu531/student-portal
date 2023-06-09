@@ -160,14 +160,12 @@ export default function Signup() {
 
     const submitData=async(data)=>{
         let response = await axios.post(`${API_URL}/api/kid/v1/adhoc/loan/`, data).then(res => {
-            if(res.data.status){
+            if(res?.data['status'] === true){
                setLoanData(res.data.data)
                setLoanSuccess(true)
-            }else{
-                alert(res.data.message)
             }
            })
-        .catch(err => err.response.data);
+        .catch(err => alert(err.response.data.message));
     }
 
     const goBack=()=>{
