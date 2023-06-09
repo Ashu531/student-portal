@@ -341,23 +341,39 @@ export default function InstituteForm({
         if(data.action === 13){
             handleProceed()
         }else if(data.action === 14){
+            let submit = true;
             if(instituteDetails.length > requiredField.length - 3){
                 instituteDetails && instituteDetails.forEach((item,index)=>{
                     if(item.label === 'Email'){
                         let status = validateEmail(item.value)
-                        if(!status) alert('Please Enter valid Email')
+                        if(!status) {
+                            alert('Please Enter valid Email')
+                            submit = false
+                        }
                     }else if(item.label === 'Phone Number'){
                         let status = validateNumber(item.value)
-                        if(!status) alert('Please Enter valid Mobile Number')
+                        if(!status) {
+                            alert('Please Enter valid Mobile Number')
+                            submit = false
+                        }
                     }else if(item.label === 'Parent Number'){
                         let status = validateNumber(item.value)
-                        if(!status) alert('Please Enter valid Parent Number')
+                        if(!status) {
+                            alert('Please Enter valid Parent Number')
+                            submit = false
+                        }
                     }else if(item.label === 'Name'){
                         let status = validateAlphabet(item.value)
-                        if(!status) alert('Please Enter valid Name')
+                        if(!status) {
+                            alert('Please Enter valid Name')
+                            submit = false
+                        }
                     }
                 })
-                handleLoanSubmit()
+                if(submit){
+                    handleLoanSubmit()
+                }
+                
             }
             else{
                 alert("All the fields are mandatory to fill")

@@ -154,9 +154,7 @@ export default function Loan() {
     }
 
     useEffect(()=>{
-        console.log(nameChecked)
         if(nameChecked){
-            console.log("comh++")
             handleBorrowerName(name)
             // setApplicantName(name)
         }else{

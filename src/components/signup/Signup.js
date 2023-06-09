@@ -198,10 +198,9 @@ export default function Signup() {
     return (
         <div className='signup'>
 
-          {
-              applyForLoan ? 
+        {
               loanSuccess ? <LoanSuccess loanData={loanData} /> :
-              <div className="loan-application" style={{padding: '0px 24px'}}>
+              <div className={`loan-application`} style={applyForLoan ? {padding: '0px 24px',display:'flex',width:'100%'} : {padding: '0px 24px',display:'none'}}>
                    <div className='adhoc-header'>
                         <div className='backIcon' onClick={()=>goBack()}>
                             <img src={backIcon} alt="backIcon" height={20} width={20}/>
@@ -228,7 +227,7 @@ export default function Signup() {
                         <div className='form-content'>
                             <div className="formDiv">
                                 <label className="label">Borrower Name</label>
-                                <InputField handleChange={(e)=>handleBorrowerName(e)} value={applicantName} maxLength={30} />
+                                <InputField handleChange={(e)=>handleBorrowerName(e)} value={applicantName} maxLength={30} disabled={nameChecked} />
                             </div>
                             <div className="formDiv">
                                 <label className="label">School/Institute Name</label>
@@ -268,15 +267,20 @@ export default function Signup() {
                         handleClick={()=>handleSubmit()}
                         />
                     </div>
-              </div> :
+              </div>
+            }
+            <div style={applyForLoan ? {display: 'none'} : {display:'block',width:'100%'}}>
                 <InstituteForm
                     title="Institute Information"
                     description='Enter information, as applicable!'
                     onlySignUp={false}
                     openApplyForLoan={(data,collegeData,adhocData)=>openApplyForLoan(data,collegeData,adhocData)}
                     closeApplyForLoan={()=>closeApplyForLoan()}
+                    fieldData={instituteDetails}
                 />
-          }
+            </div>
+                
+          
         </div>
     )
 }
