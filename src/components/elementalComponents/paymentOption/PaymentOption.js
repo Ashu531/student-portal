@@ -8,10 +8,11 @@ export default function PaymentOption({
     heading,
     description,
     bgColor,
-    onClick
+    onClick,
+    disabled
 }) {
   return (
-    <div className='payment-option' style={{background: bgColor}} onClick={onClick}>
+    <div className='payment-option' style={ disabled ? {opacity: 0.5,background: '#EBEBEB'} : {background: bgColor}} onClick={!disabled && onClick}>
         <div className='row'>
             <img src={icon} className='icon'/>
             {tag && <div className='tag'>{tag}</div>}

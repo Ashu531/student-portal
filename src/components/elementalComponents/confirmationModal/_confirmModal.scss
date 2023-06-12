@@ -1,4 +1,4 @@
-.modal{
+.confirm-modal{
     position: fixed;
     top: 0;
     left: 0;
@@ -12,10 +12,10 @@
     background-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(5px);
 
-    .modal-content{
+    .confirm-modal-content{
         padding: 2.4rem;
-        width: 56rem;
-        height: 39.1rem;
+        width: 48rem;
+        height: 33rem;
         // background: linear-gradient(125.13deg, #4530B1 0%, #A3238D 58.33%, rgba(224, 28, 134, 0.8) 100%);
         backdrop-filter: blur(40px);
         border-radius: 2.4rem;
@@ -25,6 +25,38 @@
         background: #FFFFFF;
         border: 1px solid #404040;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+
+        .modal-container{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0px;
+            gap: 20px;
+
+            .heading{
+                font-family: 'Poppins';
+                font-style: normal;
+                font-weight: 600;
+                font-size: 20px;
+                // line-height: 30px;
+                display: flex;
+                align-items: center;
+                text-align: center;
+                color: #404040;
+                margin: 0px;
+            }
+            .sub-heading{
+                font-family: 'Poppins';
+                font-style: normal;
+                font-weight: 300;
+                font-size: 12px;
+                // line-height: 20px;
+                text-align: center;
+                color: #404040;
+                margin: 0px;
+            }
+        }
 
 
         .button-container{
@@ -46,8 +78,8 @@
 }
 
 @media screen and(max-width: 499px){
-    .modal{
-        .modal-content{
+    .confirm-modal{
+        .confirm-modal-content{
             height: 50%;
             width: 85%;
 

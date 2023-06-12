@@ -1,0 +1,71 @@
+.detail-banner{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 10px 15px;
+    gap: 15px;
+    background: #A8CFFF;
+    border-radius: 10px;
+
+    .detail-banner-content{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0px;
+        gap: 10px;
+        width: 70% !important;
+
+        .title{
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            color: #000000;
+            margin: 10px 0px 0px 0px;
+        }
+
+        .sub-title{
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 21px;
+            color: #000000;
+            margin: 0px;
+        }
+    }
+
+    .button-container{
+        width: 30% !important;
+        text-align: center;
+        margin: 0px !important;
+
+        .button-small{
+            width: 100%;
+        }
+    }
+
+    .title{
+        font-weight: 600;
+        font-size: 1.6rem;
+        line-height: 2.4rem;
+    }
+
+    .subtitle, .subtitle-2{
+        font-size: 1.2rem;
+        line-height: 1.8rem;
+    }
+
+
+}
+
+@media screen and(max-width: 499px){
+    .detail-banner{
+
+            .subtitle-2{
+                text-align: center;
+                font-size: 1rem;
+                line-height: 1.35rem;
+            }
+        }
+}
