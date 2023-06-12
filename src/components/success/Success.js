@@ -9,7 +9,7 @@ import { downloadPdf } from '../../services/downloadPdf';
 
 export default function Success() {
 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
     const {state} = useLocation();
 
     let credencLogo = logo;

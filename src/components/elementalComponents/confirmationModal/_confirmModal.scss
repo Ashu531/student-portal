@@ -15,7 +15,7 @@
     .confirm-modal-content{
         padding: 2.4rem;
         width: 48rem;
-        height: 33rem;
+        // height: 33rem;
         // background: linear-gradient(125.13deg, #4530B1 0%, #A3238D 58.33%, rgba(224, 28, 134, 0.8) 100%);
         backdrop-filter: blur(40px);
         border-radius: 2.4rem;
@@ -62,6 +62,7 @@
         .button-container{
             width: 100%;
             text-align: center;
+            margin-top: 24px;
         }
 
         .title{

@@ -7,6 +7,8 @@ import { getToken } from '../../services/authService';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 import useScript from '../../hooks/useScript';
 import moment from 'moment'
+import { useNavigate, useLocation } from 'react-router-dom';
+import ConfirmationModal from '../elementalComponents/confirmationModal/ConfirmModal';
 
 export default function Autopay() {
 
@@ -17,10 +19,26 @@ export default function Autopay() {
     const [installments,setInstallments] = useState([])
     const [loader, setLoader] = useState(false);
     const [easebuzzCheckout, setEasebuzzCheckout] = useState(null);
+    const [applicationStatus, setApplicationStatus] = useState(false)
     const [paymentOpen,setpaymentOpen] = useState({
         paymentID: null,
         openPayment: false
     })
+    const [confirmModalData,setConfirmModalData] = useState({
+        title: '',
+        subHeading: '',
+        description: '',
+        buttonText:'',
+        successImage: false
+   })
+    const {state} = useLocation();
+
+    useEffect(() => {
+        if(state){
+            setAutopay(true) 
+        }
+          
+    }, []);
 
     const getData = async () => {
         const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
@@ -106,6 +124,36 @@ export default function Autopay() {
         })
     }
 
+    const openCancellationModal=()=>{
+        setConfirmModalData({
+            title: 'Auto-Pay Cancellation',
+            subHeading:'Are you sure you want to cancel your auto-pay mandate?',
+            description: 'Once this action is performed, you will have to pay all pending fee using other payment methods or set up auto-pay mandate again.',
+            buttonText: 'Yes, cancel my Auto-Pay.',
+            successImage: false,
+            handleSubmit: cancelAutopay
+        })
+        setApplicationStatus(true)
+    }
+
+    const cancelAutopay=async()=>{
+        if(state.applicationId){
+            let response = await axios.post(`${API_URL}/api/kid/v1/autopay/cancel/${getToken()}/`, {
+                application_id: state.applicationId,
+               }).then(res => {
+                    closeConfirmationModal()
+               })
+            .catch(err => err.response.data);
+        }else{
+            alert('Invalid Application Id')
+        }
+        
+    }
+
+    const closeConfirmationModal=()=>{
+        setApplicationStatus(false)
+    }
+
     return (
         <>
         <Header
@@ -127,6 +175,17 @@ export default function Autopay() {
                     ₹ {totalAmount}
                 </div>
            </div>
+           {
+                        autopay && state && 
+                        <div className='paid-status'>
+                            <div className='icon-circle'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
+                            </div>
+                            <div className='status-text'>
+                              If you wish to cancel your Auto-Pay mandate, you can do so by <b style={{textDecoration: 'underline',cursor:'pointer'}} onClick={openCancellationModal}>Clicking Here</b>.
+                            </div>    
+                        </div>
+                    }
            {
                !autopay && 
                     <div className='benefit-container'>
@@ -194,7 +253,8 @@ export default function Autopay() {
                     
                 </div>
             }
-            <div className='button-container'> 
+            {
+              !state &&  <div className='button-container'> 
             {      
                !autopay ? 
                     <Button 
@@ -208,8 +268,15 @@ export default function Autopay() {
                         classes={`small-wrapper button-small button-primary ${totalAmount > 0 ? '': 'disabled'}`}
                         handleClick={()=>handleAutopay()}
                     />
-           }
+             }
              </div>
+            }
+            { applicationStatus &&
+                <ConfirmationModal
+                    modalData={confirmModalData}
+                    student={student}
+                />
+            }
         </div>
         </>
     )

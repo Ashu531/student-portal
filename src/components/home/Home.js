@@ -371,21 +371,38 @@ export default function Home() {
     }
 
     useEffect(()=>{
-        setConfirmModalData({
-            title: 'Loan Application Rejected',
-            subHeading: 'Your loan application was denied for fee payment. Apply for a loan again or try paying with other available payment methods.',
-            description: `To know more about your loan application contact us on help@credenc.com`,
-            buttonText: 'Go to Dashboard',
-            successImage: false,
-            handleSubmit: bannerCancellation,
-        })
+        if(dashboardType.name === 'loan'){
+            setConfirmModalData({
+                title: 'Loan Application Rejected',
+                subHeading: 'Your loan application was denied for fee payment. Apply for a loan again or try paying with other available payment methods.',
+                description: `To know more about your loan application contact us on help@credenc.com`,
+                buttonText: 'Go to Dashboard',
+                successImage: false,
+                handleSubmit: bannerCancellation,
+            })
+        }else if(dashboardType.name === 'autopay'){
+            if(dashboardType.status === 'setup_done'){
+                setConfirmModalData({
+                    title: 'Auto-Pay Set up Successful!',
+                    buttonText: 'Back to Dashboard',
+                    successImage: true,
+                    handleSubmit: bannerCancellation,
+                })
+            }else if(dashboardType.status === 'initiated'){
+                setConfirmModalData({
+                    title: 'Auto-Pay Initiation Unsuccessful',
+                    subHeading: 'Your auto-pay has not been set up. Try again! ',
+                    buttonText: 'Back to Dashboard',
+                    successImage: false,
+                    handleSubmit: bannerCancellation,
+                })
+            }
+            
+        }
+        
         setApplicationStatus(dashboardType.banner)
 
     },[dashboardType.status])
-
-    const cancelAutopay=()=>{
-        
-    }
 
     const bannerCancellation=async()=>{
         await axios.post(`${API_URL}/api/kid/v1/banner/cancel/${getToken()}/`, {
@@ -397,6 +414,17 @@ export default function Home() {
             err.response.data
             closeConfirmModal()
         });
+    }
+
+    const handleAutopayModal=()=>{
+        let cancelAutopayFlow = true
+        let applicationId = dashboardType.application_id
+        navigate('/autopay',{
+            state: {
+                cancelAutopayFlow, 
+                applicationId
+            }
+        })
     }
 
 
@@ -500,12 +528,11 @@ export default function Home() {
                         value={`₹ ${pendingAmount}`}
                     />
 
-                    {   autopayDetails &&
-                        <div style={{width:'100%'}}>
+                    {   dashboardType.name === 'autopay' &&
+                        <div style={dashboardType.status == 'setup_cancel' ? {display:'none',visibility:'hidden'} : {width:'100%',marginTop: 24}}>
                             <DetailBanner 
-                                heading={'Your fee Auto-Pay has been set up!'}
-                                subHeading={'Sit back and relax, your child’s fee will be auto-deducted once the due date comes.'}
-                                buttonText={'See Details'}
+                                dashboardStatus={dashboardType.status}
+                                handleSubmit={handleAutopayModal}
                             />
                         </div>
                     }
@@ -619,6 +646,7 @@ export default function Home() {
         { applicationStatus &&
             <ConfirmationModal
                 modalData={confirmModalData}
+                student={student}
             />
         }
         {confirmationDialog && <Modal 
