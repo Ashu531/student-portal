@@ -382,7 +382,7 @@ export default function Login() {
                 <div style={{width: '100%'}}>
                     <InstituteForm 
                         title="Institute Information"
-                        description='Enter information, as applicable!'
+                        // description='Enter information, as applicable!'
                         onlySignUp={true}
                         handleFormSubmit={(details)=>handleFormSubmit(details)}
                         mobileNumber={inputValue}

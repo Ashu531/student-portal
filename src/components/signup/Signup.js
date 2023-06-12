@@ -270,7 +270,7 @@ export default function Signup() {
             <div style={applyForLoan ? {display: 'none'} : {display:'block',width:'100%'}}>
                 <InstituteForm
                     title="Institute Information"
-                    description='Enter information, as applicable!'
+                    // description='Enter information, as applicable!'
                     onlySignUp={false}
                     openApplyForLoan={(data,collegeData,adhocData)=>openApplyForLoan(data,collegeData,adhocData)}
                     closeApplyForLoan={()=>closeApplyForLoan()}
