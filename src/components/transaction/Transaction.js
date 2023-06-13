@@ -18,7 +18,6 @@ export default function Transaction() {
         if(queryList[0]?.name == 'app_id'){
             const data = await axios.get(`${API_URL}/api/kid/v1/autopay/status/${queryList[0]?.value}/`)
             .then(res => {
-                console.log("coming+++")
                 setStudentData(res.data.student)
             }
                 
