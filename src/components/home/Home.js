@@ -62,7 +62,8 @@ export default function Home() {
         subHeading: '',
         description: '',
         buttonText:'',
-        successImage: false
+        successImage: false,
+        type: 2
    })
 
     const [autopayDetails,setAutopayDetails] = useState(false)
@@ -349,6 +350,7 @@ export default function Home() {
             buttonText: 'Yes, cancel my Loan.',
             successImage: false,
             handleSubmit: cancelLoan,
+            type: 1
         })
         setApplicationStatus(true)
     }
@@ -379,6 +381,7 @@ export default function Home() {
                 buttonText: 'Go to Dashboard',
                 successImage: false,
                 handleSubmit: bannerCancellation,
+                type: 1
             })
         }else if(dashboardType.name === 'autopay'){
             if(dashboardType.status === 'setup_done'){
@@ -387,14 +390,26 @@ export default function Home() {
                     buttonText: 'Back to Dashboard',
                     successImage: true,
                     handleSubmit: bannerCancellation,
+                    type: 2
                 })
-            }else if(dashboardType.status === 'initiated'){
+            }else if(dashboardType.status === 'setup_cancel'){
+                setConfirmModalData({
+                    title: 'Auto-Pay Set up Unsuccessful',
+                    subHeading: 'Your auto-pay has not been set up. Try again! ',
+                    buttonText: 'Back to Dashboard',
+                    successImage: false,
+                    handleSubmit: bannerCancellation,
+                    type: 2
+                })
+            }
+            else if(dashboardType.status === 'initiated'){
                 setConfirmModalData({
                     title: 'Auto-Pay Initiation Unsuccessful',
                     subHeading: 'Your auto-pay has not been set up. Try again! ',
                     buttonText: 'Back to Dashboard',
                     successImage: false,
                     handleSubmit: bannerCancellation,
+                    type: 1
                 })
             }
             
@@ -647,6 +662,7 @@ export default function Home() {
             <ConfirmationModal
                 modalData={confirmModalData}
                 student={student}
+                amount={pendingAmount}
             />
         }
         {confirmationDialog && <Modal 

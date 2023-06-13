@@ -9,7 +9,8 @@ export default function ConfirmationModal({
     handleSubmit, 
     modalData, 
     autoPay,
-    student
+    student,
+    amount
 }) 
 {
     return (
@@ -27,13 +28,38 @@ export default function ConfirmationModal({
                     
                 </div> 
                 {
-                    autoPay && 
-                    <StudentDetails 
-                        name={student.name}
-                        id={student.prn}
-                        grade={student.course}
-                        school={student.college}
-                    />
+                    modalData?.type === 2 && 
+                    <div className='student-content'>
+                        <div className='student-container'>
+                            <div className='student-label'>Student Name</div>
+                            <div className='student-name'>{student?.name}</div>
+                        </div>
+                        <div className='student-container'>
+                            <div className='student-label'>Admission No.</div>
+                            <div className='student-detail'>{student?.prn}</div>
+                        </div>
+                        <div className='student-container'>
+                            <div className='student-label'>Grade</div>
+                            <div className='student-detail'>{student?.course}</div>
+                        </div>
+                        <div className='student-container'>
+                            <div className='student-label'>School</div>
+                            <div className='student-detail'>{student?.college}</div>
+                        </div>
+                        <div className='divider' />
+                        <div className='student-container'>
+                            <div className='student-label'>Total Amount</div>
+                            <div className='student-detail'>{amount}</div>
+                        </div>
+                        <div className='student-container'>
+                            <div className='student-label'>Frequency</div>
+                            <div className='student-detail'>Quarterly</div>
+                        </div>
+                        <div className='student-container'>
+                            <div className='student-label'>No. of Payments</div>
+                            <div className='student-detail'>4</div>
+                        </div>
+                    </div>
                 }
                         
                 

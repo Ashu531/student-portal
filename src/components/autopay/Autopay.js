@@ -45,12 +45,13 @@ export default function Autopay() {
         .then(res => res.data)
         .catch(error => error.response.data);
 
-        return data;
+        return data; 
     }
 
     useEffect(() => {
-        let amount = 0;     
-        installments.forEach((installment) => {
+        let amount = 0;   
+        const statusContent = installments.filter(installment => installment['status'] != 'paid' )  
+        statusContent.forEach((installment) => {
             amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
         })
     
