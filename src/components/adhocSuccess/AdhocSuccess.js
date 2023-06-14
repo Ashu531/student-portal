@@ -5,7 +5,7 @@ import Button from '../elementalComponents/button/Button';
 import background from '../../assets/background.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { logoutUser } from '../../services/authService';
-import { downloadPdf } from '../../services/downloadPdf';
+import { downloadAdhocPdf } from '../../services/downloadAdhocPdf';
 
 export default function AdhocSuccess() {
 
@@ -89,7 +89,7 @@ export default function AdhocSuccess() {
                 <div className='small-wrapper' style={{margin: '1.5rem 0', width: '100%'}}>
                     <Button 
                         text='Download Acknowledgement' 
-                        handleClick={() => downloadPdf(state)} 
+                        handleClick={() => downloadAdhocPdf(state)} 
                         classes='button-big button-primary'/>
                 </div>
             </div>

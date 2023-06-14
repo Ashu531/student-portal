@@ -5,7 +5,7 @@ import TransactionStatus from '../../elementalComponents/transactionStatus/Trans
 import moment from 'moment'
 import { useParams, useNavigate } from 'react-router-dom';
 
-export default function LoanSuccess({loanData}) {
+export default function LoanSuccess({loanData,adhocLoan}) {
     const navigate = useNavigate();
     const [successIcon, setSuccessIcon] = useState(true)
 
@@ -38,11 +38,15 @@ export default function LoanSuccess({loanData}) {
                     <div className='student-detail'>{moment(loanData.timestamp).format('HH:mm:ss')}</div>
                 </div>
            </div>
-            <Button 
-             text='Back To Dashboard' 
-             classes='button'
-             handleClick={()=> navigate(`/`, {replace: true})}
-            />
+           {
+               !adhocLoan && 
+               <Button 
+                    text='Back To Dashboard' 
+                    classes='button'
+                    handleClick={()=> navigate(`/`, {replace: true})}
+                />
+           }
+            
         </div>
     )
 }

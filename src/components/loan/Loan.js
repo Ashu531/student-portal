@@ -92,7 +92,8 @@ export default function Loan() {
 
     const validateNumber=(number)=>{
         let numformat = /^[0-9]+$/;
-        if(number.match(numformat)) return true
+        if(number.length != 10) return false
+        else if(number.match(numformat)) return true
         else return false
     }
 
@@ -166,7 +167,7 @@ export default function Loan() {
         <>
         {
             loanSuccess ? 
-            <LoanSuccess loanData={loanData} />
+            <LoanSuccess loanData={loanData} adhocLoan={false} />
             :
         <>
         <Header

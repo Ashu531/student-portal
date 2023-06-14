@@ -326,6 +326,7 @@ export default function InstituteForm({
 
     const validateNumber=(number)=>{
         let numformat = /^[0-9]+$/;
+        if(number.length != 10) return false
         if(number.match(numformat)) return true
         else return false
     }

@@ -180,7 +180,8 @@ export default function Signup() {
 
     const validateNumber=(number)=>{
         let numformat = /^[0-9]+$/;
-        if(number.match(numformat)) return true
+        if(number.length != 10) return false
+        else if(number.match(numformat)) return true
         else return false
     }
 
@@ -197,7 +198,7 @@ export default function Signup() {
         <div className='signup'>
 
         {
-              loanSuccess ? <LoanSuccess loanData={loanData} /> :
+              loanSuccess ? <LoanSuccess loanData={loanData} adhocLoan={true} /> :
               <div className={`loan-application`} style={applyForLoan ? {padding: '0px 24px',display:'flex',width:'100%'} : {padding: '0px 24px',display:'none'}}>
                    <div className='adhoc-header'>
                         <div className='backIcon' onClick={()=>goBack()}>
