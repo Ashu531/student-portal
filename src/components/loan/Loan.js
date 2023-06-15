@@ -77,7 +77,7 @@ export default function Loan() {
                     setLoanSuccess(true)
                     setLoanData(res.data.data)
                 }
-            }).catch(err => err.response.data);
+            }).catch(err => alert(err.response.data.error));
         }
 
         

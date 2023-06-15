@@ -129,6 +129,13 @@
             line-height: 1.8rem;
         }
     }
+
+    .closeIcon{
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        cursor: pointer;
+    }
 }
 
 @media screen and(max-width: 499px){

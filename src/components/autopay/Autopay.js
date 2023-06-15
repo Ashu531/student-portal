@@ -148,9 +148,13 @@ export default function Autopay() {
             let response = await axios.post(`${API_URL}/api/kid/v1/autopay/cancel/${getToken()}/`, {
                 application_id: state.applicationId,
                }).then(res => {
-                    closeConfirmationModal()
+                closeConfirmationModal()
+                alert('Application Successfully Cancelled')
                })
-            .catch(err => err.response.data);
+            .catch(err => {
+                closeConfirmationModal()
+                alert(err.response.data.error)
+            });
         }else{
             alert('Invalid Application Id')
         }
@@ -282,6 +286,7 @@ export default function Autopay() {
                 <ConfirmationModal
                     modalData={confirmModalData}
                     student={student}
+                    handleClose={closeConfirmationModal}
                 />
             }
         </div>

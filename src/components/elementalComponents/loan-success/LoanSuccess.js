@@ -40,11 +40,13 @@ export default function LoanSuccess({loanData,adhocLoan}) {
            </div>
            {
                !adhocLoan && 
-               <Button 
-                    text='Back To Dashboard' 
-                    classes='button'
-                    handleClick={()=> navigate(`/`, {replace: true})}
-                />
+               <div className='button-container'>
+                    <Button 
+                        text='Back To Dashboard' 
+                        classes='button'
+                        handleClick={()=> navigate(`/`, {replace: true})}
+                    />
+                </div>
            }
             
         </div>

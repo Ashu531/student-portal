@@ -362,7 +362,7 @@ export default function Home() {
         }).then(res => {
             closeConfirmModal()
         }).catch(err => {
-            err.response.data
+            alert(err.response.data.error)
             closeConfirmModal()
         });
     }
@@ -440,6 +440,10 @@ export default function Home() {
                 applicationId
             }
         })
+    }
+
+    const closeConfirmationModal=()=>{
+        setApplicationStatus(false)
     }
 
 
@@ -662,6 +666,7 @@ export default function Home() {
                 modalData={confirmModalData}
                 student={student}
                 amount={pendingAmount}
+                handleClose={closeConfirmationModal}
             />
         }
         {confirmationDialog && <Modal 

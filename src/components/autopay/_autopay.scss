@@ -264,11 +264,13 @@
 .autopay{
 
     padding: 0px 24px;
+    height: 100%;
+    overflow: scroll;
 
     .button-container{
         width: 100%;
         align-self: flex-end;
-        margin-bottom: 1.2rem;
+        padding-bottom: 2rem;
     }
 }
 }

@@ -332,7 +332,7 @@ export default function InstituteForm({
     }
 
     const validateAlphabet=(alpha)=>{
-        let aplhaformat = /^[a-zA-Z]+$/;
+        let aplhaformat = /^[a-zA-Z_ ]+$/;
         if(alpha.match(aplhaformat)) return true
         else return false
     }
