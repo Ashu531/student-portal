@@ -270,7 +270,7 @@ export default function Home() {
         const data = await getData();
 
         if(data.status_code === 401){
-            navigate('/login')
+            logout()
         }else{
             setStudent(data.student);
         }
@@ -532,7 +532,7 @@ export default function Home() {
 
                     {
                         !nonPaidStatus && 
-                        <div className='paid-status'>
+                        <div className='paid-status' style={{marginTop: 24}}>
                             <div className='icon-circle'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
                             </div>
@@ -560,7 +560,7 @@ export default function Home() {
                    
                    {
                         dashboardType.name === 'loan' && dashboardType.status === 'applied' && 
-                        <div className='paid-status' style={{marginTop: 10}}>
+                        <div className='paid-status' style={{marginTop: 12}}>
                             <div className='icon-circle'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
                             </div>

@@ -223,7 +223,7 @@ export default function PartialPayment() {
         const data = await getData();
         
         if(data.status_code === 401){
-            navigate('/login')
+            logout()
         }else{
             setStudent(data.student);
         }

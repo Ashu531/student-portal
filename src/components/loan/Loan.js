@@ -4,7 +4,7 @@ import Button from '../elementalComponents/button/Button';
 import backIcon from '../../assets/caret-right.svg';
 import InputField from '../elementalComponents/inputField/InputField';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
-import { getToken } from '../../services/authService';
+import { getToken,logoutUser } from '../../services/authService';
 import axios from 'axios';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
@@ -97,12 +97,18 @@ export default function Loan() {
         else return false
     }
 
+    const logout = async () => {
+        const loggedOut = await logoutUser();
+        if(loggedOut)
+            navigate('/login', {replace: true});
+    }
+
     useEffect(async () => {
         setLoader(true);
         const data = await getData();
 
         if(data.status_code === 401){
-            navigate('/login')
+            logout()
         }else{
             setStudent(data.student);
         }
@@ -117,6 +123,9 @@ export default function Loan() {
 
     const handleName=(e)=>{
         setName(e)
+        if(nameChecked){
+            setApplicantName(e)
+        }
     }
 
     const handleEmail=(e)=>{

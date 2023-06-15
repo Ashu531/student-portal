@@ -3,7 +3,7 @@ import Header from '../../components/elementalComponents/header/Header'
 import Button from '../elementalComponents/button/Button';
 import backIcon from '../../assets/caret-right.svg';
 import axios from 'axios';
-import { getToken } from '../../services/authService';
+import { getToken,logoutUser } from '../../services/authService';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 import useScript from '../../hooks/useScript';
 import moment from 'moment'
@@ -58,12 +58,18 @@ export default function Autopay() {
         setTotalAmount(amount);
     }, [installments])
 
+    const logout = async () => {
+        const loggedOut = await logoutUser();
+        if(loggedOut)
+            navigate('/login', {replace: true});
+    }
+
     useEffect(async () => {
         setLoader(true);
         const data = await getData();
 
         if(data.status_code === 401){
-            navigate('/login')
+            logout()
         }else{
             setStudent(data.student);
         }
@@ -82,7 +88,7 @@ export default function Autopay() {
         const data = await axios.get(`${API_URL}/api/kid/v1/autopay/installments/${getToken()}/`)
         .then(res => {
             if(res.status === 401){
-                navigate('/login')
+                logout()
             }else{
                 setPaymentDetailData(res.data.data)
                 _getPaymentOptions(res.data.data)

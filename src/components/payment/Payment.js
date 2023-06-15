@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { TailSpin } from 'react-loader-spinner';
 import { useNavigate } from 'react-router';
 import useScript from '../../hooks/useScript';
-import { getToken } from '../../services/authService';
+import { getToken, logoutUser } from '../../services/authService';
 import Button from '../elementalComponents/button/Button';
 import Header from '../elementalComponents/header/Header';
 import Modal from '../elementalComponents/modal/Modal';
@@ -148,7 +148,7 @@ useEffect(async () => {
     const data = await getData();
 
     if(data.status_code === 401){
-        navigate('/login')
+        logout()
     }else{
         setStudent(data.student);
     }
@@ -174,6 +174,12 @@ useEffect(async () => {
     });
 
 }, [])
+
+const logout = async () => {
+    const loggedOut = await logoutUser();
+    if(loggedOut)
+        navigate('/login', {replace: true});
+}
 
   return (
     <>

@@ -77,6 +77,9 @@ export default function Signup() {
 
     const handleName=(e)=>{
         setName(e)
+        if(nameChecked){
+            setApplicantName(e)
+        }
     }
 
     const handleEmail=(e)=>{
@@ -186,7 +189,6 @@ export default function Signup() {
     }
 
     useEffect(()=>{
-        console.log(nameChecked)
         if(nameChecked){
             handleBorrowerName(name)
         }else{
