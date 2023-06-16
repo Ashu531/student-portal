@@ -9,6 +9,7 @@ import useScript from '../../hooks/useScript';
 import moment from 'moment'
 import { useNavigate, useLocation } from 'react-router-dom';
 import ConfirmationModal from '../elementalComponents/confirmationModal/ConfirmModal';
+import awaitIcon from '../../assets/awaitIcon.svg'
 
 export default function Autopay() {
 
@@ -186,8 +187,16 @@ export default function Autopay() {
                     ₹ {totalAmount}
                 </div>
            </div>
+           {    totalAmount < 6 &&
+                <div className='amount-container' style={{justifyContent:'flex-start'}}>
+                        <img src={awaitIcon} alt="status-icon" height={25} width={25} style={{objectFit:'contain'}}/>
+                        <div className='amount-label'>
+                            Amount cannot be less than 6
+                        </div>
+                </div>
+           }
            {
-                        autopay && state && 
+                    autopay && state && 
                         <div className='paid-status'>
                             <div className='icon-circle'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>

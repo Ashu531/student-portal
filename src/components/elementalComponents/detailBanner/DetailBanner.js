@@ -24,8 +24,6 @@ export default function DetailBanner({
         }
     },[])
 
-    console.log(dashboardStatus)
-
     return (
         <div className='detail-banner'>
                 <div className='detail-banner-content'>
