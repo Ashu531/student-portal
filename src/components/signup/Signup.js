@@ -174,7 +174,7 @@ export default function Signup() {
                setLoanSuccess(true)
             }
            })
-        .catch(err => alert(err.response.data.message));
+        .catch(err => alert(err.response.data.error));
     }
 
     const goBack=()=>{
