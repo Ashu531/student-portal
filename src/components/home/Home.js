@@ -79,7 +79,7 @@ export default function Home() {
     const getData = async () => {
         const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
         .then(res => res.data)
-        .catch(error => error.response.data);
+        .catch(error => alert(error.response.data.error));
 
         return data;
     }
@@ -100,7 +100,7 @@ export default function Home() {
             'ids': ids,
             'amount': amount,
         }).then(res => res.data)
-        .catch(err => err.response.data);
+        .catch(err => alert(error.response.data.error));
 
         return data;
     }

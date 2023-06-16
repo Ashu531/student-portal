@@ -289,7 +289,7 @@ export default function InstituteForm({
         then(res => res.data)
         .catch(err => {
             err.response.data
-            alert(err.response.data.message)
+            alert(err.response.data.error)
         });
     
         return response;
@@ -363,7 +363,7 @@ export default function InstituteForm({
 
     const handleButtonClick=(data)=>{
         let submit = true;
-            if(instituteDetails.length > requiredField.length - 3){
+            if(instituteDetails.length > requiredField.length - 1){
                 instituteDetails && instituteDetails.forEach((item,index)=>{
                     if(item.label === 'Email'){
                         let status = validateEmail(item.value)
@@ -415,8 +415,6 @@ export default function InstituteForm({
             amount: e
         })
     }
-
-    console.log(parseInt(totalAmount.min_amount),'fdec')
 
     return (
         <div className='institute'>
@@ -480,7 +478,7 @@ export default function InstituteForm({
                                               handleChange={(e)=>handleAmount(e)} 
                                               maxLength={10} 
                                               value={ parseInt(totalAmount.min_amount) ===  parseInt(totalAmount.max_amount) ? totalAmount.max_amount : totalAmount.amount} 
-                                              disabled={parseInt(totalAmount.min_amount) ===  parseInt(totalAmount.max_amount)}
+                                              disabled={adhocData?.amount?.min_amount === adhocData?.amount?.max_amount}
                                               inputType="tel"
                                             />
                                         </div>
