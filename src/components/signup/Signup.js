@@ -30,12 +30,18 @@ export default function Signup() {
     const [instituteDetails,setInstituteDetails] = useState([]);
     const [loanData,setLoanData] = useState({})
     const [loanSuccess,setLoanSuccess] =useState(false)
+    const [totalAmount,setTotalAmount] = useState({
+        amount: '',
+        min_amount: '',
+        max_amount: ''
+    })
 
-    const openApplyForLoan=(data,collegeData,adhocData)=>{
+    const openApplyForLoan=(data,collegeData,adhocData,amount)=>{
         setApplyForLoan(true);
         setCollegeInfo(collegeData)
         setAdhocData(adhocData)
         settleFields(data)
+        setTotalAmount(amount)
     }
 
     const settleFields=(data)=>{
@@ -100,7 +106,8 @@ export default function Signup() {
             parent_number :  '',
             uid : '',
             slug : '',
-            batch: ''
+            batch: '',
+            amount:'',
         }; 
 
             instituteDetails && instituteDetails.forEach((item,index)=>{
@@ -132,8 +139,9 @@ export default function Signup() {
                 data.slug = url;
             }
 
-        let applicantData = {
+            data['amount'] = totalAmount.amount
 
+        let applicantData = {
                 "student_name" : name,
                 "phone_number" : mobileNumber,
                 "email" : email,
@@ -141,8 +149,6 @@ export default function Signup() {
                 "remark" : remark,
                 "college" : collegeInfo.college_id,
                 "name" : applicantName,
-                "amount": adhocData.amount
-
         }
 
         let emailStatus = validateEmail(email)
@@ -247,7 +253,7 @@ export default function Signup() {
                             </div>
                             <div className="formDiv">
                                 <label className="label">Course Fee</label>
-                                <InputField value={adhocData?.amount}/>
+                                <InputField value={totalAmount?.amount}/>
                             </div>
                         </div>
                         <div className='form-content'>
@@ -275,7 +281,7 @@ export default function Signup() {
                     title="Institute Information"
                     // description='Enter information, as applicable!'
                     onlySignUp={false}
-                    openApplyForLoan={(data,collegeData,adhocData)=>openApplyForLoan(data,collegeData,adhocData)}
+                    openApplyForLoan={(data,collegeData,adhocData,amount)=>openApplyForLoan(data,collegeData,adhocData,amount)}
                     closeApplyForLoan={()=>closeApplyForLoan()}
                     fieldData={instituteDetails}
                 />

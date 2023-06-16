@@ -115,7 +115,9 @@ export default function Loan() {
         
         let amount = 0;
         data.data.forEach((installment,index)=>{
+            if(installment['status'] !== 'paid'){
                 amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
+            }
         })
         setTotalAmount(amount);
         setLoader(false);

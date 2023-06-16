@@ -42,6 +42,11 @@ export default function InstituteForm({
     const [installment,setInstallment] = useState([])
     const [buttonData,setButtonData] = useState([])
     const [collegeData,setCollegeData] = useState({})
+    const [totalAmount,setTotalAmount] = useState({
+        amount: '',
+        min_amount: '',
+        max_amount: ''
+    })
 
     const navigate = useNavigate();
 
@@ -77,6 +82,7 @@ export default function InstituteForm({
         .then(res => {
             setRequiredField(res.data.data)
             setAdhocData(res.data.adhoc)
+            segregateAmountData(res.data.adhoc.amount)
             setButtonData(res.data.button)
             if(res?.data?.college?.length > 0){
                 setCollegeData(res?.data?.college[0])
@@ -87,6 +93,22 @@ export default function InstituteForm({
 
         return data;
 
+    }
+
+    const segregateAmountData=(data)=>{
+        if(parseInt(data.min_amount) === parseInt(data.max_amount)){
+            setTotalAmount({
+                ...totalAmount,
+                amount: data.max_amount
+            })
+            
+        }else{
+            setTotalAmount({
+                ...totalAmount,
+                min_amount: data.min_amount,
+                max_amount: data.max_amount
+            })
+        }
     }
 
     const handleField=(item,e)=>{
@@ -180,7 +202,7 @@ export default function InstituteForm({
 
 
     const handleLoanSubmit=()=>{
-       openApplyForLoan(instituteDetails,collegeData,adhocData);
+       openApplyForLoan(instituteDetails,collegeData,adhocData,totalAmount);
     }
 
 
@@ -232,7 +254,7 @@ export default function InstituteForm({
             parent_number :  '',
             uid : '',
             slug : '',
-            
+            amount: '',
         };
 
         instituteDetails && instituteDetails.forEach((item,index)=>{
@@ -260,6 +282,8 @@ export default function InstituteForm({
         Object.keys(data).forEach(
             key => (data[key] == null || data[key] == '') && delete data[key],
         );
+
+        data['amount'] = totalAmount.amount;
         
         const response = await axios.post(`${API_URL}/api/fees/v2/adhoc/student/`,data).
         then(res => res.data)
@@ -287,7 +311,7 @@ export default function InstituteForm({
                 'student': student,
                 'key': data,
                 'logNumber': logNumber,
-                'amount': adhocData?.amount
+                'amount': totalAmount.amount
             });
             setInstallment(installment)
             setStudent(student)
@@ -365,8 +389,14 @@ export default function InstituteForm({
                             alert('Please Enter valid Name')
                             submit = false
                         }
-                    }
+                    } 
                 })
+                if(totalAmount?.min_amount !== totalAmount?.max_amount){
+                    if(parseInt(totalAmount.amount) < totalAmount.min_amount || parseInt(totalAmount.amount) > totalAmount.max_amount){
+                        alert('Amount should be within the range');
+                        submit = false
+                    }
+                }
                 if(submit){
                     if(data.action === 13) handleProceed()
                     else if(data.action === 14) handleLoanSubmit()
@@ -378,6 +408,15 @@ export default function InstituteForm({
                 alert("All the fields are mandatory to fill")
             }
     }
+
+    const handleAmount=(e)=>{
+        setTotalAmount({
+            ...totalAmount,
+            amount: e
+        })
+    }
+
+    console.log(parseInt(totalAmount.min_amount),'fdec')
 
     return (
         <div className='institute'>
@@ -427,6 +466,25 @@ export default function InstituteForm({
                                         </div>
                                 )
                             })}
+                            {
+                                !onlySignUp && 
+                                        <div className="formDiv">
+                                            <div className='formDivContent'>
+                                                <label className="label">Amount</label>
+                                                {
+                                                   parseInt(totalAmount.min_amount) > 0 && 
+                                                   <label className="label" style={{fontWeight: 400,fontSize: 12}}>Hint: You can enter from ₹{totalAmount.min_amount} to ₹{totalAmount.max_amount}</label>
+                                                }
+                                            </div>
+                                            <InputField 
+                                              handleChange={(e)=>handleAmount(e)} 
+                                              maxLength={10} 
+                                              value={ parseInt(totalAmount.min_amount) ===  parseInt(totalAmount.max_amount) ? totalAmount.max_amount : totalAmount.amount} 
+                                              disabled={parseInt(totalAmount.min_amount) ===  parseInt(totalAmount.max_amount)}
+                                              inputType="tel"
+                                            />
+                                        </div>
+                            }
                         </div>
                </div>
                {/* {

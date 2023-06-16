@@ -88,6 +88,14 @@
                     border-radius: 12px;
                 }
             }
+
+            .formDivContent{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
         }
 
         .institute-application-heading{

@@ -121,7 +121,7 @@ export default function Autopay() {
                window.location.href = url
             //    console.log(url,"url+++")
            })
-            .catch(err => err.response.data);
+            .catch(err => alert(err.response.data.error));
     }
 
     const handleToggle=(item)=>{
