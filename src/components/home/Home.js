@@ -79,7 +79,10 @@ export default function Home() {
     const getData = async () => {
         const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
         .then(res => res.data)
-        .catch(error => alert(error.response.data.error));
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
 
         return data;
     }
@@ -268,7 +271,7 @@ export default function Home() {
     const initHome = async () => {
         setLoader(true);
         const data = await getData();
-
+        console.log(data,"kjhgfdsfghjk")
         if(data.status_code === 401){
             logout()
         }else{
