@@ -596,6 +596,7 @@ export default function Home() {
                                 return <PaymentOption
                                     key={index}
                                     icon={moneyIcon}
+                                    tag={plan.tag}
                                     heading={'PAY IN FULL'}
                                     description={'Pay the whole school fee in one go!'}
                                     bgColor={'#A8CFFF'}
@@ -608,6 +609,7 @@ export default function Home() {
                                 return <PaymentOption
                                     icon={coinsIcon}
                                     heading={'PAY INDIVIDUALLY'}
+                                    tag={plan.tag}
                                     description={'Break up the fees as per your convenience!'}
                                     bgColor={'#D6D6FF'}
                                     onClick={navigateToPartialPaymentPage}
@@ -618,7 +620,7 @@ export default function Home() {
                             if(plan?.name === "LOAN"){
                                 return <PaymentOption
                                     icon={handCoinsIcon}
-                                    tag={'Recommended'}
+                                    tag={plan.tag}
                                     heading={'PAY WITH CREDENC'}
                                     description={'Pay full fee using Credenc loan!'}
                                     bgColor={'#FFD45C'}
@@ -633,6 +635,7 @@ export default function Home() {
                                     heading={'SET UP AUTO-PAY'}
                                     description={'Set up auto-payment at regular intervals!'}
                                     bgColor={'#E3FB72'}
+                                    tag={plan.tag}
                                     onClick={navigateToAutopay}
                                     disabled={plan?.disabled}
                                 />
