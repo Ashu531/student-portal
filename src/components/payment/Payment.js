@@ -51,7 +51,7 @@ const getSelectedInstallments = () => {
 }
 
 const getData = async () => {
-    const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
+    const data = await axios.get(`${API_URL}/api/kid/v1/school/all_installments/${getToken()}/`)
     .then(res => res.data)
     .catch(error => error.response.data);
 
@@ -148,7 +148,8 @@ useEffect(async () => {
     const data = await getData();
 
     if(data.status_code === 401){
-        logout()
+        await logout();
+        return;
     }else{
         setStudent(data.student);
     }

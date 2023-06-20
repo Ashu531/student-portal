@@ -368,33 +368,38 @@ export default function InstituteForm({
                     if(item.label === 'Email'){
                         let status = validateEmail(item.value)
                         if(!status) {
+                            submit = false;
                             alert('Please Enter valid Email')
-                            submit = false
+                            return;
                         }
                     }else if(item.label === 'Phone Number'){
                         let status = validateNumber(item.value)
                         if(!status) {
+                            submit = false;
                             alert('Please Enter valid Mobile Number')
-                            submit = false
+                            return;
                         }
                     }else if(item.label === 'Parent Number'){
                         let status = validateNumber(item.value)
                         if(!status) {
+                            submit = false;
                             alert('Please Enter valid Parent Number')
-                            submit = false
+                            return;
                         }
                     }else if(item.label === 'Name'){
                         let status = validateAlphabet(item.value)
                         if(!status) {
+                            submit = false;
                             alert('Please Enter valid Name')
-                            submit = false
+                            return;
                         }
                     } 
                 })
                 if(totalAmount?.min_amount !== totalAmount?.max_amount){
                     if(parseInt(totalAmount.amount) < totalAmount.min_amount || parseInt(totalAmount.amount) > totalAmount.max_amount){
+                        submit = false;
                         alert('Amount should be within the range');
-                        submit = false
+                        return;
                     }
                 }
                 if(submit){
@@ -535,6 +540,7 @@ export default function InstituteForm({
                     data={modalData} 
                     handleSubmit={handleProceedAndPay}
                     handleClose={closeModal}
+                    showEmail={requiredField && requiredField.findIndex(item => item.label == 'Email') >= 0}
                 />}
             </div>
     )

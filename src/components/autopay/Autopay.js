@@ -70,7 +70,8 @@ export default function Autopay() {
         const data = await getData();
 
         if(data.status_code === 401){
-            logout()
+            await logout();
+            return;
         }else{
             setStudent(data.student);
         }
@@ -126,10 +127,17 @@ export default function Autopay() {
     }
 
     const handleToggle=(item)=>{
-        setpaymentOpen({
-            paymentID: item.id,
-            openPayment: !paymentOpen.openPayment
-        })
+        if(item.id != paymentOpen.paymentID){
+            setpaymentOpen({
+                paymentID: item.id,
+                openPayment: true
+            })
+        } else {
+            setpaymentOpen({
+                paymentID: item.id,
+                openPayment: false
+            })
+        }
     }
 
     const openCancellationModal=()=>{

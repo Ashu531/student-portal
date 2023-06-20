@@ -108,7 +108,8 @@ export default function Loan() {
         const data = await getData();
 
         if(data.status_code === 401){
-            logout()
+            await logout();
+            return;
         }else{
             setStudent(data.student);
         }

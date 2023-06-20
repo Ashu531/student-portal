@@ -96,7 +96,7 @@
         background: #8F14CC;
         border-radius: 10px;
         width: 100%;
-        margin-top: 50px;
+        margin-top: 5rem;
     }
 
     .backIcon{
@@ -190,6 +190,10 @@
             justify-content: flex-start;
             align-items: center;
             padding: 0px;
+        }
+
+        .button{
+            margin-top: 1rem;
         }
     }
 }    

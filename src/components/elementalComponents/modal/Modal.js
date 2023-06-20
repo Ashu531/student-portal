@@ -6,7 +6,7 @@ import phoneIcon from '../../../assets/phone-icon.svg';
 import Button from '../button/Button';
 import StudentDetails from '../studentDetails/StudentDetails';
 
-export default function Modal({ data, handleClose, handleSubmit }) {
+export default function Modal({ data, handleClose, handleSubmit, showEmail=true }) {
 console.log(data)
     return (
         <div className='modal'>
@@ -23,10 +23,10 @@ console.log(data)
                         <div className="field">Student</div>
                         <div className="value">{data.student.name}</div>
                     </div>
-                    <div className="row">
+                   {showEmail && <div className="row">
                         <div className="field">Email</div>
                         <div className="value">{data.student.email}</div>
-                    </div>
+                    </div>}
                     <div className="row">
                         <div className="field">Mobile No.</div>
                         <div className="value">{data.student.phone}</div>

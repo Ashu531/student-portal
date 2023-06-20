@@ -271,9 +271,9 @@ export default function Home() {
     const initHome = async () => {
         setLoader(true);
         const data = await getData();
-        console.log(data,"kjhgfdsfghjk")
         if(data.status_code === 401){
-            logout()
+            await logout();
+            return;
         }else{
             setStudent(data.student);
         }
@@ -589,10 +589,10 @@ export default function Home() {
                         </div>
                     }
 
-                    <div className='heading'>Payment Plans</div>
+                    {paymentPlans.length > 0 && <div className='heading'>Payment Plans</div>}
                     <div className='payment-options-container'>
                         {paymentPlans.map((plan, index) => {
-                            if(plan?.name === "full"){
+                            if(plan?.name === "FULL_PAYMENT"){
                                 return <PaymentOption
                                     key={index}
                                     icon={moneyIcon}
@@ -604,7 +604,7 @@ export default function Home() {
                                 />
                             }
 
-                            if(plan?.name === "individual"){
+                            if(plan?.name === "INDIVIDUAL_PAYMENT"){
                                 return <PaymentOption
                                     icon={coinsIcon}
                                     heading={'PAY INDIVIDUALLY'}
@@ -615,7 +615,7 @@ export default function Home() {
                                 />
                             }
 
-                            if(plan?.name === "loan"){
+                            if(plan?.name === "LOAN"){
                                 return <PaymentOption
                                     icon={handCoinsIcon}
                                     tag={'Recommended'}
@@ -627,7 +627,7 @@ export default function Home() {
                                 />
                             }
 
-                            if(plan?.name === "autopay"){
+                            if(plan?.name === "AUTO_PAY"){
                                 return <PaymentOption
                                     icon={CurrencyEthIcon}
                                     heading={'SET UP AUTO-PAY'}

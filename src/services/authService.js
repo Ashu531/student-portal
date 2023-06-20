@@ -52,7 +52,7 @@ const logoutUser = async () => {
     let res = await axios.delete(`${API_URL}/api/kid/v1/logout/${getToken()}/`)
     .then(res => res.data)
     .catch(err => console.log(err));
-    if(res && res.status){
+    if(res){
         removeToken();
         return true;
     }
