@@ -35,6 +35,7 @@ export default function Payment() {
     const data = await axios.post(`${API_URL}/api/kid/v1/payment/${getToken()}/`, {
         'ids': ids,
         'amount': amount,
+        'mode': 'FULL_PAYMENT',
     }).then(res => res.data)
     .catch(err => err.response.data);
 
