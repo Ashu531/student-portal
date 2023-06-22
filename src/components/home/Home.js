@@ -57,6 +57,8 @@ export default function Home() {
 
     const [applicationStatus, setApplicationStatus] = useState(false)
 
+    const [noAcademicFeeState,setNoAcademicFeeState] = useState(false)
+
     const [confirmModalData,setConfirmModalData] = useState({
         title: '',
         subHeading: '',
@@ -235,6 +237,13 @@ export default function Home() {
     useEffect(() => {
         let amount = 0;
         let pendingAmount = 0;
+
+        if(installments.length === 0){
+            setNoAcademicFeeState(true)
+        }else{
+            setNoAcademicFeeState(false)
+        }
+
         installments.forEach((installment) => {
             if(installment['is_mandatory'] === 'True' || installment['is_mandatory'] === true){
                 amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
@@ -538,7 +547,19 @@ export default function Home() {
                     />
 
                     {
-                        !nonPaidStatus && 
+                        noAcademicFeeState && 
+                        <div className='paid-status' style={{marginTop: 24}}>
+                            <div className='icon-circle'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
+                            </div>
+                            <div className='status-text'>
+                                You dont have any academic fee to pay.
+                            </div>    
+                        </div>
+                    }
+
+                    {
+                        (!nonPaidStatus && !noAcademicFeeState) && 
                         <div className='paid-status' style={{marginTop: 24}}>
                             <div className='icon-circle'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>

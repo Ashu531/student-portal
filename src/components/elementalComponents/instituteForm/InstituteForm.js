@@ -80,9 +80,12 @@ export default function InstituteForm({
 
         const data = await axios.post(`${API_URL}/api/fees/v2/fetch/link/${url}/`,urldata)
         .then(res => {
+            console.log(res.data)
             setRequiredField(res.data.data)
-            setAdhocData(res.data.adhoc)
-            segregateAmountData(res.data.adhoc.amount)
+            if(!onlySignUp){
+                setAdhocData(res.data.adhoc)
+                segregateAmountData(res.data.adhoc.amount)
+            }
             setButtonData(res.data.button)
             if(res?.data?.college?.length > 0){
                 setCollegeData(res?.data?.college[0])
@@ -421,6 +424,8 @@ export default function InstituteForm({
         })
     }
 
+    console.log(buttonData,"lkjhgfgchvbjk")
+
     return (
         <div className='institute'>
             <div className='institute-container'>
@@ -517,6 +522,7 @@ export default function InstituteForm({
 
                <div className='button-container'>
                    {buttonData?.length > 0 && buttonData.map((item,index)=>{
+                       console.log(item,"98765435678")
                        return(
                         <>
                         <Button 
