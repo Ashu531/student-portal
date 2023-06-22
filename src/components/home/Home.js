@@ -621,7 +621,7 @@ export default function Home() {
                                 return <PaymentOption
                                     icon={handCoinsIcon}
                                     tag={plan.tag}
-                                    heading={'PAY WITH CREDENC'}
+                                    heading={'PAY WITH NO COST EMI'}
                                     description={'Pay full fee using Credenc loan!'}
                                     bgColor={'#FFD45C'}
                                     onClick={navigateToLoanPage}
