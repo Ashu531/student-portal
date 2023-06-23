@@ -29,7 +29,9 @@ export default function CollapsibleInstallment({ installment, index, handleCheck
                 <div className='subline bold' style={{display: !collapsed && 'none', margin: handleCheckBox ? '' : '0 1rem 0 0'}}>
                     ₹ {installment.amount}
                 </div>
-                {handleCheckBox && 
+                {
+                installment.status !== 'paid' ? 
+                handleCheckBox && 
                 <div style={{margin: '0 2rem 0 1rem'}}>
                     <CheckBox 
                         setChecked={(v) => {
@@ -38,8 +40,10 @@ export default function CollapsibleInstallment({ installment, index, handleCheck
                         isChecked={installment.is_mandatory === 'True' || installment.is_mandatory === true} 
                         disabled={getDisabled()}
                     />
-                </div>
-                }
+                </div> 
+                : <div/>
+                
+            }
                 <img src={collapsed ? expandIcon : collapseIcon}/>
             </div>
             
@@ -64,10 +68,6 @@ export default function CollapsibleInstallment({ installment, index, handleCheck
                 <div className='pair'>
                     <div className='key'>Expire Date</div>
                     <div className='value'>{installment.expire_date}</div>
-                </div>
-                <div className='pair'>
-                    <div className='key'>Expire Date</div>
-                    <div className='value'>{installment.status}</div>
                 </div>
             </div>
             }
