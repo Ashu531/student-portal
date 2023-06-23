@@ -366,7 +366,7 @@ export default function InstituteForm({
 
     const handleButtonClick=(data)=>{
         let submit = true;
-            if(instituteDetails.length > requiredField.length - 1){
+            if(instituteDetails.length > requiredField.length - 3){
                 instituteDetails && instituteDetails.forEach((item,index)=>{
                     if(item.label === 'Email'){
                         let status = validateEmail(item.value)
