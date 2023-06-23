@@ -65,6 +65,10 @@ export default function CollapsibleInstallment({ installment, index, handleCheck
                     <div className='key'>Expire Date</div>
                     <div className='value'>{installment.expire_date}</div>
                 </div>
+                <div className='pair'>
+                    <div className='key'>Expire Date</div>
+                    <div className='value'>{installment.status}</div>
+                </div>
             </div>
             }
         </div>

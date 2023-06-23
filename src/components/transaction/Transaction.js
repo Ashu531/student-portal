@@ -101,11 +101,14 @@ export default function Transaction() {
                     <div className='student-detail'>4</div>
                 </div>
            </div>
-            <Button 
-             text='Back To Dashboard' 
-             classes='button'
-             handleClick={()=> navigate(`/`, {replace: true})}
-            />
+           <div style={{width: '100%',paddingBottom: '4rem'}}>
+                <Button 
+                    text='Back To Dashboard' 
+                    classes='button'
+                    handleClick={()=> navigate(`/`, {replace: true})}
+                />
+           </div>
+            
         </div>
         </>
     )
