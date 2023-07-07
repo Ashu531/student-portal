@@ -141,7 +141,7 @@ useEffect(() => {
         amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
     })
 
-    setAmount(amount);
+    setAmount(amount.toFixed(2));
 }, [installments])
 
 useEffect(async () => {

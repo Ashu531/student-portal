@@ -6,6 +6,7 @@
   cursor: pointer;
   overflow: hidden;
   outline: none;
+  z-index: 999999;
 
   img {
     width: 2rem;
@@ -31,7 +32,9 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
     padding: 0.6rem 1.2rem;
+    min-width: 20rem;
 
     .field {
       font-weight: 300;

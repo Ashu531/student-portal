@@ -6,7 +6,6 @@ export default function StudentDetails({
     grade,
     school
 }) {
-  console.log(name,id,grade,school)
   return (
     <div className="student-details">
       <div className="row">

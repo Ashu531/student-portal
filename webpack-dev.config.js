@@ -35,7 +35,7 @@ const configs = addBaseConfig({
       //   "U2FsdGVkX19p7zIuVPh8mW1fp9PdMxR0aGHzQ0IbJuw="
       // ),
       // LOGIN_API_URL: JSON.stringify("http://localhost:7777"),
-      API_URL: JSON.stringify("https://fmsbackend.credenc.com"),
+      API_URL: JSON.stringify("https://fmsbuild.credenc.com"),
     }),
     // new HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({

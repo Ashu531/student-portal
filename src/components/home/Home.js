@@ -146,7 +146,7 @@ export default function Home() {
                 newAmount -= parseFloat(adhocInstallments[i]['amount']) + parseFloat(adhocInstallments[i]['penalty']);
                 setSelectAll(isChecked);
             }
-            setAdhocAmount(newAmount);
+            setAdhocAmount(newAmount.toFixed(2));
         } else {
             if(isChecked){
                 setSelectAll(isChecked);
@@ -161,13 +161,13 @@ export default function Home() {
                 });
 
                 setAdhocInstallments(installmentList);
-                setAdhocAmount(amount);
+                setAdhocAmount(amount.toFixed(2));
                 
             } else {
                 setSelectAll(isChecked);
 
                 let amount = 0;
-                setAdhocAmount(amount);
+                setAdhocAmount(amount.toFixed(2));
 
                 let installmentList = [...adhocInstallments];
                 installmentList.forEach((installment) => {
@@ -254,8 +254,8 @@ export default function Home() {
             }
         })
 
-        setAmount(amount);
-        setPendingAmount(pendingAmount);
+        setAmount(amount.toFixed(2));
+        setPendingAmount(pendingAmount.toFixed(2));
     }, [installments])
 
     useEffect(() => {
@@ -266,7 +266,7 @@ export default function Home() {
             }
         })
 
-        setAdhocAmount(amount);
+        setAdhocAmount(amount.toFixed(2));
     }, [adhocInstallments])
 
     useEffect(() => {
@@ -484,8 +484,7 @@ export default function Home() {
                                 <div className="value" style={{color: '#FFFFFF'}}>{student.college}</div>
                             </div>
                             <div style={{position: 'absolute', left: '0'}}>
-                                <Collapsible 
-                                    width={'20rem'}
+                                <Collapsible
                                     title={'Student'}
                                     students={students}
                                     student={student} 
@@ -539,12 +538,6 @@ export default function Home() {
                     </div>}
 
                     <div style={{height: '1rem'}}></div>
-                    <Pair 
-                        radius={'1rem'}
-                        bgColor={'#5654BF'}
-                        keyname={'Pending Fee :'}
-                        value={`₹ ${pendingAmount}`}
-                    />
 
                     {
                         noAcademicFeeState && 
@@ -665,9 +658,19 @@ export default function Home() {
                             return ''
                         })}
                         
-
                     </div>
+
                     <div style={{height: '2rem'}}></div>
+
+                    <Pair 
+                        radius={'1rem'}
+                        bgColor={'#5654BF'}
+                        keyname={'Pending Fee :'}
+                        value={`₹ ${pendingAmount}`}
+                    />
+
+                    <div style={{height: '1rem'}}></div>
+
                     <Table list={installments} selectAll={selectAll}/>
                     <SmallTable list={installments} showStatus={true}/>
 

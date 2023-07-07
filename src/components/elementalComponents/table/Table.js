@@ -41,11 +41,11 @@ export default function Table({ heading='Installments', list, handleCheckBox, se
                             End Date
                         </span>
                     </th>
-                    <th style={{minWidth: '10%', textAlign: 'right'}}>
+                    {/* <th style={{minWidth: '10%', textAlign: 'right'}}>
                         <span>
                             Expire Date
                         </span>
-                    </th>
+                    </th> */}
                     <th style={{minWidth: '10%', textAlign: 'center'}}>
                         <span>
                             Status
@@ -86,11 +86,11 @@ export default function Table({ heading='Installments', list, handleCheckBox, se
                                 {listItem.due_date}
                             </span>
                         </td>
-                        <td style={{minWidth: '10%', textAlign: 'right'}}>
+                        {/* <td style={{minWidth: '10%', textAlign: 'right'}}>
                             <span style={{fontSize: '1.4rem', lineHeight: '2.1rem', color: 'rgba(0, 0, 0, 0.6)'}}>
                                 {listItem.expire_date}
                             </span>
-                        </td>
+                        </td> */}
                         <td style={{minWidth: '10%', textAlign: 'center'}}>
                             <span className={`status ${listItem.status}`}>
                                 {listItem.status}

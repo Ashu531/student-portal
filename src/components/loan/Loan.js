@@ -120,7 +120,7 @@ export default function Loan() {
                 amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
             }
         })
-        setTotalAmount(amount);
+        setTotalAmount(amount.toFixed(2));
         setLoader(false);
     }, [])
 

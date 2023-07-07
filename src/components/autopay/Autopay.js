@@ -16,7 +16,6 @@ export default function Autopay() {
     const [student, setStudent] = useState({});
     const [totalAmount,setTotalAmount] = useState(0)
     const [autopay,setAutopay] = useState(false);
-    const [paymentDetailData,setPaymentDetailData] = useState([])
     const [installments,setInstallments] = useState([])
     const [loader, setLoader] = useState(false);
     const [easebuzzCheckout, setEasebuzzCheckout] = useState(null);
@@ -42,7 +41,7 @@ export default function Autopay() {
     }, []);
 
     const getData = async () => {
-        const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
+        const data = await axios.get(`${API_URL}/api/kid/v1/autopay/installments/${getToken()}/`)
         .then(res => res.data)
         .catch(error => error.response.data);
 
@@ -56,7 +55,7 @@ export default function Autopay() {
             amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
         })
     
-        setTotalAmount(amount);
+        setTotalAmount(amount.toFixed(2));
     }, [installments])
 
     const logout = async () => {
@@ -74,12 +73,11 @@ export default function Autopay() {
             return;
         }else{
             setStudent(data.student);
+            setInstallments(data.data);
         }
 
-        setInstallments(data.data);
-
         setLoader(false);
-        _getPaymentDetails()
+        // _getPaymentDetails()
 
         useScript('https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/easebuzz-checkout.js', () => {
             setEasebuzzCheckout(new EasebuzzCheckout("7ITASSQJE1", 'prod'));
@@ -93,22 +91,12 @@ export default function Autopay() {
                 logout()
             }else{
                 setPaymentDetailData(res.data.data)
-                _getPaymentOptions(res.data.data)
             }
             
         })
         .catch(error => error.response.data);
 
         return data;
-    }
-
-    const _getPaymentOptions=(data)=>{
-        let amount = 0;
-        data.forEach((item,index)=>{
-            console.log(item.amount)
-            amount = amount + item.amount
-        })
-        console.log(amount)
     }
 
     const handleProceed=()=>{
@@ -121,7 +109,6 @@ export default function Autopay() {
            }).then(res => {
                let url = res.data.url
                window.location.href = url
-            //    console.log(url,"url+++")
            })
             .catch(err => alert(err.response.data.error));
     }
@@ -237,31 +224,17 @@ export default function Autopay() {
                         <span className='header-text'>Payment Details</span>
                     </div>
                     {
-                        paymentDetailData && paymentDetailData.map((item,index)=>{
-                            let amount = 0;
-                            item?.data.forEach((data,i)=>{
-                                amount = amount + data.amount
-                            })
-
-                            let minDate = item?.data[0]?.start_date
-
-                            item?.data.forEach((data,i)=>{
-                                console.log(data)
-                                let temp = data?.start_date
-                                if(moment(temp).isAfter(minDate)){
-                                    minDate = temp;
-                                }
-                            })
+                        installments.map((item,index)=>{
 
                             return(
                                 <div className='quarter-container' key={index}>
                                     <div className='quarter-header'>
                                         <span className='quarter-label'>{item.name}</span>
-                                        <span className='quarter-label'>{moment(minDate).format("MMM Do YYYY")}</span>
-                                        <span className='quarter-label' style={{fontWeight: 700,width: '20%',textAlign:'center'}}>₹ {amount}</span>
-                                        <img src={backIcon} height={20} width={20} style={item.id == paymentOpen.paymentID && paymentOpen.openPayment === true && item.data.length > 0 ? {transform: 'rotate(-90deg)',cursor: 'pointer'} : {transform: 'rotate(90deg)',cursor: 'pointer'}} onClick={()=>handleToggle(item)} />
+                                        <span className='quarter-label'>{moment(item.start_date).format("MMM Do YYYY")}</span>
+                                        <span className='quarter-label' style={{fontWeight: 700,width: '20%',textAlign:'center'}}>₹ {item.amount}</span>
+                                        {/* <img src={backIcon} height={20} width={20} style={item.id == paymentOpen.paymentID && paymentOpen.openPayment === true && item.data.length > 0 ? {transform: 'rotate(-90deg)',cursor: 'pointer'} : {transform: 'rotate(90deg)',cursor: 'pointer'}} onClick={()=>handleToggle(item)} /> */}
                                     </div>
-                                    {  item.id == paymentOpen.paymentID && paymentOpen.openPayment === true &&
+                                    {/* {  item.id == paymentOpen.paymentID && paymentOpen.openPayment === true &&
                                         item.data.map((el,i)=>{
                                             return(
                                                 <div className='fee-breakup' key={i}>
@@ -272,7 +245,7 @@ export default function Autopay() {
                                                 </div>
                                             )
                                         })
-                                    }
+                                    } */}
                                     
                                 </div>
                             )

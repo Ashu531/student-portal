@@ -208,14 +208,13 @@ export default function PartialPayment() {
 
     useEffect(() => {
         let amount = 0;
-        let pendingAmount = 0;
         installments.forEach((installment) => {
             if(installment['is_mandatory'] === 'True' || installment['is_mandatory'] === true){
                 amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
             }
         })
 
-        setAmount(amount);
+        setAmount(amount.toFixed(2));
     }, [installments])
 
     useEffect(async () => {
