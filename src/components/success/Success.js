@@ -11,6 +11,7 @@ export default function Success() {
 
     const navigate = useNavigate(); 
     const {state} = useLocation();
+    console.log("jnskjn", state)
 
     let credencLogo = logo;
 

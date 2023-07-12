@@ -93,12 +93,8 @@ export default function Transaction() {
                     <div className='student-detail'>{studentData?.amount}</div>
                 </div>
                 <div className='student-container'>
-                    <div className='student-label'>Frequency</div>
-                    <div className='student-detail'>Quarterly</div>
-                </div>
-                <div className='student-container'>
                     <div className='student-label'>No. of Payments</div>
-                    <div className='student-detail'>4</div>
+                    <div className='student-detail'>{studentData?.installments_count}</div>
                 </div>
            </div>
            <div style={{width: '100%',paddingBottom: '4rem'}}>

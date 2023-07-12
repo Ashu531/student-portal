@@ -136,6 +136,18 @@
         right: 20px;
         cursor: pointer;
     }
+
+    .text-button {
+        color: #8F14CC;
+        text-align: center;
+        font-family: Poppins;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        text-decoration-line: underline;
+        cursor: pointer;
+    }
 }
 
 @media screen and(max-width: 499px){

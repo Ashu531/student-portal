@@ -6,7 +6,6 @@
   cursor: pointer;
   overflow: hidden;
   outline: none;
-  z-index: 999999;
 
   img {
     width: 2rem;
@@ -57,6 +56,8 @@
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     overflow: hidden;
+    position: relative;
+    z-index: 999;
 
     .dropdown {
       background: #ffffff;

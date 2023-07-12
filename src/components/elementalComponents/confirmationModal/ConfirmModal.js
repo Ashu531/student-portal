@@ -11,7 +11,8 @@ export default function ConfirmationModal({
     modalData, 
     autoPay,
     student,
-    amount
+    amount,
+    installments_count
 }) 
 {
     return (
@@ -52,14 +53,10 @@ export default function ConfirmationModal({
                             <div className='student-label'>Total Amount</div>
                             <div className='student-detail'>{amount}</div>
                         </div>
-                        <div className='student-container'>
-                            <div className='student-label'>Frequency</div>
-                            <div className='student-detail'>Quarterly</div>
-                        </div>
-                        <div className='student-container'>
+                        {installments_count && <div className='student-container'>
                             <div className='student-label'>No. of Payments</div>
-                            <div className='student-detail'>4</div>
-                        </div>
+                            <div className='student-detail'>{installments_count}</div>
+                        </div>}
                     </div>
                 }
                         
@@ -71,6 +68,17 @@ export default function ConfirmationModal({
                         handleClick={modalData?.handleSubmit}
                     />
                 </div>
+
+                { 
+                    modalData?.type !== 2 && 
+                    <div 
+                        className='text-button' 
+                        style={{margin: '1rem 0 0 0'}}
+                        onClick={handleClose}
+                    >
+                        Don't Cancel
+                    </div>
+                }
                 {/* <div className='closeIcon' onClick={()=>handleClose()}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#2a2b2d" viewBox="0 0 256 256"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path></svg>
                 </div> */}

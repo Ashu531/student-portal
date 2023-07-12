@@ -25,7 +25,8 @@ export default function CollapsibleInstallment({ installment, index, handleCheck
                         {installment.name}
                     </div>
                 </div>
-                {showStatus && <div style={{margin: '0 1rem 0 0'}} className={`status ${installment.status}`}>{installment.status}</div>}
+                {showStatus && <div className={`status ${installment.status}`}>{installment.status}</div>}
+                {showStatus && installment.enach_status != null &&  <div className={`status ${installment.enach_status}`}>Auto Pay {installment.enach_status[0]}</div>}
                 <div className='subline bold' style={{display: !collapsed && 'none', margin: handleCheckBox ? '' : '0 1rem 0 0'}}>
                     ₹ {installment.amount}
                 </div>
@@ -58,11 +59,12 @@ export default function CollapsibleInstallment({ installment, index, handleCheck
                     <div className='value'>{installment.penalty}</div>
                 </div>
                 <div className='pair'>
-                    <div className='key'>Start Date</div>
-                    <div className='value'>{installment.start_date}</div>
+                    {installment.enach_status == null && <div className='key'>Start Date</div>}
+                    {installment.enach_status == null && <div className='value'>{installment.start_date}</div>}
                 </div>
                 <div className='pair'>
-                    <div className='key'>End Date</div>
+                    {installment.enach_status == null && <div className='key'>End Date</div>}
+                    {installment.enach_status != null && <div className='key'>Collection Date</div>}
                     <div className='value'>{installment.due_date}</div>
                 </div>
                 {/* <div className='pair'>

@@ -697,6 +697,7 @@ export default function Home() {
                 student={student}
                 amount={pendingAmount}
                 handleClose={closeConfirmationModal}
+                installments_count={dashboardType.installments_count}
             />
         }
         {confirmationDialog && <Modal 
