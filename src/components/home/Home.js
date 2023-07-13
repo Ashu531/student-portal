@@ -480,7 +480,7 @@ export default function Home() {
                     <div className='hideOnMobile'>
                         <div className="student-details" style={{background: '#404040', alignItems: 'flex-start', justifyContent: 'flex-end', padding: '1rem 2rem', position: 'relative', overflow: 'visible'}}>
                             <div className="row">
-                                <div className="field" style={{color: '#FFFFFF'}}>School</div>
+                                <div className="field" style={{color: '#FFFFFF'}}>Institute</div>
                                 <div className="value" style={{color: '#FFFFFF'}}>{student.college}</div>
                             </div>
                             <div style={{position: 'absolute', left: '0'}}>
@@ -494,7 +494,7 @@ export default function Home() {
                                 />
                             </div>
                             <div className="row">
-                                <div className="field" style={{color: '#FFFFFF'}}>Grade</div>
+                                <div className="field" style={{color: '#FFFFFF'}}>Grade/Course</div>
                                 <div className="value" style={{color: '#FFFFFF'}}>{student.course}</div>
                             </div>
                             <div className="row">

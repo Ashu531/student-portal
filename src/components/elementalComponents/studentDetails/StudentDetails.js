@@ -17,11 +17,11 @@ export default function StudentDetails({
         <div className="value">{id}</div>
       </div>
       <div className="row">
-        <div className="field">Grade</div>
+        <div className="field">Grade/Course</div>
         <div className="value">{grade}</div>
       </div>
       <div className="row">
-        <div className="field">School</div>
+        <div className="field">Institute</div>
         <div className="value">{school}</div>
       </div>
     </div>

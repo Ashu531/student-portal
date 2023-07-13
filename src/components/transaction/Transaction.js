@@ -80,11 +80,11 @@ export default function Transaction() {
                     <div className='student-detail'>{studentData?.prn}</div>
                 </div>
                 <div className='student-container'>
-                    <div className='student-label'>Grade</div>
+                    <div className='student-label'>Grade/Course</div>
                     <div className='student-detail'>{studentData?.course}</div>
                 </div>
                 <div className='student-container'>
-                    <div className='student-label'>School</div>
+                    <div className='student-label'>Institute</div>
                     <div className='student-detail'>{studentData?.college?.name}</div>
                 </div>
                 <div className='divider' />
