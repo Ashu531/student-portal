@@ -79,7 +79,7 @@ export default function InstituteForm({
             'domain': onlySignUp ? 'signup' : 'adhoc'
         }
 
-        const data = await axios.post(`${API_URL}/api/fees/v2/fetch/link/${url}/`,urldata)
+        const data = await axios.post(`${API_URL}/api/fees/v2/fetch/fields/${url}/`,urldata)
         .then(res => {
             setRequiredField(res.data.data)
             if(!onlySignUp){
@@ -179,7 +179,7 @@ export default function InstituteForm({
 
     const getAcademicYearValue=async()=>{
         if(batchId){
-            await axios.get(`${API_URL}/api/fees/v2/adhoc/batches/${batchId}/`)
+            await axios.get(`${API_URL}/api/fees/v2/otf/batches/${batchId}/`)
             .then(res => {
                 setDropDownOptions(res.data.data)
             })
@@ -190,7 +190,7 @@ export default function InstituteForm({
     }
 
     const getGradeData=async(e)=>{
-        await axios.get(`${API_URL}/api/fees/v2/adhoc/grades/${slug}`)
+        await axios.get(`${API_URL}/api/fees/v2/otf/grades/${slug}`)
         .then(res => {
             setDropDownOptions(res.data.data)
             // getDropdownData(res.data.data)
@@ -292,7 +292,7 @@ export default function InstituteForm({
 
         data['amount'] = totalAmount.amount;
         
-        const response = await axios.post(`${API_URL}/api/fees/v2/adhoc/student/`,data).
+        const response = await axios.post(`${API_URL}/api/fees/v2/otf/payment/`,data).
         then(res => res.data)
         .catch(err => {
             err.response.data

@@ -36,6 +36,8 @@ const configs = addBaseConfig({
       // ),
       // LOGIN_API_URL: JSON.stringify("http://localhost:7777"),
       API_URL: JSON.stringify("https://fmsbuild.credenc.com"),
+      PAPERCUPS_TOKEN: JSON.stringify('56c70349-6e9c-4af4-9523-214be28e4f63'),
+      PAPERCUPS_INBOX: JSON.stringify('50015cd0-ebc1-4726-bbc8-0728e7851f93')
     }),
     // new HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({

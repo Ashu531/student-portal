@@ -1,3 +1,4 @@
+import ChatWidget from '@papercups-io/chat-widget';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { TailSpin } from 'react-loader-spinner';
@@ -234,6 +235,30 @@ const logout = async () => {
             handleSubmit={handleProceedAndPay}
             handleClose={closeModal}
         />}
+        <ChatWidget
+            token={`${PAPERCUPS_TOKEN}`}
+            inbox={`${PAPERCUPS_INBOX}`}
+            title="Welcome to Credenc Fee Pay"
+            subtitle="Ask us anything in the chat window below 😊"
+            primaryColor="#8F14CC"
+            newMessagePlaceholder="Start typing..."
+            showAgentAvailability={true}
+            agentAvailableText="We're online right now!"
+            agentUnavailableText="We're away at the moment."
+            iconVariant="outlined"
+            baseUrl="https://app.papercups.io"
+            customer={{
+              name: student.name,
+              email: student.email,
+              metadata: {
+                college: student.college,
+                id: student.id,
+                course: student.course,
+                batch: student.batch,
+                prn: student.prn
+              }
+            }}
+        />
         </>
   )
 }
