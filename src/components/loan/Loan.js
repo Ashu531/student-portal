@@ -10,6 +10,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
 import Select from 'react-select';
 import Switch from "react-switch";
+import ChatWidget from '@papercups-io/chat-widget';
 
 const relations = [
     { value: 'Self', label: 'Self' },
@@ -287,9 +288,32 @@ export default function Loan() {
                 />
               </div>
             </div>
-        
             </>
         }
+        <ChatWidget
+            token={`${PAPERCUPS_TOKEN}`}
+            inbox={`${PAPERCUPS_INBOX}`}
+            title="Welcome to Credenc Fee Pay"
+            subtitle="Ask us anything in the chat window below 😊"
+            primaryColor="#8F14CC"
+            newMessagePlaceholder="Start typing..."
+            showAgentAvailability={true}
+            agentAvailableText="We're online right now!"
+            agentUnavailableText="We're away at the moment."
+            iconVariant="outlined"
+            baseUrl="https://app.papercups.io"
+            customer={{
+              name: student.name,
+              email: student.email,
+              metadata: {
+                college: student.college,
+                id: student.id,
+                course: student.course,
+                batch: student.batch,
+                prn: student.prn
+              }
+            }}
+        />
         </>
     )
 }
