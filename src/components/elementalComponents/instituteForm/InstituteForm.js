@@ -23,7 +23,8 @@ export default function InstituteForm({
     handleFormSubmit,
     mobileNumber,
     closeApplyForLoan,
-    openApplyForLoan
+    openApplyForLoan,
+    handleLinkExpired
 }) {
 
     const [relation,setRelation] = useState('')
@@ -80,7 +81,6 @@ export default function InstituteForm({
 
         const data = await axios.post(`${API_URL}/api/fees/v2/fetch/fields/${url}/`,urldata)
         .then(res => {
-            console.log(res.data)
             setRequiredField(res.data.data)
             if(!onlySignUp){
                 setAdhocData(res.data.adhoc)
@@ -92,7 +92,11 @@ export default function InstituteForm({
             }
             // getDropdownData(res.data.data)
         })
-        .catch(error => error.response.data);
+        .catch(error => {
+            if(error.response.status === 406){
+                handleLinkExpired()
+            }
+        });
 
         return data;
 
@@ -423,8 +427,6 @@ export default function InstituteForm({
             amount: e
         })
     }
-
-    console.log(buttonData,"lkjhgfgchvbjk")
 
     return (
         <div className='institute'>
