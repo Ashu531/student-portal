@@ -402,7 +402,7 @@ export default function Login() {
                                 <div className='student-card' key={i} onClick={() => navigateToInstallmentPage(i)}>
                                     <div className='text-container'>
                                         <div className='name'>{student.name}</div>
-                                        <div className='id'>{student.id}</div>
+                                        <div className='id'>{student.id} &#8226; {student.course}</div>
                                     </div>
                                     <img src={caret} className='icon'/>
                                 </div>
