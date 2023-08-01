@@ -4,7 +4,7 @@ import logo from '../../assets/credenc-logo.svg';
 import Table from '../elementalComponents/table/Table';
 import Modal from '../elementalComponents/modal/Modal';
 import background from '../../assets/background.png';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import Collapsible from '../elementalComponents/collapsible/Collapsible';
 import SmallTable from '../elementalComponents/smallTable/SmallTable';
@@ -23,6 +23,8 @@ import Steps from '../elementalComponents/steps/Steps';
 import ConfirmationModal from '../elementalComponents/confirmationModal/ConfirmModal';
 import DetailBanner from '../elementalComponents/detailBanner/DetailBanner';
 import {ChatWidget} from "@papercups-io/chat-widget";
+import CredencLoanModal from '../elementalComponents/loanModal/LoanModal';
+import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
 
 export default function Home() {
 
@@ -71,7 +73,13 @@ export default function Home() {
 
     const [autopayDetails,setAutopayDetails] = useState(false)
 
+    const [credencLoanModal,setCredencLoanModal] = useState(false)
+
     const [loader, setLoader] = useState(false);
+
+    const [loanSuccess,setLoanSuccess] = useState(false)
+
+    const [loanData,setLoanData] = useState(false)
 
     const logout = async () => {
         const loggedOut = await logoutUser();
@@ -352,7 +360,8 @@ export default function Home() {
     }
 
     const navigateToLoanPage=()=>{
-        navigate(`/credenc-loan`, {replace: true});
+        setCredencLoanModal(true)
+        // navigate(`/credenc-loan`, {replace: true});
     }
 
     const openCancellationModal=()=>{
@@ -459,6 +468,38 @@ export default function Home() {
         setApplicationStatus(false)
     }
 
+    const closeLoanModal=()=>{
+        setCredencLoanModal(false)
+    }
+
+    const applyCredencLoan=async()=>{
+        let data = {
+            'name': student.name,
+            'email': student.email,
+            'phone_number': '',
+            'relation': 'Self',
+            'amount': String(pendingAmount),
+            'remark': '',
+            'tenure': '',
+            'course_name': student.course_id,
+            'applicant_name': student.name,
+            'college': student.college_id
+        }
+
+        await axios.post(`${API_URL}/api/kid/v1/loan/${getToken()}/`, data).then(res => {
+            if(res.data.status){
+                setLoanData(res.data.data)
+                closeLoanModal()
+                navigate(`/credenc-loan`, {
+                    replace: true,
+                    state: res.data.data
+                });
+            }
+        }).catch(err => {
+            alert(err.response.data.error)
+        });
+        
+    }
 
     return (
         <>
@@ -706,7 +747,17 @@ export default function Home() {
             handleSubmit={handleProceedAndPay}
             handleClose={closeModal}
         />}
-        {console.log(student)}
+        {
+            credencLoanModal && 
+            <CredencLoanModal 
+                closeLoanModal={()=>closeLoanModal()}
+                applyLoan={()=>applyCredencLoan()}
+            />
+        }
+        {
+            loanSuccess && 
+            <LoanSuccess loanData={loanData} adhocLoan={false} />
+        }
         <ChatWidget
             token={`${PAPERCUPS_TOKEN}`}
             inbox={`${PAPERCUPS_INBOX}`}
