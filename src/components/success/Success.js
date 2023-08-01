@@ -15,6 +15,10 @@ export default function Success() {
 
     let credencLogo = logo;
 
+    const navigateToHomePage = () => {
+        navigate(`/installments`, {replace: true});
+    }
+
     const logout = async () => {
         const loggedOut = await logoutUser();
         if(loggedOut)
@@ -30,7 +34,6 @@ export default function Success() {
         if(!state)
             navigate('/', {replace: true});
         else{
-            // console.log(state);
             credencLogo = state.merchant_logo;
         }
     }, []);
@@ -40,8 +43,8 @@ export default function Success() {
             <img src={credencLogo} className='logo'/>
             <div className='logout-button'>
                     <Button 
-                        text='Logout' 
-                        handleClick={logout} 
+                        text='Go to Dashboard' 
+                        handleClick={navigateToHomePage} 
                         classes='button-white'
                     />
             </div>
@@ -51,8 +54,8 @@ export default function Success() {
                     <div className='responsive-logout'>
                         <img src={`data:image/png;base64, ${state.studentFrontend.logo}`} className='header-logo'/>
                         <Button 
-                            text='Logout' 
-                            handleClick={logout} 
+                            text='Go to Dashboard' 
+                            handleClick={navigateToHomePage} 
                             classes='button-white'
                         />
                     </div>

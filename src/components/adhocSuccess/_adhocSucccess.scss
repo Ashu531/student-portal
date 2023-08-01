@@ -22,7 +22,7 @@
     }
 
     .logout-button{
-        width: 10rem;
+        width: auto;
         position: absolute;
         right: 3%;
         top: 6%;
@@ -144,6 +144,7 @@
             height: 85%;
             border-radius: 0;
             background: none;
+            border: none;
 
             .title{
                 font-size: 2rem;
