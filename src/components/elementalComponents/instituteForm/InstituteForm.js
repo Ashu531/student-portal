@@ -450,12 +450,12 @@ export default function InstituteForm({
                                 return(
                                     item.type === 1 ?
                                         <div className="formDiv" key={index}>
-                                            <label className="label">{item.label}</label>
+                                            <label className="label">{item.label}{item.mandate === true && <span className='astrix'>*</span>}</label>
                                             <InputField handleChange={(e)=>handleField(item,e)} maxLength={30} />
                                         </div>
                                      : item.type === 2 ? 
                                         <div className="formDiv" key={index}>
-                                            <label className="label">{item.label}</label>
+                                            <label className="label">{item.label}{item.mandate === true && <span className='astrix'>*</span>}</label>
                                             <InputField 
                                               handleChange={(e)=>handleField(item,e)} 
                                               maxLength={10} 
@@ -466,7 +466,8 @@ export default function InstituteForm({
                                         </div>
                                     :
                                         <div className="formDiv" key={index}>
-                                            <label className="label">{item.label}</label>
+                                            <label className="label">{item.label}{item.mandate === true && <span className='astrix'>*</span>}</label>
+                                            
                                             <Select
                                                 onChange={(e)=>handleDropdown(e,item)}
                                                 options={dropDownOption}
