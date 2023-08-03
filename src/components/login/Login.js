@@ -137,7 +137,18 @@ export default function Login() {
     }
 
     const getStudents = async () => {
-        const students = await axios.get(`${API_URL}/api/kid/v1/identify/${inputValue}/`)
+        let params = window.location.pathname
+        let urlSlug = params.substring(7,params.length)
+        const students = await axios.post(`${API_URL}/api/kid/v1/identify/${inputValue}/`,
+        JSON.stringify({
+            college_slug: urlSlug
+        }), 
+        {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        )
         .then(res => (res.data.data))
         .catch(err => console.log(err));
 
