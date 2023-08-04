@@ -41,6 +41,8 @@ export default function Login() {
 
     const [signUpState,setSignUpState] = useState(false)
 
+    const [collegeData,setCollegeData] = useState({})
+
     const openTandC = (type) => {
         setTcModal({...tcModal, open: true, type: type});
     }
@@ -298,11 +300,45 @@ export default function Login() {
 
     }
 
+    const getFieldData=async()=>{
+
+        let params = window.location.pathname
+        let url = params.substring(7,params.length)
+
+        let urldata = {
+            'domain': 'signup'
+        }
+
+        const data = await axios.post(`${API_URL}/api/fees/v2/fetch/fields/${url}/`,urldata)
+        .then(res => {
+            if(res?.data?.college?.length > 0){
+                setCollegeData(res?.data?.college[0])
+            }
+            // getDropdownData(res.data.data)
+        })
+        .catch(error => {
+            if(error.response.status === 406){
+                handleLinkExpired()
+            }
+        });
+
+    }
+
+    useEffect(()=>{
+        getFieldData()
+    },[])
+
     return (
         <div className='login'>
             <img src={logo} className='logo'/>
             {!verified && !otp.generated &&
             <div className='container'>
+                {
+                        collegeData?.logo && 
+                        <div className='college-icon'>
+                            <img src={collegeData?.logo} alt='college_logo' height={32} width={62} style={{objectFit:"contain"}} />
+                        </div>
+                }
                 <div className='header-container'>
                     <img src={logo} className='logo-small'/>
                 </div>
@@ -348,6 +384,12 @@ export default function Login() {
 
             {!verified && otp.generated && !signUpState &&
                 <div className='wrapper container'>
+                    {
+                        collegeData?.logo && 
+                        <div className='college-icon'>
+                            <img src={collegeData?.logo} alt='college_logo' height={32} width={62} style={{objectFit:"contain"}} />
+                        </div>
+                    }
                 <div className='header-container'>
                     <img src={logo} className='logo-small'/>
                 </div>
@@ -405,7 +447,13 @@ export default function Login() {
                 <div className='header-container'>
                     <img src={logo} className='logo-small'/>
                 </div>
-                <div style={{width: '100%'}}>
+                <div style={{width: '100%',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                     {
+                        collegeData?.logo && 
+                        <div className='college-icon'>
+                            <img src={collegeData?.logo} alt='college_logo' height={32} width={62} style={{objectFit:"contain"}} />
+                        </div>
+                    }
                     <div className='header'>Select Student</div>
                     <div className='students-container'>
                         {
