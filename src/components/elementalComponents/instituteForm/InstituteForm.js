@@ -433,15 +433,16 @@ export default function InstituteForm({
             <div className='institute-container'>
             <div className="institute-application">
                    <div className='institute-header-content'>
+                      <div className='college-icon'>
+                            <img src={collegeData?.logo} alt='college_logo' height={32} width={62} style={{objectFit:"contain"}} />
+                        </div>
                        <p className="institute-application-heading">{collegeData?.name}</p>
                        {
                            adhocData?.amount_name?.length > 0 &&
                            <p className='institute-application-header'>{adhocData?.amount_name}</p>
                        }
                        {/* <p className='institute-application-subheading'>{description}</p> */}
-                       <div className='college-icon'>
-                            <img src={collegeData?.logo} alt='college_logo' height={32} width={62} style={{objectFit:"contain"}} />
-                        </div>
+                      
                    </div>
                    
                     
