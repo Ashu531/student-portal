@@ -81,6 +81,8 @@ export default function Home() {
 
     const [loanData,setLoanData] = useState(false)
 
+    const [instituteLogo,setInstituteLogo] = useState('')
+
     const logout = async () => {
         const loggedOut = await logoutUser();
         if(loggedOut)
@@ -211,7 +213,8 @@ export default function Home() {
                             state: {
                                 ...response, 
                                 'installmentsFrontend': adhocInstallments.filter(installment => installment.is_mandatory === 'True' || installment.is_mandatory === true),
-                                'studentFrontend': {...student}
+                                'studentFrontend': {...student},
+                                'instituteLogo': instituteLogo
                             }
                         });
                     } else if(response.status && response.status.toLowerCase() === 'failure'){
@@ -294,6 +297,7 @@ export default function Home() {
             return;
         }else{
             setStudent(data.student);
+            setInstituteLogo(data.student.logo)
         }
 
         setDashboardType(data.dashboard_type)
