@@ -370,6 +370,9 @@ export default function InstituteForm({
 
     const handleButtonClick=(data)=>{
         let submit = true;
+        if(data.action === 15){
+            handleSignupForm()
+        }else{
             if(instituteDetails.length > requiredField.length - 3){
                 instituteDetails && instituteDetails.forEach((item,index)=>{
                     if(item.label === 'Email'){
@@ -412,13 +415,15 @@ export default function InstituteForm({
                 if(submit){
                     if(data.action === 13) handleProceed()
                     else if(data.action === 14) handleLoanSubmit()
-                    else if(data.action === 15) handleSignupForm()
+                    // else if(data.action === 15) handleSignupForm()
                 }
                 
             }
             else{
                 alert("All the fields are mandatory to fill")
             }
+        }
+            
     }
 
     const handleAmount=(e)=>{

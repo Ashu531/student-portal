@@ -194,6 +194,7 @@ export default function Login() {
             saveStudents(studentList);
             setStudents(studentList);
             setVerified(true);
+            setSignUpState(false)
         }
     }
 
@@ -286,7 +287,6 @@ export default function Login() {
         .then(res => {
             try{
                     if(res.data.signup === false){
-                        setSignUpState(false)
                         handleApplicationData()
                     }
             }catch(err) {
