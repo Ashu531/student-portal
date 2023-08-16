@@ -154,7 +154,7 @@ export default function InstituteForm({
 
         let details = [...dropDownDetails];
 
-        if(item.label === 'Grade'){
+        if(item.label == 'Grade/Course'){
             details[0] = {
                 'label': item.label,
                  'value' : e.value,
@@ -199,7 +199,7 @@ export default function InstituteForm({
     }
 
     const handleDropDownOpen=(e,item)=>{
-        if(item.label === 'Grade'){
+        if(item.label == 'Grade/Course'){
             getGradeData()
         }else{
             let details = [...dropDownDetails]
