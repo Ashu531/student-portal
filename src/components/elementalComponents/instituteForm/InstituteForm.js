@@ -370,6 +370,9 @@ export default function InstituteForm({
 
     const handleButtonClick=(data)=>{
         let submit = true;
+        if(data.action === 15){
+            handleSignupForm()
+        }else{
             if(instituteDetails.length > requiredField.length - 3){
                 instituteDetails && instituteDetails.forEach((item,index)=>{
                     if(item.label === 'Email'){
@@ -412,13 +415,15 @@ export default function InstituteForm({
                 if(submit){
                     if(data.action === 13) handleProceed()
                     else if(data.action === 14) handleLoanSubmit()
-                    else if(data.action === 15) handleSignupForm()
+                    // else if(data.action === 15) handleSignupForm()
                 }
                 
             }
             else{
                 alert("All the fields are mandatory to fill")
             }
+        }
+            
     }
 
     const handleAmount=(e)=>{
@@ -433,15 +438,16 @@ export default function InstituteForm({
             <div className='institute-container'>
             <div className="institute-application">
                    <div className='institute-header-content'>
+                      <div className='college-icon'>
+                            <img src={collegeData?.logo} alt='college_logo' height={32} width={62} style={{objectFit:"contain"}} />
+                        </div>
                        <p className="institute-application-heading">{collegeData?.name}</p>
                        {
                            adhocData?.amount_name?.length > 0 &&
                            <p className='institute-application-header'>{adhocData?.amount_name}</p>
                        }
                        {/* <p className='institute-application-subheading'>{description}</p> */}
-                       <div className='college-icon'>
-                            <img src={collegeData?.logo} alt='college_logo' height={32} width={62} style={{objectFit:"contain"}} />
-                        </div>
+                      
                    </div>
                    
                     
@@ -450,12 +456,12 @@ export default function InstituteForm({
                                 return(
                                     item.type === 1 ?
                                         <div className="formDiv" key={index}>
-                                            <label className="label">{item.label}</label>
+                                            <label className="label">{item.label}{item.mandate === true && <span className='astrix'>*</span>}</label>
                                             <InputField handleChange={(e)=>handleField(item,e)} maxLength={30} />
                                         </div>
                                      : item.type === 2 ? 
                                         <div className="formDiv" key={index}>
-                                            <label className="label">{item.label}</label>
+                                            <label className="label">{item.label}{item.mandate === true && <span className='astrix'>*</span>}</label>
                                             <InputField 
                                               handleChange={(e)=>handleField(item,e)} 
                                               maxLength={10} 
@@ -466,7 +472,8 @@ export default function InstituteForm({
                                         </div>
                                     :
                                         <div className="formDiv" key={index}>
-                                            <label className="label">{item.label}</label>
+                                            <label className="label">{item.label}{item.mandate === true && <span className='astrix'>*</span>}</label>
+                                            
                                             <Select
                                                 onChange={(e)=>handleDropdown(e,item)}
                                                 options={dropDownOption}

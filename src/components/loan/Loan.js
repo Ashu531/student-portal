@@ -6,7 +6,7 @@ import InputField from '../elementalComponents/inputField/InputField';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 import { getToken,logoutUser } from '../../services/authService';
 import axios from 'axios';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams,useLocation } from 'react-router-dom';
 import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
 import Select from 'react-select';
 import Switch from "react-switch";
@@ -36,13 +36,24 @@ export default function Loan() {
     const [relation,setRelation] = useState('')
     const [totalAmount,setTotalAmount] = useState('')
     const navigate = useNavigate();
-    const [loanSuccess,setLoanSuccess] = useState(false);
+    const [loanSuccess,setLoanSuccess] = useState(true);
     const [loader, setLoader] = useState(false);
     const [loanData,setLoanData] = useState({})
     const [tenure,setTenure] = useState(0)
     const [remark,setRemark] = useState('');
     const [applicantName,setApplicantName] = useState('')
     const [nameChecked,setNameChecked] = useState(false)
+
+    const {state} = useLocation();
+
+    useEffect(() => {
+        if(!state)
+            navigate('/', {replace: true});
+        else{
+            console.log(state,"state+++")
+            setLoanData(state)
+        }
+    }, []);
 
     const getData = async () => {
         const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
