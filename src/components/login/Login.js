@@ -308,20 +308,20 @@ export default function Login() {
         let urldata = {
             'domain': 'signup'
         }
-
-        const data = await axios.post(`${API_URL}/api/fees/v2/fetch/fields/${url}/`,urldata)
-        .then(res => {
-            if(res?.data?.college?.length > 0){
-                setCollegeData(res?.data?.college[0])
-            }
-            // getDropdownData(res.data.data)
-        })
-        .catch(error => {
-            if(error.response.status === 406){
-                handleLinkExpired()
-            }
-        });
-
+        if(url.length > 0){
+            const data = await axios.post(`${API_URL}/api/fees/v2/fetch/fields/${url}/`,urldata)
+            .then(res => {
+                if(res?.data?.college?.length > 0){
+                    setCollegeData(res?.data?.college[0])
+                }
+                // getDropdownData(res.data.data)
+            })
+            .catch(error => {
+                if(error.response.status === 406){
+                    handleLinkExpired()
+                }
+            });
+        }
     }
 
     useEffect(()=>{
