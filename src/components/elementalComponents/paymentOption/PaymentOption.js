@@ -1,6 +1,6 @@
 import React from 'react'
 
-import arrow from '../../../assets/arrow-right.svg';
+import arrow from '../../../assets/arrow-right-filled.svg';
 
 export default function PaymentOption({
     icon,
@@ -19,9 +19,11 @@ export default function PaymentOption({
         </div>
         <div className='row'>
             <div className='heading'>{heading}</div>
-            <img src={arrow} className='icon'/>
         </div>
-        <div className='desc'>{description}</div>
+        <div className='row'>
+            <div className='desc'>{description}</div>
+            <div className='icon-back'><img src={arrow} className='icon'/></div>
+        </div>
     </div>
   )
 }

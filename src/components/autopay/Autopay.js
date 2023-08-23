@@ -256,19 +256,21 @@ export default function Autopay() {
                 </div>
             }
             {
-              !state &&  <div className='button-container'> 
+              !state &&  <div className='button-container'>
             {      
-               !autopay ? 
+               !autopay ?
                     <Button 
                         text='Proceed' 
                         classes={`small-wrapper button-small button-primary ${totalAmount > 5 ? '': 'disabled'}`}
                         handleClick={()=>handleProceed()}
+                        align={'flex-end'}
                     />
                     : 
                     <Button 
                         text='Set up Auto-Pay' 
                         classes={`small-wrapper button-small button-primary ${totalAmount > 0 ? '': 'disabled'}`}
                         handleClick={()=>handleAutopay()}
+                        align={'flex-end'}
                     />
              }
              </div>
