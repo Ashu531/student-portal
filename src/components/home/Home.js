@@ -586,14 +586,14 @@ export default function Home() {
                         handleCheckBox={handleAmount}
                     />
 
-                    <div className='button-container'>
+                    {adhocInstallments.length > 0 && <div className='button-container'>
                         <Button 
                             text={`Pay ₹ ${adhocAmount} Now `} 
                             handleClick={handleProceed}
                             classes={`button-small button-primary ${adhocAmount > 0 ? '' : 'disabled'}`}
                             align={'flex-end'}
                         />
-                    </div>
+                    </div>}
 
                     {
                         noAcademicFeeState && 

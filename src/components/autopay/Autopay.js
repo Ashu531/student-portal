@@ -147,6 +147,7 @@ export default function Autopay() {
                }).then(res => {
                 closeConfirmationModal()
                 alert('Application Successfully Cancelled')
+                setAutopay(false)
                })
             .catch(err => {
                 closeConfirmationModal()

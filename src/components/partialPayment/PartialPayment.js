@@ -235,7 +235,7 @@ export default function PartialPayment() {
 
         });
 
-        const installments = data.data.filter(installment => installment['status'] != 'paid' )
+        const installments = data.data.filter(installment => installment['status'] != 'paid' && installment['enach_status'] != 'payment_in_progress')
 
         setInstallments(installments);
         setLoader(false);
