@@ -47,7 +47,8 @@
 
 @media screen and (max-width: 499px){
     .payment-option {
-        width: 48%;
+        width: 100%;
+        flex: none;
         padding-top: 100%;
         border-radius: 1rem;
         padding: 1.5rem;

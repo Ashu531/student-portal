@@ -19,7 +19,6 @@ export default function Autopay() {
     const [autopay,setAutopay] = useState(false);
     const [installments,setInstallments] = useState([])
     const [loader, setLoader] = useState(false);
-    const [easebuzzCheckout, setEasebuzzCheckout] = useState(null);
     const [applicationStatus, setApplicationStatus] = useState(false)
     const [paymentOpen,setpaymentOpen] = useState({
         paymentID: null,
@@ -63,6 +62,10 @@ export default function Autopay() {
         const loggedOut = await logoutUser();
         if(loggedOut)
             navigate('/login', {replace: true});
+    }
+
+    const navigateToHome=()=>{
+        navigate(`/installments`, {replace: true});
     }
 
     useEffect(async () => {
@@ -147,7 +150,7 @@ export default function Autopay() {
                }).then(res => {
                 closeConfirmationModal()
                 alert('Application Successfully Cancelled')
-                setAutopay(false)
+                navigateToHome();
                })
             .catch(err => {
                 closeConfirmationModal()
