@@ -14,6 +14,7 @@ import ChatWidget from '@papercups-io/chat-widget';
 
 export default function Autopay() {
 
+    const navigate = useNavigate();
     const [student, setStudent] = useState({});
     const [totalAmount,setTotalAmount] = useState(0)
     const [autopay,setAutopay] = useState(false);
