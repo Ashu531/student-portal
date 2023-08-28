@@ -64,7 +64,7 @@ export default function Login() {
 
         if(value.length == 6){
             const otpVerified = await axios.post(`${API_URL}/api/kid/v1/verify_otp/`, JSON.stringify({
-                'phone_number': inputValue,
+                'phone_number': `${selectedCountry} ${inputValue}`,
                 'otp': value,
                 'college_slug': urlSlug
             }), {
@@ -143,7 +143,7 @@ export default function Login() {
     const getStudents = async () => {
         let params = window.location.pathname
         let urlSlug = params.substring(7,params.length)
-        const students = await axios.post(`${API_URL}/api/kid/v1/identify/${inputValue}/`,
+        const students = await axios.post(`${API_URL}/api/kid/v1/identify/${selectedCountry} ${inputValue}/`,
         JSON.stringify({
             college_slug: urlSlug
         }), 
