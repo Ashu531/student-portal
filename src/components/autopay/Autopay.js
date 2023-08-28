@@ -19,7 +19,6 @@ export default function Autopay() {
     const [autopay,setAutopay] = useState(false);
     const [installments,setInstallments] = useState([])
     const [loader, setLoader] = useState(false);
-    const [easebuzzCheckout, setEasebuzzCheckout] = useState(null);
     const [applicationStatus, setApplicationStatus] = useState(false)
     const [paymentOpen,setpaymentOpen] = useState({
         paymentID: null,
@@ -63,6 +62,10 @@ export default function Autopay() {
         const loggedOut = await logoutUser();
         if(loggedOut)
             navigate('/login', {replace: true});
+    }
+
+    const navigateToHome=()=>{
+        navigate(`/installments`, {replace: true});
     }
 
     useEffect(async () => {
@@ -147,6 +150,7 @@ export default function Autopay() {
                }).then(res => {
                 closeConfirmationModal()
                 alert('Application Successfully Cancelled')
+                navigateToHome();
                })
             .catch(err => {
                 closeConfirmationModal()
@@ -256,19 +260,21 @@ export default function Autopay() {
                 </div>
             }
             {
-              !state &&  <div className='button-container'> 
+              !state &&  <div className='button-container'>
             {      
-               !autopay ? 
+               !autopay ?
                     <Button 
                         text='Proceed' 
                         classes={`small-wrapper button-small button-primary ${totalAmount > 5 ? '': 'disabled'}`}
                         handleClick={()=>handleProceed()}
+                        align={'flex-end'}
                     />
                     : 
                     <Button 
                         text='Set up Auto-Pay' 
                         classes={`small-wrapper button-small button-primary ${totalAmount > 0 ? '': 'disabled'}`}
                         handleClick={()=>handleAutopay()}
+                        align={'flex-end'}
                     />
              }
              </div>
