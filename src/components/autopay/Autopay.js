@@ -35,7 +35,6 @@ export default function Autopay() {
    })
    const [autopayLoader,setAutopayLoader] = useState(false)
    const {state} = useLocation();
-   const navigate = useNavigate();
 
     useEffect(() => {
         if(state){

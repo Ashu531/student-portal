@@ -143,7 +143,7 @@ export default function Login() {
     const getStudents = async () => {
         let params = window.location.pathname
         let urlSlug = params.substring(7,params.length)
-        const students = await axios.post(`${API_URL}/api/kid/v1/identify/${selectedCountry} ${inputValue}/`,
+        const students = await axios.post(`${API_URL}/api/kid/v1/identify/${selectedCountry}_${inputValue}/`,
         JSON.stringify({
             college_slug: urlSlug
         }), 
