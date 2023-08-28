@@ -11,6 +11,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import ConfirmationModal from '../elementalComponents/confirmationModal/ConfirmModal';
 import awaitIcon from '../../assets/awaitIcon.svg'
 import ChatWidget from '@papercups-io/chat-widget';
+import { Bars, TailSpin } from "react-loader-spinner";
 
 export default function Autopay() {
 
@@ -32,7 +33,9 @@ export default function Autopay() {
         buttonText:'',
         successImage: false
    })
-    const {state} = useLocation();
+   const [autopayLoader,setAutopayLoader] = useState(false)
+   const {state} = useLocation();
+   const navigate = useNavigate();
 
     useEffect(() => {
         if(state){
@@ -84,9 +87,9 @@ export default function Autopay() {
         setLoader(false);
         // _getPaymentDetails()
 
-        useScript('https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/easebuzz-checkout.js', () => {
-            setEasebuzzCheckout(new EasebuzzCheckout("7ITASSQJE1", 'prod'));
-        });
+        // useScript('https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/easebuzz-checkout.js', () => {
+        //     setEasebuzzCheckout(new EasebuzzCheckout("7ITASSQJE1", 'prod'));
+        // });
     }, [])
 
     const _getPaymentDetails=async()=>{
@@ -145,20 +148,25 @@ export default function Autopay() {
     }
 
     const cancelAutopay=async()=>{
+        setAutopayLoader(true)
         if(state.applicationId){
             let response = await axios.post(`${API_URL}/api/kid/v1/autopay/cancel/${getToken()}/`, {
                 application_id: state.applicationId,
                }).then(res => {
                 closeConfirmationModal()
                 alert('Application Successfully Cancelled')
+                setAutopayLoader(false)
                 navigateToHome();
                })
             .catch(err => {
                 closeConfirmationModal()
+                setAutopayLoader(false)
+                navigateToHome();
                 alert(err.response.data.error)
             });
         }else{
             alert('Invalid Application Id')
+            setAutopayLoader(false)
         }
         
     }
@@ -286,6 +294,12 @@ export default function Autopay() {
                     student={student}
                     handleClose={closeConfirmationModal}
                 />
+            }
+            {
+            autopayLoader && 
+              <div className="credenc-loader-white fullscreen-loader">
+                <TailSpin color="#00BFFF" height={60} width={60}/>
+              </div>
             }
         </div>
         <ChatWidget

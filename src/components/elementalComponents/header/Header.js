@@ -43,10 +43,10 @@ export default function Header({title, back=true, icon}) {
                
                 <span className="title">{title}</span>
             </div>
-            <div className='sikshaIcon tooltip bottom' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}} onClick={() => setShowLogout(!showLogout)}>
+            <div className='sikshaIcon tooltip bottom' style={{display: 'flex !important', justifyContent: 'center', alignItems: 'center'}} onClick={() => setShowLogout(!showLogout)}>
                 {icon && <img src={`data:image/png;base64, ${icon}`} className='shikshaIcon' height={32}/>}
                 <img src={backIcon}  height={16} style={{transform: 'rotate(90deg)', margin: '0 0 8px 8px'}}/>
-                {showLogout && <div className='tooltiptext'>
+                {showLogout && <div className='tooltiptext' style={window.innerWidth < 500 ? {position:'absolute',top:'150%',left: '-8.2vw',marginLeft:0,minWidth:'135px'} : { position:'absolute',top:'150%',left: '-7vw',marginLeft:0}}>
                     <button 
                         onMouseUp={logout}
                         style={{
