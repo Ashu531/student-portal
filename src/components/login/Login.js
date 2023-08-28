@@ -12,11 +12,15 @@ import { Bars, TailSpin } from 'react-loader-spinner';
 import CheckBox from '../elementalComponents/checkBox/CheckBox';
 import TcModal from '../elementalComponents/tandc/TcModal';
 import InstituteForm from '../elementalComponents/instituteForm/InstituteForm';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import { CountrySelect } from '../countrySelect/CountrySelect';
 
 export default function Login() {
 
     const navigate = useNavigate();
 
+    const [selectedCountry, setSelectedCountry] = useState('+91');
     const [students, setStudents] = useState([]);
 
     const [inputValue, setInputValue] = useState('');
@@ -95,7 +99,7 @@ export default function Login() {
         let urlSlug = params.substring(7,params.length)
 
         let data = {
-            'phone_number': inputValue,
+            'phone_number': `${selectedCountry} ${inputValue}`,
             'college_slug': urlSlug
         }
 
@@ -124,7 +128,7 @@ export default function Login() {
         let urlSlug = params.substring(7,params.length)
         const resent = await axios.post(`${API_URL}/api/kid/v1/resend_otp/`, 
         JSON.stringify({
-            phone_number: inputValue,
+            phone_number: `${selectedCountry} ${inputValue}`,
             college_slug: urlSlug
         }), 
         {
@@ -204,13 +208,13 @@ export default function Login() {
 
     const handleInputChange = (value) => {
         let isnum = /^\d+$/.test(value);
-        if(value.length < 10){
+        if(value.length < 6){
             setInputValue(value);
             setIsValid(false);
             setError({...error,number: ''})
         }
         
-        if(value.length == 10){
+        if(value.length >= 6){
             setInputValue(value);
             if(!isnum)
                 setIsValid(false);
@@ -346,15 +350,24 @@ export default function Login() {
                     <div className='header'>Login</div>
                     <div className='subline' style={{marginBottom: '3rem'}}>Let's pay your fees</div>
                 
+                <div style={{display: 'flex', gap: '1rem', alignItems: 'flex-start'}}>
+                    <CountrySelect 
+                        selectedCountry={selectedCountry} 
+                        onSelect={(code) => {
+                            console.log(code, "hwhjebjwh")
+                            setSelectedCountry(code)
+                        }}
+                    />
+                    {console.log('selected country before render', selectedCountry)}
                     <InputField 
                         placeholder={'Enter registered Phone Number'} 
                         validate={true}
                         validity={isValid}
-                        inputType="tel"
+                        inputType="number"
                         handleChange={handleInputChange}
                         error={error.number}
-                        maxLength={10}
                     />
+                </div>
                 </div>
                 <div className='bottom-container'>
                     <p>
