@@ -12,8 +12,6 @@ import { Bars, TailSpin } from 'react-loader-spinner';
 import CheckBox from '../elementalComponents/checkBox/CheckBox';
 import TcModal from '../elementalComponents/tandc/TcModal';
 import InstituteForm from '../elementalComponents/instituteForm/InstituteForm';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
 import { CountrySelect } from '../countrySelect/CountrySelect';
 
 export default function Login() {
