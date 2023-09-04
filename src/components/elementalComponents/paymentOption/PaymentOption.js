@@ -1,4 +1,6 @@
 import React from 'react'
+import credencPaymentLogo from '../../../assets/credencPaymentLogo.svg'
+import onlinePaymentIcon from '../../../assets/onlinePaymentIcon.svg'
 
 export default function PaymentOption({
     icon,
@@ -7,7 +9,8 @@ export default function PaymentOption({
     description,
     bgColor,
     onClick,
-    disabled
+    disabled,
+    type
 }) {
 
     const getArrow = () => {
@@ -21,8 +24,14 @@ export default function PaymentOption({
   return (
     <div className='payment-option' style={ disabled ? {opacity: 0.5,background: '#EBEBEB'} : {background: bgColor}} onClick={!disabled && onClick}>
         <div className='row'>
-            <img src={icon} className='icon'/>
-            {tag && <div className='tag'>{tag}</div>}
+            <div className='row' style={{justifyContent:'flex-start'}}>
+                <img src={icon} className='icon'/>
+                {tag && <div className='tag'>{tag}</div>}
+            </div>
+            <div>
+                {type === 'loan' && <img src={credencPaymentLogo} className='icon' />}
+                {type === 'online' && <img src={onlinePaymentIcon} className='icon' />}
+            </div>
         </div>
         <div className='row'>
             <div className='heading'>{heading}</div>

@@ -22,7 +22,7 @@ export default function Button({
     }, [counter]);
 
     return (
-        <div style={{width: '100%', display:'flex', justifyContent: align}}>
+        <div style={{display:'flex', justifyContent: align}}>
             {counter > 0 &&
                 <button 
                     className={`button ${classes} disabled`}

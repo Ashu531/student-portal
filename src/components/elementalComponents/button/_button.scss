@@ -13,6 +13,12 @@
     background: #8F14CC;
 }
 
+.button-outline{
+    border: 1px solid #8F14CC;
+    background: #ffffff;
+    color: #8F14CC;
+}
+
 .button-secondary{
     background: rgba(255, 255, 255, 0.15);
     font-weight: 500 !important;
@@ -39,6 +45,14 @@
 
 .button-small{
     width: 50%;
+    padding: 1.2rem 1.6rem;
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 2.1rem;
+}
+
+.button-auto{
+    // width: 50%;
     padding: 1.2rem 1.6rem;
     font-weight: 600;
     font-size: 1.4rem;
