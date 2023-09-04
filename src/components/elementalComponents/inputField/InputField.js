@@ -35,6 +35,7 @@ export default function InputField({
                     type={inputType}
                     value={currentValue}
                     disabled={disabled}
+                    minLength={6}
                 ></input>
                 {validate && validity && <img className='icon' src={check}/>}
             </div>

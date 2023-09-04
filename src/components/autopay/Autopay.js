@@ -15,6 +15,7 @@ import { Bars, TailSpin } from "react-loader-spinner";
 
 export default function Autopay() {
 
+    const navigate = useNavigate();
     const [student, setStudent] = useState({});
     const [totalAmount,setTotalAmount] = useState(0)
     const [autopay,setAutopay] = useState(false);
@@ -34,7 +35,6 @@ export default function Autopay() {
    })
    const [autopayLoader,setAutopayLoader] = useState(false)
    const {state} = useLocation();
-   const navigate = useNavigate();
 
     useEffect(() => {
         if(state){
