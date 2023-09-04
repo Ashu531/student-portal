@@ -34,7 +34,7 @@ export default function CredencLoanModal({
                         classes='button-auto button-outline' 
                         handleClick={()=>closeLoanModal()}
                     />
-                    <div style={{width: '10%'}} />
+                    <div style={{width: '4%'}} />
                     <Button 
                         text={'Apply For Loan'} 
                         classes='button-auto button-primary' 
