@@ -101,13 +101,16 @@ const handleProceedAndPay = async () => {
                     alert(`some error occurred!`);
                 } else if(response.status && response.status.toLowerCase() === 'success'){
                     logResponse(response);
+                    let paymentResponse = {
+                        ...response, 
+                        'installmentsFrontend': installments.filter(installment => installment.is_mandatory === 'True' || installment.is_mandatory === true),
+                        'studentFrontend': {...student} 
+                    }
                     navigate('/success', {
-                        state: {
-                            ...response, 
-                            'installmentsFrontend': installments.filter(installment => installment.is_mandatory === 'True' || installment.is_mandatory === true),
-                            'studentFrontend': {...student}
-                        }
+                        state: paymentResponse
                     });
+                    
+                    handlePaymentSuccessResponse(paymentResponse)
                 } else if(response.status && response.status.toLowerCase() === 'failure'){
                     logResponse(response);
                     alert(response.error_Message);
@@ -128,6 +131,24 @@ const handleProceedAndPay = async () => {
             await logResponse(err);
             confirm(`some error occurred!`);
         }
+}
+
+const handlePaymentSuccessResponse=async(state)=>{
+   let detail = {
+    "name": state.firstname,
+    "batch": state.studentFrontend.batch,
+    "course": state.studentFrontend.course,
+    "mode": state.mode,
+    "date": state.addedon,
+    "payment_id": state.txnid,
+    "amount": state.amount,
+    "installment": state.installmentsFrontend,
+    "logo": state.studentFrontend.logo
+   }
+
+   await axios.post(`${API_URL}/api/kid/v1/payment_success_response/${getToken()}/`,detail).then(res => res.data)
+   .catch(err => alert(error.response.data.error));
+
 }
 
 useEffect(() => {
