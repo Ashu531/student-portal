@@ -48,8 +48,17 @@ export default function InstituteForm({
         min_amount: '',
         max_amount: ''
     })
-
+    const [paramsInfo,setParamsInfo] = useState({
+        studentName: '',
+        phoneNumber: '',
+        email : '',
+        parentName: '',
+        parentNumber: '',
+        enrollNumber: ''
+    })
+    const [urlQuery,setUrlQuery] = useState([])
     const navigate = useNavigate();
+
 
     useEffect(() => {
        getFieldData()
@@ -79,9 +88,10 @@ export default function InstituteForm({
             'domain': onlySignUp ? 'signup' : 'adhoc'
         }
 
-        const data = await axios.post(`${API_URL}/api/fees/v2/fetch/fields/${url}/`,urldata)
+        const data = await axios.post(`${API_URL}/api/fees/v2/fetch/fields/${url}`,urldata)
         .then(res => {
             setRequiredField(res.data.data)
+            settleParamsData(res.data.data)
             if(!onlySignUp){
                 setAdhocData(res.data.adhoc)
                 segregateAmountData(res.data.adhoc.amount)
@@ -118,13 +128,86 @@ export default function InstituteForm({
         }
     }
 
+    const settleParamsData=(item)=>{
+        
+        let urlQueryParams= []
+        let params = window.location.search
+        let url = params.substring(1,params.length)
+        // let url = 'app_id=1684141351252-5612-3686bd1c&status=failure'
+        const query_params = url.split('&');
+        let queryArray = [];
+        query_params.forEach((item,i)=>{
+            let query = item.split('=')
+            queryArray.push(query);
+            queryArray.forEach((el,index)=>{
+                if(index === queryArray.length -1){
+                    let data = {
+                        'name' : el[0],
+                        'value' : el[1]
+                    }
+                    urlQueryParams.push(data)
+                }
+            })
+        })
+        let urlData = [...urlQueryParams]
+        setUrlQuery([...urlQueryParams])
+
+        let details = [...item]
+        if(item?.length > 0){
+            for(let i = 0; i < details.length; i++){
+                urlData && urlData.forEach((node,index)=>{
+                        if(node.name.toLowerCase() === details[i].label.toLowerCase()){
+                            details[i]={
+                                'label': details[i].label,
+                                'value' : node.value,
+                                'type' : details[i].type
+                            }
+                        }
+                        if(node.name === 'phone%20number' && details[i].label.toLowerCase() === 'phone number'){
+                            details[i]={
+                                'label': details[i].label,
+                                'value' : node.value,
+                                'type' : details[i].type
+                            }
+                        }
+
+                        if(node.name === 'parent%20name' && details[i].label.toLowerCase() === 'parent name'){
+                            details[i]={
+                                'label': details[i].label,
+                                'value' : node.value,
+                                'type' : details[i].type
+                            }
+                        }
+
+                        if(node.name === 'parent%20number' && details[i].label.toLowerCase() === 'parent number'){
+                            details[i]={
+                                'label': details[i].label,
+                                'value' : node.value,
+                                'type' : details[i].type
+                            }
+                        }
+
+                        if(node.name === 'enrollment%20number' && details[i].label.toLowerCase() === 'enrollment number'){
+                            details[i]={
+                                'label': details[i].label,
+                                'value' : node.value,
+                                'type' : details[i].type
+                            }
+                        }
+                })
+                setInstituteDetails(details)
+                setRequiredField(details)
+            }
+        }
+    }
+
     const handleField=(item,e)=>{
         let data = {}
-
         let details = [...instituteDetails];
         if(details?.length > 0){
             for(let i = 0; i < details.length; i++){
                 const set = details[i];
+
                 if(set.label === item.label){
                     details[i] = {
                         'label': item.label,
@@ -457,7 +540,12 @@ export default function InstituteForm({
                                     item.type === 1 ?
                                         <div className="formDiv" key={index}>
                                             <label className="label">{item.label}{item.mandate === true && <span className='astrix'>*</span>}</label>
-                                            <InputField handleChange={(e)=>handleField(item,e)} maxLength={30} />
+                                            <InputField 
+                                                handleChange={(e)=>handleField(item,e)} 
+                                                maxLength={30} 
+                                                value={item.value} 
+                                                // disabled={item.value}  
+                                              />
                                         </div>
                                      : item.type === 2 ? 
                                         <div className="formDiv" key={index}>
@@ -465,8 +553,8 @@ export default function InstituteForm({
                                             <InputField 
                                               handleChange={(e)=>handleField(item,e)} 
                                               maxLength={10} 
-                                            //   value={(item.label == 'Phone Number' && onlySignUp === true) && mobileNumber} 
-                                            //   disabled={item.label == 'Phone Number' && onlySignUp === true} 
+                                              value={item.value}
+                                            //   disabled={item.value} 
                                               inputType="tel"
                                               />
                                         </div>
