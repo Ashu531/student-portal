@@ -544,7 +544,7 @@ export default function InstituteForm({
                                                 handleChange={(e)=>handleField(item,e)} 
                                                 maxLength={30} 
                                                 value={item.value} 
-                                                // disabled={item.value}  
+                                                disabled={item.value}  
                                               />
                                         </div>
                                      : item.type === 2 ? 
@@ -554,7 +554,7 @@ export default function InstituteForm({
                                               handleChange={(e)=>handleField(item,e)} 
                                               maxLength={10} 
                                               value={item.value}
-                                            //   disabled={item.value} 
+                                              disabled={item.value} 
                                               inputType="tel"
                                               />
                                         </div>
@@ -620,7 +620,6 @@ export default function InstituteForm({
 
                <div className='button-container'>
                    {buttonData?.length > 0 && buttonData.map((item,index)=>{
-                       console.log(item,"98765435678")
                        return(
                         <>
                         <Button 
