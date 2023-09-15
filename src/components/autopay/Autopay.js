@@ -149,7 +149,7 @@ export default function Autopay() {
     const cancelAutopay=async()=>{
         setAutopayLoader(true)
         if(state.applicationId){
-            let response = await axios.post(`${API_URL}/api/kid/v1/autopay/cancel/${getToken()}/`, {
+            let response = await axios.post(`${API_URL}/api/kid/v1/autopay/request_cancel/${getToken()}/`, {
                 application_id: state.applicationId,
                }).then(res => {
                 closeConfirmationModal()
