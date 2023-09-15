@@ -195,7 +195,7 @@ export function Pair1({ name, value }) {
           width: "100%",
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: "flex-start",
         }}
       >
         <div
@@ -213,6 +213,8 @@ export function Pair1({ name, value }) {
             color: "#0B090D",
             fontFamily: "Poppins",
             fontSize: "12px",
+            width: '60%',
+            textAlign: 'end'
           }}
         >
           {value}
