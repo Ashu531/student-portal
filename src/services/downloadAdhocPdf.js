@@ -2,7 +2,6 @@ import { jsPDF } from 'jspdf';
 import credencLogo from '../assets/credenc-text-logo.png';
 
 export const downloadAdhocPdf = (state) => {
-    console.log(state,"state++")
     const doc = new jsPDF('p', 'pt', 'a4', true);
     let pdfContent = `<div style="padding: 50px 20px;background: #FFF; color: #000; font-size: 16px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">

@@ -26,6 +26,7 @@ import {ChatWidget} from "@papercups-io/chat-widget";
 import CredencLoanModal from '../elementalComponents/loanModal/LoanModal';
 import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
 import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
+import { downloadTransaction } from '../../services/dowmloadTransaction';
 
 export default function Home() {
 
@@ -92,17 +93,25 @@ export default function Home() {
 
         let newQuickViewState = {};
         newQuickViewState["student"] = student;
-        let details = await axios.get(`${API_URL}/api/fees/v2/student/quickview/${student?.id}/${getToken()}/`)
-        .then(res => {
-            newQuickViewState["details"] = res.data.data[0].details
-        })
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
+        // let details = await axios.get(`${API_URL}/api/fees/v2/student/quickviewfeepay/${student?.id}/`,{
+        //     headers: {
+        //         'token' : getToken()
+        //     }
+        // })
+        // .then(res => {
+        //     newQuickViewState["details"] = res.data.data[0].details
+        // })
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
 
   
-        let history = await axios.get(`${API_URL}/api/fees/v2/transactions/page/student/${student?.id}/${getToken()}/`)
+        let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
+            headers: {
+                'token' : getToken()
+            }
+        })
         .then(res => {
             newQuickViewState["transactionHistory"] = res.data.data
         })
@@ -111,22 +120,26 @@ export default function Home() {
             return error.response.data
         });
 
-        let feeBreakup = await axios.get(`${API_URL}/api/fees/v2/student/feebreakup/${student?.batch_id}/${student?.id}/${getToken()}/`)
-        .then(res => {
-            newQuickViewState["feeBreakup"] = res.data.data;
-            newQuickViewState["feeBreakupAdhoc"] = res.data.adhoc_data;
-            newQuickViewState["feeDetails"] = [
-              res.data.total,
-              res.data.paid,
-              parseFloat(res.data.total) - parseFloat(res.data.paid),
-            ];
-        })
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
+        // let feeBreakup = await axios.get(`${API_URL}/api/fees/v2/student/feebreakupfeepay/${student?.b_id}/${student?.id}/`,{
+        //     headers: {
+        //         'token' : getToken()
+        //     }
+        // })
+        // .then(res => {
+        //     newQuickViewState["feeBreakup"] = res.data.data;
+        //     newQuickViewState["feeBreakupAdhoc"] = res.data.adhoc_data;
+        //     newQuickViewState["feeDetails"] = [
+        //       res.data.total,
+        //       res.data.paid,
+        //       parseFloat(res.data.total) - parseFloat(res.data.paid),
+        //     ];
+        // })
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
   
-        Promise.all([details, history, feeBreakup]).then((values) => {
+        Promise.all([history]).then((values) => {
           setQuickViewState(newQuickViewState);
         });
     };
@@ -559,7 +572,16 @@ export default function Home() {
 
     const openQuickView=()=>{
         setQuickView(true)
-        // handleStudentClick()
+        handleStudentClick()
+    }
+
+    const downloadCollapsiblePdf=(item)=>{
+        let state =  {
+            ...item,
+            'instituteLogo': instituteLogo
+        }
+        console.log(state)
+        downloadTransaction(state)
     }
 
     return (
@@ -861,6 +883,7 @@ export default function Home() {
                  closeQuickView={()=>closeQuickView()}
                  quickView={quickView}
                  quickViewState={quickViewState}
+                 handleCollapsibleDownload={(item)=>downloadCollapsiblePdf(item)}
             />
         }
         <ChatWidget

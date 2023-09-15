@@ -23,7 +23,6 @@ export default function Header({title, back=true, icon,openQuickView}) {
     useEffect(() => {
 
         document.body.addEventListener('click', (e) => {
-            console.log('hereeee');
             setShowMenu(false)
         }, true);
 
@@ -48,7 +47,7 @@ export default function Header({title, back=true, icon,openQuickView}) {
                 <img src={backIcon}  height={16} style={{transform: 'rotate(90deg)', margin: '0 0 8px 8px'}}/>
                 
                 {showMenu && <div className='tooltiptext' style={window.innerWidth < 500 ? {position:'absolute',top:'150%',left: '-8.2vw',marginLeft:0,minWidth:'135px'} : { position:'absolute',top:'150%',left: '-7vw',marginLeft:0}}>
-                    {/* <button 
+                    <button 
                         onMouseUp={()=>openQuickView()}
                         style={{
                             width: '100%',
@@ -70,7 +69,7 @@ export default function Header({title, back=true, icon,openQuickView}) {
                             cursor: 'pointer',
                             marginBottom: 8
                         }}
-                    >View Transaction</button> */}
+                    >View Transaction</button>
                     <button 
                         onMouseUp={logout}
                         style={{

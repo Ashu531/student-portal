@@ -1,24 +1,22 @@
 import { jsPDF } from 'jspdf';
 import credencLogo from '../assets/credenc-text-logo.png';
 
-export const downloadPdf = (state) => {
-    const doc = new jsPDF('p', 'px', 'a4', true);
-    let pdfContent = `<div style="padding: 50px 20px;background: #FFF; color: #000; font-size: 16px; width: 81.25%;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
-            <img src="${credencLogo}" height="50px" style="display: block;"/>
-            <img src="${`data:image/png;base64, ${state.studentFrontend.logo}`}" height="50px" style="display: block;"/>
+export const downloadTransaction = (state) => {
+    const doc = new jsPDF('p', 'pt', 'a4', true);
+    let pdfContent = `<div style="padding: 50px 20px;background: #FFF; color: #000; font-size: 16px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <img src="${credencLogo}" height="50px" style="display: block;margin-left: auto;margin-right: auto;"/>
+            <img src="${`data:image/png;base64, ${state.instituteLogo}`}" height="50px" style="display: block;margin-left: auto;margin-right: auto;"/>
         </div>
         <div style="display: flex; justify-content: space-between;">
-            <div>Name of student: ${state.firstname}</div>
-            <div>Date of transaction: ${state.addedon}</div>
+            <div>Name of student: ${state.student_name}</div>
+            <div>Date of transaction: ${state.transaction_date}</div>
         </div>
-        <div>Course: ${state.studentFrontend.course}</div>
-        <div>Batch: ${state.studentFrontend.batch}</div>
         <br/>
-        <table style="font-family:arial, sans-serif;border-collapse: collapse;width:100%; margin: 0 auto;">
+        <table style="font-family:arial, sans-serif;border-collapse: collapse;width:80%;">
             <tr>
                 <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Fee Payment Reference ID</td>
-                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${state.txnid}</td>
+                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${state.transaction_id}</td>
             </tr>
             <tr style="background: #f1f1f1;">
                 <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Mode of Payment</td>
@@ -26,25 +24,20 @@ export const downloadPdf = (state) => {
             </tr>
             <tr>
                 <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Total Amount Paid</td>
-                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${state.amount}</td>
+                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${state.transaction_amount}</td>
             </tr>
             <tr>
-                <td style="border:1px solid #dddddd;text-align:left;padding:8px;" colspan="2">Installments Paid: 
-                <br /><br/ > 
-                    ${state.installmentsFrontend.map((item, i) => (
-                        `<table style="font-family:arial, sans-serif;border-collapse: collapse;width:100%;">
+                <td style="border:1px solid #dddddd;text-align:left;padding:8px;" colspan="2">Amount Paid: 
+                    ${state.installments_summary.map((item, i) => (
+                        `<table style="font-family:arial, sans-serif;border-collapse: collapse;width:100%;margin-top: 8px;">
                             <tr style="background: #f1f1f1;">
                                 <td style="border:1px solid #dddddd;text-align:left;padding:8px;" colspan="2">
-                                    <b>${item.name}</b>
+                                    ${item.name}
                                 </td>
                             </tr>
                             <tr>
                                 <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Installement amount</td>
                                 <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${item.amount}</td>
-                            </tr>
-                            <tr style="background: #f1f1f1;">
-                                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Discount Amount</td>
-                                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${item.discount || 0}</td>
                             </tr>
                             <tr>
                                 <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Penalty amount</td>
@@ -55,7 +48,7 @@ export const downloadPdf = (state) => {
                                 <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${parseFloat(item.amount) + parseFloat(item.penalty)}</td>
                             </tr>
                     </table>`
-                    )).join('<br />')}
+                    )).join(' ')}
                 </td>
             </tr>
         </table>
