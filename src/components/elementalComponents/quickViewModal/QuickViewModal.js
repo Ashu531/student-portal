@@ -189,7 +189,9 @@ export function Pair1({ name, value }) {
   export function Pair2({ name, value }) {
     return (
       <div
-        style={{
+        style={ name === 'Installments Summary' ? {
+            display:'none'
+        } : {
           width: "100%",
           display: "flex",
           justifyContent: "space-between",
