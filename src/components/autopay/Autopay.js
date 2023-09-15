@@ -137,8 +137,8 @@ export default function Autopay() {
     const openCancellationModal=()=>{
         setConfirmModalData({
             title: 'Auto-Pay Cancellation',
-            subHeading:'Are you sure you want to cancel your auto-pay mandate?',
-            description: 'Once this action is performed, you will have to pay all pending fee using other payment methods or set up auto-pay mandate again.',
+            subHeading:'Are you sure you want to request for auto-pay mandate cancellation?',
+            description: 'Once this action is completed, you will have to pay all pending fee using other payment methods or set up auto-pay mandate again.',
             buttonText: 'Yes, cancel my Auto-Pay.',
             successImage: false,
             handleSubmit: cancelAutopay
@@ -149,11 +149,11 @@ export default function Autopay() {
     const cancelAutopay=async()=>{
         setAutopayLoader(true)
         if(state.applicationId){
-            let response = await axios.post(`${API_URL}/api/kid/v1/autopay/cancel/${getToken()}/`, {
+            let response = await axios.post(`${API_URL}/api/kid/v1/autopay/request_cancel/${getToken()}/`, {
                 application_id: state.applicationId,
                }).then(res => {
                 closeConfirmationModal()
-                alert('Application Successfully Cancelled')
+                alert('Request for Cancellation submitted to Institute')
                 setAutopayLoader(false)
                 navigateToHome();
                })
