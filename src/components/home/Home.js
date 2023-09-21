@@ -25,6 +25,8 @@ import DetailBanner from '../elementalComponents/detailBanner/DetailBanner';
 import {ChatWidget} from "@papercups-io/chat-widget";
 import CredencLoanModal from '../elementalComponents/loanModal/LoanModal';
 import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
+import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
+import { downloadTransaction } from '../../services/dowmloadTransaction';
 
 export default function Home() {
 
@@ -82,6 +84,65 @@ export default function Home() {
     const [loanData,setLoanData] = useState(false)
 
     const [instituteLogo,setInstituteLogo] = useState('')
+
+    const [quickViewState,setQuickViewState] = useState(false);
+
+    const [quickView,setQuickView] = useState(false);
+
+    const handleStudentClick = async () => {
+
+        let newQuickViewState = {};
+        newQuickViewState["student"] = student;
+        // let details = await axios.get(`${API_URL}/api/fees/v2/student/quickviewfeepay/${student?.id}/`,{
+        //     headers: {
+        //         'token' : getToken()
+        //     }
+        // })
+        // .then(res => {
+        //     newQuickViewState["details"] = res.data.data[0].details
+        // })
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+
+  
+        let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
+            headers: {
+                'token' : getToken()
+            }
+        })
+        .then(res => {
+            newQuickViewState["transactionHistory"] = res.data.data
+        })
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
+
+        // let feeBreakup = await axios.get(`${API_URL}/api/fees/v2/student/feebreakupfeepay/${student?.b_id}/${student?.id}/`,{
+        //     headers: {
+        //         'token' : getToken()
+        //     }
+        // })
+        // .then(res => {
+        //     newQuickViewState["feeBreakup"] = res.data.data;
+        //     newQuickViewState["feeBreakupAdhoc"] = res.data.adhoc_data;
+        //     newQuickViewState["feeDetails"] = [
+        //       res.data.total,
+        //       res.data.paid,
+        //       parseFloat(res.data.total) - parseFloat(res.data.paid),
+        //     ];
+        // })
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+  
+        Promise.all([history]).then((values) => {
+          setQuickViewState(newQuickViewState);
+        });
+    };
 
     const logout = async () => {
         const loggedOut = await logoutUser();
@@ -505,9 +566,27 @@ export default function Home() {
         
     }
 
+    const closeQuickView=()=>{
+        setQuickView(false)
+    }
+
+    const openQuickView=()=>{
+        setQuickView(true)
+        handleStudentClick()
+    }
+
+    const downloadCollapsiblePdf=(item)=>{
+        let state =  {
+            ...item,
+            'instituteLogo': instituteLogo
+        }
+        console.log(state)
+        downloadTransaction(state)
+    }
+
     return (
         <>
-        <Header title="Student Fee Ledger" back={false} icon={student?.logo} />
+        <Header title="Student Fee Ledger" back={false} icon={student?.logo} openQuickView={()=>openQuickView()} />
         <div className={`home ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='container'>
                 {!loader && <div className='content-container'>
@@ -806,6 +885,15 @@ export default function Home() {
         {
             loanSuccess && 
             <LoanSuccess loanData={loanData} adhocLoan={false} />
+        }
+        {
+            quickView &&
+            <QuickViewModal 
+                 closeQuickView={()=>closeQuickView()}
+                 quickView={quickView}
+                 quickViewState={quickViewState}
+                 handleCollapsibleDownload={(item)=>downloadCollapsiblePdf(item)}
+            />
         }
         <ChatWidget
             token={`${PAPERCUPS_TOKEN}`}

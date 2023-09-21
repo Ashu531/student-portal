@@ -3,7 +3,7 @@ import backIcon from '../../../assets/caret-right.svg';
 import { useNavigate } from 'react-router-dom';
 import { getToken, logoutUser } from '../../../services/authService';
 
-export default function Header({title, back=true, icon}) {
+export default function Header({title, back=true, icon,openQuickView}) {
 
     const navigate = useNavigate();
 
@@ -18,13 +18,12 @@ export default function Header({title, back=true, icon}) {
             navigate('/login', {replace: true});
     }
 
-    const [showLogout, setShowLogout] = useState(false);
+    const [showMenu, setShowMenu] = useState(false);
 
     useEffect(() => {
 
         document.body.addEventListener('click', (e) => {
-            console.log('hereeee');
-            setShowLogout(false)
+            setShowMenu(false)
         }, true);
 
         return () => document.body.removeEventListener('click');
@@ -43,10 +42,34 @@ export default function Header({title, back=true, icon}) {
                
                 <span className="title">{title}</span>
             </div>
-            <div className='sikshaIcon tooltip bottom' style={{display: 'flex !important', justifyContent: 'center', alignItems: 'center'}} onClick={() => setShowLogout(!showLogout)}>
+            <div className='sikshaIcon tooltip bottom' style={{display: 'flex !important', justifyContent: 'center', alignItems: 'center'}} onClick={() => setShowMenu(!showMenu)}>
                 {icon && <img src={`data:image/png;base64, ${icon}`} className='shikshaIcon' height={32}/>}
                 <img src={backIcon}  height={16} style={{transform: 'rotate(90deg)', margin: '0 0 8px 8px'}}/>
-                {showLogout && <div className='tooltiptext' style={window.innerWidth < 500 ? {position:'absolute',top:'150%',left: '-8.2vw',marginLeft:0,minWidth:'135px'} : { position:'absolute',top:'150%',left: '-7vw',marginLeft:0}}>
+                
+                {showMenu && <div className='tooltiptext' style={window.innerWidth < 500 ? {position:'absolute',top:'150%',left: '-8.2vw',marginLeft:0,minWidth:'135px'} : { position:'absolute',top:'150%',left: '-7vw',marginLeft:0}}>
+                    <button 
+                        onMouseUp={()=>openQuickView()}
+                        style={{
+                            width: '100%',
+                            padding: '8px 12px',
+                            background: '#8F14CC',
+                            borderRadius: '1rem',
+                            outline: 'none',
+                            border: 'none',
+                            textAlign: 'center',
+                            color: '#FFFFFF',
+                            cursor: 'pointer',
+                            color: '#FFFFFF',
+                            textAlign: 'center',
+                            fontFamily: 'Poppins',
+                            fontSize: '14px',
+                            fontStyle: 'normal',
+                            fontWeight: '600',
+                            lineHeight: 'normal',
+                            cursor: 'pointer',
+                            marginBottom: 8
+                        }}
+                    >View Transaction</button>
                     <button 
                         onMouseUp={logout}
                         style={{
@@ -70,6 +93,7 @@ export default function Header({title, back=true, icon}) {
                         }}
                     >Logout</button>
                 </div>}
+                
             </div>
         </div>
     )

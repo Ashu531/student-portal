@@ -1,0 +1,41 @@
+.transaction-quick-view{
+    width: 100%;
+    height: 100%;
+
+    .quick-view {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 3rem;
+
+        .quick-view-row{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quick-view-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        .quick-view-text {
+            color: #0B090D;
+            font-family: 'Poppins';
+            font-style: normal;
+            line-height: normal;
+        }
+
+        .quick-view-body-text {
+            color: #444;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
+}
