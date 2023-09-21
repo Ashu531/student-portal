@@ -21,7 +21,7 @@ function App() {
       <div style={{
         width: '100%', 
         height: '2rem', 
-        background: '#F19C37', 
+        background: '#8F14CC', 
         position: 'sticky',
         top: '0',
         zIndex: 99
