@@ -245,20 +245,7 @@ export default function Autopay() {
                                         <span className='quarter-label'>{item.name}</span>
                                         <span className='quarter-label'>{moment(item.start_date).format("MMM Do YYYY")}</span>
                                         <span className='quarter-label' style={{fontWeight: 700,width: '20%',textAlign:'center'}}>₹ {item.amount}</span>
-                                        {/* <img src={backIcon} height={20} width={20} style={item.id == paymentOpen.paymentID && paymentOpen.openPayment === true && item.data.length > 0 ? {transform: 'rotate(-90deg)',cursor: 'pointer'} : {transform: 'rotate(90deg)',cursor: 'pointer'}} onClick={()=>handleToggle(item)} /> */}
                                     </div>
-                                    {/* {  item.id == paymentOpen.paymentID && paymentOpen.openPayment === true &&
-                                        item.data.map((el,i)=>{
-                                            return(
-                                                <div className='fee-breakup' key={i}>
-                                                    <div className='fee-content'>
-                                                        <span className='fee-content-text'>{el.name}</span>
-                                                        <span className='fee-content-text' style={{fontWeight: 600}}>₹ {el.amount}</span>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })
-                                    } */}
                                     
                                 </div>
                             )

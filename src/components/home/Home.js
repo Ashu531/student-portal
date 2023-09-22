@@ -27,6 +27,7 @@ import CredencLoanModal from '../elementalComponents/loanModal/LoanModal';
 import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
 import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
 import { downloadTransaction } from '../../services/dowmloadTransaction';
+import closeIcon from '../../assets/closeIcon.svg';
 
 export default function Home() {
 
@@ -73,8 +74,6 @@ export default function Home() {
         type: 2
    })
 
-    const [autopayDetails,setAutopayDetails] = useState(false)
-
     const [credencLoanModal,setCredencLoanModal] = useState(false)
 
     const [loader, setLoader] = useState(false);
@@ -93,18 +92,6 @@ export default function Home() {
 
         let newQuickViewState = {};
         newQuickViewState["student"] = student;
-        // let details = await axios.get(`${API_URL}/api/fees/v2/student/quickviewfeepay/${student?.id}/`,{
-        //     headers: {
-        //         'token' : getToken()
-        //     }
-        // })
-        // .then(res => {
-        //     newQuickViewState["details"] = res.data.data[0].details
-        // })
-        // .catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
 
   
         let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
@@ -119,25 +106,6 @@ export default function Home() {
             alert(error.response.data.error)
             return error.response.data
         });
-
-        // let feeBreakup = await axios.get(`${API_URL}/api/fees/v2/student/feebreakupfeepay/${student?.b_id}/${student?.id}/`,{
-        //     headers: {
-        //         'token' : getToken()
-        //     }
-        // })
-        // .then(res => {
-        //     newQuickViewState["feeBreakup"] = res.data.data;
-        //     newQuickViewState["feeBreakupAdhoc"] = res.data.adhoc_data;
-        //     newQuickViewState["feeDetails"] = [
-        //       res.data.total,
-        //       res.data.paid,
-        //       parseFloat(res.data.total) - parseFloat(res.data.paid),
-        //     ];
-        // })
-        // .catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
   
         Promise.all([history]).then((values) => {
           setQuickViewState(newQuickViewState);
@@ -470,6 +438,7 @@ export default function Home() {
                 handleSubmit: bannerCancellation,
                 type: 1
             })
+            setApplicationStatus(dashboardType.banner)
         }else if(dashboardType.name === 'autopay'){
             if(dashboardType.status === 'setup_done'){
                 setConfirmModalData({
@@ -479,6 +448,7 @@ export default function Home() {
                     handleSubmit: bannerCancellation,
                     type: 2
                 })
+                setApplicationStatus(dashboardType.banner)
             }else if(dashboardType.status === 'setup_cancel'){
                 setConfirmModalData({
                     title: 'Auto-Pay Set up Unsuccessful',
@@ -488,6 +458,7 @@ export default function Home() {
                     handleSubmit: bannerCancellation,
                     type: 2
                 })
+                setApplicationStatus(dashboardType.banner)
             }
             else if(dashboardType.status === 'initiated'){
                 setConfirmModalData({
@@ -498,12 +469,11 @@ export default function Home() {
                     handleSubmit: bannerCancellation,
                     type: 1
                 })
+                setApplicationStatus(dashboardType.banner)
             }
             
         }
         
-        setApplicationStatus(dashboardType.banner)
-
     },[dashboardType.status])
 
     const bannerCancellation=async()=>{
@@ -698,8 +668,8 @@ export default function Home() {
                         </div>
                     }
 
-                    {   dashboardType.name === 'autopay' &&
-                        <div style={dashboardType.status == 'setup_cancel' ? {display:'none',visibility:'hidden'} : {width:'100%',marginTop: 24}}>
+                    {   dashboardType.name === 'autopay' && (dashboardType.status === 'setup_done' || dashboardType.status === 'setup_done_by_admin') &&
+                        <div style={{width:'100%',marginTop: 24}}>
                             <DetailBanner 
                                 dashboardStatus={dashboardType.status}
                                 handleSubmit={handleAutopayModal}
@@ -726,14 +696,40 @@ export default function Home() {
                         </div>
                     }
 
-                    {/* <div className='paid-status'>
-                        <div className='icon-circle'>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
+                    {dashboardType.name === 'autopay' && dashboardType.status === 'setup_to_cancel' &&
+                        <div className='paid-status' style={{margin: '1rem 0', background: 'rgba(216, 133, 35, 0.3)'}}>
+                            <div className='icon-circle'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M128,128,67.2,82.4A8,8,0,0,1,64,76V40a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8V75.64A8,8,0,0,1,188.82,82L128,128h0" fill="none" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><path d="M128,128,67.2,173.6A8,8,0,0,0,64,180v36a8,8,0,0,0,8,8H184a8,8,0,0,0,8-8V180.36a8,8,0,0,0-3.18-6.38L128,128h0" fill="none" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
+                            </div>
+                            <div className='status-text'>
+                                Your request to cancel eNach is in review, awaiting approval from your admin. Until approved upcoming fees will be auto debited.
+                            </div>    
                         </div>
-                        <div className='status-text'>
-                            Your enach cancel request has been accepted and processed.
-                        </div>    
-                    </div> */}
+                    }
+
+                    {dashboardType.name === 'autopay' && dashboardType.status === 'setup_done_by_admin' &&
+                        <div className='paid-status' style={{margin: '1rem 0', background: 'rgba(216, 35, 35, 0.3)'}}>
+                            <div className='icon-circle'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
+                            </div>
+                            <div className='status-text'>
+                                Your request to cancel eNach is rejected by your admin. Upcoming fees will be auto debited.
+                            </div> 
+                            <svg xmlns="http://www.w3.org/2000/svg" onClick={bannerCancellation} style={{marginLeft: 'auto', cursor: 'pointer'}} width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
+                        </div>
+                    }
+
+                    {dashboardType.name === 'autopay' && dashboardType.status === 'setup_cancel_by_admin' &&
+                        <div className='paid-status' style={{margin: '1rem 0', background: 'rgba(119, 219, 38, 0.3)'}}>
+                            <div className='icon-circle'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="40 144 96 200 224 72" fill="none" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
+                            </div>
+                            <div className='status-text'>
+                                Your request to cancel eNach is accepted by your admin.
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" onClick={bannerCancellation} style={{marginLeft: 'auto', cursor: 'pointer'}} width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
+                        </div>
+                    }
 
                     {
                         dashboardType.name === 'loan' && dashboardType.status === 'disbursed' && 
@@ -844,14 +840,6 @@ export default function Home() {
                     <Table list={installments} selectAll={selectAll}/>
                     <SmallTable list={installments} showStatus={true}/>
 
-                    {/* <div className='button-container'>
-                        <Button 
-                            text='LOGOUT' 
-                            handleClick={logout}
-                            classes={`button-small button-primary`}
-                            align={'flex-end'}
-                        />
-                    </div> */}
                 </div>}
 
                 {loader && 
@@ -861,7 +849,11 @@ export default function Home() {
                 }
             </div>
         </div>
-        { applicationStatus &&
+        { applicationStatus && 
+            (
+                dashboardType.status != 'setup_done_by_admin' && 
+                dashboardType.status != 'setup_cancel_by_admin'
+            ) &&
             <ConfirmationModal
                 modalData={confirmModalData}
                 student={student}

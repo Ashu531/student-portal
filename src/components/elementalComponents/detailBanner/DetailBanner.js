@@ -19,7 +19,7 @@ export default function DetailBanner({
             setSubHeading('Your bank is in the process of approving your Auto-Pay mandate. Check back in 24 hours!')
             setButtonText('See Details')
         }
-        else if(dashboardStatus === 'setup_done'){
+        else if(dashboardStatus === 'setup_done' || dashboardStatus === 'setup_done_by_admin'){
             setHeading('Your fee Auto-Pay has been set up!')
             setSubHeading('Sit back and relax, your child’s fee will be auto-deducted once the due date comes.')
             setButtonText('See Details')
@@ -34,7 +34,7 @@ export default function DetailBanner({
                     <p className='sub-title'>{subHeading}</p>
                 </div>
                 {
-                    (dashboardStatus === 'setup_done') && 
+                    (dashboardStatus === 'setup_done' || dashboardStatus === 'setup_done_by_admin') && 
                     <div className='button-container'>
                         <Button 
                             text={buttonText} 

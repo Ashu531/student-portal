@@ -10,7 +10,7 @@ export const downloadPdf = (state) => {
         </div>
         <div style="display: flex; justify-content: space-between;">
             <div>Name of student: ${state.firstname}</div>
-            <div>Date of transaction: ${state.addedon}</div>
+            <div>Date of transaction: ${(new Date(`${state.addedon} UTC`)).toLocaleDateString('en-IN', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</div>
         </div>
         <div>Course: ${state.studentFrontend.course}</div>
         <div>Batch: ${state.studentFrontend.batch}</div>
