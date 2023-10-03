@@ -1,5 +1,6 @@
 import { jsPDF } from 'jspdf';
 import credencLogo from '../assets/credenc-text-logo.png';
+import credencWoodmark from '../assets/logo/credencWoodmark.png'
 
 export const downloadTransaction = (state) => {
     const doc = new jsPDF('p', 'px', 'a4', true);
@@ -9,7 +10,7 @@ export const downloadTransaction = (state) => {
         Receipt
     </h1>
     <div style="padding: 30px 40px">
-        <img src="${`data:image/png;base64, ${state.studentFrontend.logo}`}" height="50px" style="display: block;"/>
+        <img src="${`data:image/png;base64, ${state.instituteLogo}`}" height="50px" style="display: block;"/>
     </div>
     </div>
     <table>
@@ -23,11 +24,11 @@ export const downloadTransaction = (state) => {
                     </tr>
                     <tr>
                         <td style="border: none; text-align: left;">Course:</td>
-                        <td style="border: none; text-align: left;font-weight: bolder;">${state.studentFrontend.course}</td>
+                        <td style="border: none; text-align: left;font-weight: bolder;">${state.course}</td>
                     </tr>
                     <tr>
                         <td style="border: none; text-align: left;">Batch:</td>
-                        <td style="border: none; text-align: left;font-weight: bolder;">${state.studentFrontend.batch}</td>
+                        <td style="border: none; text-align: left;font-weight: bolder;">${state.batch}</td>
                     </tr>
                 </table>
             </td>
@@ -38,11 +39,11 @@ export const downloadTransaction = (state) => {
     <table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Fee Payment Reference ID</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.txnid}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.transaction_id}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Date of Transaction</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.addedon}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.transaction_date}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Mode of Payment</td>
@@ -50,12 +51,12 @@ export const downloadTransaction = (state) => {
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Amount Paid</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.amount}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.transaction_amount}</td>
         </tr>
     </table>
 
     <h2 style="font-family: 'Montserrat';">Installments</h2>
-    ${state.installmentsFrontend.map((item, i) => (
+    ${state.installments_summary.map((item, i) => (
     `<table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
         <tr style="background-color: #ddd">
             <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.name}</th>

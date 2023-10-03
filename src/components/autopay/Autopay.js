@@ -195,11 +195,11 @@ export default function Autopay() {
                     ₹ {totalAmount}
                 </div>
            </div>
-           {    totalAmount < 6 &&
+           {    totalAmount <= 10 &&
                 <div className='amount-container' style={{justifyContent:'flex-start'}}>
                         <img src={awaitIcon} alt="status-icon" height={25} width={25} style={{objectFit:'contain'}}/>
                         <div className='amount-label'>
-                            Amount cannot be less than 6
+                            Amount cannot be lesser than 10
                         </div>
                 </div>
            }

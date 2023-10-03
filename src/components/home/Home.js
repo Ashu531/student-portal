@@ -580,7 +580,6 @@ export default function Home() {
             ...item,
             'instituteLogo': instituteLogo
         }
-        console.log(state)
         downloadTransaction(state)
     }
 

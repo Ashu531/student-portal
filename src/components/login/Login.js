@@ -356,7 +356,6 @@ export default function Login() {
                             setSelectedCountry(code)
                         }}
                     />
-                    {console.log('selected country before render', selectedCountry)}
                     <InputField 
                         placeholder={'Enter registered Phone Number'} 
                         validate={true}
