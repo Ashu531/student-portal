@@ -242,7 +242,7 @@ export default function Autopay() {
                             return(
                                 <div className='quarter-container' key={index}>
                                     <div className='quarter-header'>
-                                        <span className='quarter-label'>{item.name}</span>
+                                        <span className='quarter-label'>{item.name}<br/><p style={{fontSize: '1rem', color: '#000000', fontWeight:'400', textTransform: 'capitalize',margin:0}}>{item?.fee_category?.name}</p></span>
                                         <span className='quarter-label'>{moment(item.start_date).format("MMM Do YYYY")}</span>
                                         <span className='quarter-label' style={{fontWeight: 700,width: '20%',textAlign:'center'}}>₹ {item.amount}</span>
                                         {/* <img src={backIcon} height={20} width={20} style={item.id == paymentOpen.paymentID && paymentOpen.openPayment === true && item.data.length > 0 ? {transform: 'rotate(-90deg)',cursor: 'pointer'} : {transform: 'rotate(90deg)',cursor: 'pointer'}} onClick={()=>handleToggle(item)} /> */}
