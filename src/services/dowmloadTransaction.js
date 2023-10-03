@@ -20,7 +20,7 @@ export const downloadTransaction = (state) => {
                 <table style="border-collapse: collapse; width: 100%;">
                     <tr>
                         <td style="border: none; text-align: left;">Name:</td>
-                        <td style="border: none; text-align: left;font-weight: bolder;">${state.firstname}</td>
+                        <td style="border: none; text-align: left;font-weight: bolder;">${state.student_name}</td>
                     </tr>
                     <tr>
                         <td style="border: none; text-align: left;">Course:</td>
@@ -93,15 +93,7 @@ export const downloadTransaction = (state) => {
             const footerImageHeight = 40; // Increase the height of your footer image
             const footerX = 0; // Aligned to the start of the page horizontally
             const footerY = pageHeight - footerImageHeight; // Aligned to the bottom of the page
-
-            // doc.addFont('Montserrat-Regular', 'Montserrat', 'normal');
-
-            // Set the font to Montserrat
-            doc.setFont('Helvetica');
-            // Add the footer image
             doc.addImage(credencWoodmark, 'PNG', footerX, footerY, footerImageWidth, footerImageHeight);
-      
-            // Save the PDF
             doc.save('fee-payment-receipt.pdf');
             
           },

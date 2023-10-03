@@ -108,7 +108,7 @@ export default function QuickViewModal({
                                 >
                                     ₹ {item.transaction_amount}
                                 </div>
-                                <div className="subtitle" style={ window.innerWidth < 500 && {display:'none'}}>{item.transaction_id}</div>
+                                <div className="subtitle" style={ window.innerWidth < 500 ? {display:'none'} : null}>{item.transaction_id}</div>
                                 </div>,
                             ]}
                             >
