@@ -4,7 +4,9 @@ import credencWoodmark from '../assets/logo/credencWoodmark.png'
 
 export const downloadTransaction = (state) => {
     const doc = new jsPDF('p', 'px', 'a4', true);
-    let pdfContent = `<div style="padding: 50px 20px;background: #FFF; color: #000; font-size: 16px; width: 81.25%;heigth:100%;">
+
+    let pdfContent = `
+    <div style="font-family: 'Montserrat';padding: 50px 20px;background: #FFF; color: #000; font-size: 16px; width: 81.25%;heigth:100%;">
     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
     <h1 style="font-weight: bolder;font-family: 'Montserrat';font-size:44px">
         Receipt
@@ -30,6 +32,7 @@ export const downloadTransaction = (state) => {
                         <td style="border: none; text-align: left;">Batch:</td>
                         <td style="border: none; text-align: left;font-weight: bolder;">${state.batch}</td>
                     </tr>
+                    <tr>
                 </table>
             </td>
         </tr>
@@ -52,6 +55,10 @@ export const downloadTransaction = (state) => {
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Amount Paid</td>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.transaction_amount}</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Status</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.status}</td>
         </tr>
     </table>
 
