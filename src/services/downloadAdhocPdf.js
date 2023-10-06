@@ -1,77 +1,113 @@
 import { jsPDF } from 'jspdf';
 import credencLogo from '../assets/credenc-text-logo.png';
+import credencWoodmark from '../assets/logo/credencWoodmark.png'
 
 export const downloadAdhocPdf = (state) => {
     const doc = new jsPDF('p', 'pt', 'a4', true);
-    let pdfContent = `<div style="padding: 50px 20px;background: #FFF; color: #000; font-size: 16px;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-            <img src="${credencLogo}" height="50px" style="display: block;margin-left: auto;margin-right: auto;"/>
-            <img src="${`data:image/png;base64, ${state.studentFrontend.logo}`}" height="50px" style="display: block;margin-left: auto;margin-right: auto;"/>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-            <div>Name of student: ${state.firstname}</div>
-            <div>Date of transaction: ${state.addedon}</div>
-        </div>
-        <br/>
-        <table style="font-family:arial, sans-serif;border-collapse: collapse;width:80%;">
-            <tr>
-                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Fee Payment Reference ID</td>
-                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${state.txnid}</td>
-            </tr>
-            <tr style="background: #f1f1f1;">
-                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Mode of Payment</td>
-                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${state.mode}</td>
-            </tr>
-            <tr>
-                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Total Amount Paid</td>
-                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${state.amount}</td>
-            </tr>
-            <tr>
-                <td style="border:1px solid #dddddd;text-align:left;padding:8px;" colspan="2">Amount Paid: 
-                    ${state.installmentsFrontend.map((item, i) => (
-                        `<table style="font-family:arial, sans-serif;border-collapse: collapse;width:80%;">
-                            <tr style="background: #f1f1f1;">
-                                <td style="border:1px solid #dddddd;text-align:left;padding:8px;" colspan="2">
-                                    ${item.name}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Installement amount</td>
-                                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${item.amount}</td>
-                            </tr>
-                            <tr style="background: #f1f1f1;">
-                                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Discount Amount</td>
-                                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${item.discount || 0}</td>
-                            </tr>
-                            <tr>
-                                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Penalty amount</td>
-                                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${item.penalty}</td>
-                            </tr>
-                            <tr style="background: #f1f1f1;">
-                                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">Total Paid</td>
-                                <td style="border:1px solid #dddddd;text-align:left;padding:8px;">${parseFloat(item.amount) + parseFloat(item.penalty)}</td>
-                            </tr>
-                    </table>`
-                    )).join(' ')}
-                </td>
-            </tr>
-        </table>
-        <br/><br/><br/><br/><br/>
-        <hr/>
-        Thank you for your payment!
-        <hr/>
-    </div>`
+    let pdfContent = `<div style="padding: 50px 20px;background: #FFF; color: #000; font-size: 16px; width: 81.25%;heigth:100%;">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+    <h1 style="font-weight: bolder;font-family: 'Montserrat';font-size:44px">
+        Receipt
+    </h1>
+    <div style="padding: 30px 40px">
+        <img src="${`data:image/png;base64, ${state.studentFrontend.logo}`}" height="50px" style="display: block;"/>
+    </div>
+    </div>
+    <table>
+        <tr style="text-align: left;font-family: 'Montserrat';">
+            <td style="width: 70%; border: none; vertical-align: top;">
+                <h2>Student Details</h2>
+                <table style="border-collapse: collapse; width: 100%;">
+                    <tr>
+                        <td style="border: none; text-align: left;">Name:</td>
+                        <td style="border: none; text-align: left;font-weight: bolder;">${state.firstname}</td>
+                    </tr>
+                    <tr>
+                        <td style="border: none; text-align: left;">Course:</td>
+                        <td style="border: none; text-align: left;font-weight: bolder;">${state.studentFrontend.course}</td>
+                    </tr>
+                    <tr>
+                        <td style="border: none; text-align: left;">Batch:</td>
+                        <td style="border: none; text-align: left;font-weight: bolder;">${state.studentFrontend.batch}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 
+    <h2 style="background-color: #fff; color: #000000; font-weight: bold;font-family: 'Montserrat';">Transactions Details</h2>
+    <table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Fee Payment Reference ID</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.txnid}</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Date of Transaction</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.addedon}</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Mode of Payment</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.mode}</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Amount Paid</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.amount}</td>
+        </tr>
+    </table>
+
+    <h2 style="font-family: 'Montserrat';">Installments</h2>
+    ${state.installmentsFrontend.map((item, i) => (
+    `<table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
+        <tr style="background-color: #ddd">
+            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.name}</th>
+        </tr>
+    </table>
+    <table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Installment Amount</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.amount}</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Discount Amount</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.discount || 0}</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Penalty amount</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.penalty}</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Total Amount</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${parseFloat(item.amount) + parseFloat(item.penalty)}</td>
+        </tr>
+    </table>
+    <div>
+    `)).join('<br />')}`
     doc.html(
         pdfContent,
         {
-            'callback': function(dispose){
-                doc.internal.write(0, "Tw");
-                doc.save('fee-payment-receipt.pdf');
-            },
-            'margin': [0, 0, 0, 0],
-            'width': 550,
-            'windowWidth': 1000
+          'callback': function (dispose) {
+            // Calculate the position for the footer image
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const footerImageWidth = pageWidth; // Set the width to fill the entire page width
+            const footerImageHeight = 40; // Increase the height of your footer image
+            const footerX = 0; // Aligned to the start of the page horizontally
+            const footerY = pageHeight - footerImageHeight; // Aligned to the bottom of the page
+
+            // doc.addFont('Montserrat-Regular', 'Montserrat', 'normal');
+
+            // Set the font to Montserrat
+            doc.setFont('Helvetica');
+            // Add the footer image
+            doc.addImage(credencWoodmark, 'PNG', footerX, footerY, footerImageWidth, footerImageHeight);
+      
+            // Save the PDF
+            doc.save('fee-payment-receipt.pdf');
+            
+          },
+          'margin': [0, 0, 0, 0],
+          'width': 550,
+          'windowWidth': 1000,
         }
-    );
+      );
 }

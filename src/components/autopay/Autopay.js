@@ -195,11 +195,11 @@ export default function Autopay() {
                     ₹ {totalAmount}
                 </div>
            </div>
-           {    totalAmount < 6 &&
+           {    totalAmount <= 10 &&
                 <div className='amount-container' style={{justifyContent:'flex-start'}}>
                         <img src={awaitIcon} alt="status-icon" height={25} width={25} style={{objectFit:'contain'}}/>
                         <div className='amount-label'>
-                            Amount cannot be less than 6
+                            Amount cannot be lesser than 10
                         </div>
                 </div>
            }
@@ -242,7 +242,7 @@ export default function Autopay() {
                             return(
                                 <div className='quarter-container' key={index}>
                                     <div className='quarter-header'>
-                                        <span className='quarter-label'>{item.name}</span>
+                                        <span className='quarter-label'>{item.name}<br/><p style={{fontSize: '1rem', color: '#000000', fontWeight:'400', textTransform: 'capitalize',margin:0}}>{item?.fee_category?.name}</p></span>
                                         <span className='quarter-label'>{moment(item.start_date).format("MMM Do YYYY")}</span>
                                         <span className='quarter-label' style={{fontWeight: 700,width: '20%',textAlign:'center'}}>₹ {item.amount}</span>
                                     </div>
