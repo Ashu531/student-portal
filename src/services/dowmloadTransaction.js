@@ -1,15 +1,16 @@
 import { jsPDF } from 'jspdf';
+import React, { useState, useEffect } from 'react';
 import credencLogo from '../assets/credenc-text-logo.png';
 import credencWoodmark from '../assets/logo/credencWoodmark.png'
 
 export const downloadTransaction = (state) => {
     const doc = new jsPDF('p', 'px', 'a4', true);
-
+    console.log(state.student_name,"state.student_name+++")
     let pdfContent = `
     <div style="font-family: 'Montserrat';padding: 50px 20px;background: #FFF; color: #000; font-size: 16px; width: 81.25%;heigth:100%;">
     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
     <h1 style="font-weight: bolder;font-family: 'Montserrat';font-size:44px">
-        Receipt
+        RECEIPT
     </h1>
     <div style="padding: 30px 40px">
         <img src="${`data:image/png;base64, ${state.instituteLogo}`}" height="50px" style="display: block;"/>
@@ -22,7 +23,11 @@ export const downloadTransaction = (state) => {
                 <table style="border-collapse: collapse; width: 100%;">
                     <tr>
                         <td style="border: none; text-align: left;">Name:</td>
-                        <td style="border: none; text-align: left;font-weight: bolder;">${state.student_name}</td>
+                        <td style="border: none; text-align: left;font-weight: bolder;">${state.name.map((item,index)=>{
+                            return(
+                                `${item}`
+                            )
+                        }).join('  ')}</td>
                     </tr>
                     <tr>
                         <td style="border: none; text-align: left;">Course:</td>
@@ -42,23 +47,23 @@ export const downloadTransaction = (state) => {
     <table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Fee Payment Reference ID</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.transaction_id}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.transaction_id}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Date of Transaction</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.transaction_date}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.transaction_date}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Mode of Payment</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.mode}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.mode}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Amount Paid</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.transaction_amount}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.transaction_amount}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Status</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.status}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.status}</td>
         </tr>
     </table>
 
@@ -66,25 +71,25 @@ export const downloadTransaction = (state) => {
     ${state.installments_summary.map((item, i) => (
     `<table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
         <tr style="background-color: #ddd">
-            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.name}</th>
+            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${item.name}</th>
         </tr>
     </table>
     <table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Installment Amount</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.amount}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${item.amount}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Discount Amount</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.discount || 0}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${item.discount || 0}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Penalty amount</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.penalty}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${item.penalty}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Total Amount</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${parseFloat(item.amount) + parseFloat(item.penalty)}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${parseFloat(item.amount) + parseFloat(item.penalty)}</td>
         </tr>
     </table>
     <div>
