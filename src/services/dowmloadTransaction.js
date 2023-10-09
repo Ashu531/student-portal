@@ -1,11 +1,11 @@
 import { jsPDF } from 'jspdf';
 import React, { useState, useEffect } from 'react';
 import credencLogo from '../assets/credenc-text-logo.png';
+import moment from 'moment';
 import credencWoodmark from '../assets/logo/credencWoodmark.png'
 
 export const downloadTransaction = (state) => {
     const doc = new jsPDF('p', 'px', 'a4', true);
-    console.log(state.student_name,"state.student_name+++")
     let pdfContent = `
     <div style="font-family: 'Montserrat';padding: 50px 20px;background: #FFF; color: #000; font-size: 16px; width: 81.25%;heigth:100%;">
     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
@@ -51,7 +51,7 @@ export const downloadTransaction = (state) => {
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Date of Transaction</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.transaction_date}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.transaction_date} ${state.transaction_time}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Mode of Payment</td>
