@@ -4,11 +4,12 @@ import credencWoodmark from '../assets/logo/credencWoodmark.png'
 
 export const downloadPdf = (state) => {
     const doc = new jsPDF('p', 'px', 'a4', true);
+    doc.setFont("helvetica");
     let pdfContent = `
   <div style="padding: 50px 20px;background: #FFF; color: #000; font-size: 16px; width: 81.25%;heigth:100%;">
     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
     <h1 style="font-weight: bolder;font-family: 'Montserrat';font-size:44px">
-        Receipt
+    RECEIPT
     </h1>
     <div style="padding: 30px 40px">
         <img src="${`data:image/png;base64, ${state.studentFrontend.logo}`}" height="50px" style="display: block;"/>
@@ -40,49 +41,41 @@ export const downloadPdf = (state) => {
     <table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Fee Payment Reference ID</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.txnid}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.txnid}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Date of Transaction</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.addedon}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.addedon}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Mode of Payment</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.mode}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.mode}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Amount Paid</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.amount}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.amount}</td>
         </tr>
     </table>
 
     <h2 style="font-family: 'Montserrat';">Installments</h2>
-    ${state.installmentsFrontend.map((item, i) => (
-    `<table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
-        <tr style="background-color: #ddd">
-            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.name}</th>
-        </tr>
-    </table>
     <table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Installment Amount</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.amount}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.amount}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Discount Amount</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.discount || 0}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.discount || 0}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Penalty amount</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.penalty}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.penalty || 0}</td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Total Amount</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${parseFloat(item.amount) + parseFloat(item.penalty)}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.amount}</td>
         </tr>
-    </table>
-    <div>`
-    )).join('<br />')}`
+    </table>`
     doc.html(
         pdfContent,
         {

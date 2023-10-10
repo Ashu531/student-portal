@@ -37,51 +37,43 @@ export const downloadAdhocPdf = (state) => {
 
     <h2 style="background-color: #fff; color: #000000; font-weight: bold;font-family: 'Montserrat';">Transactions Details</h2>
     <table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
-        <tr>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Fee Payment Reference ID</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.txnid}</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Date of Transaction</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.addedon}</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Mode of Payment</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.mode}</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Amount Paid</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${state.amount}</td>
-        </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Fee Payment Reference ID</td>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.txnid}</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Date of Transaction</td>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.addedon}</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Mode of Payment</td>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.mode}</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Amount Paid</td>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.amount}</td>
+    </tr>
     </table>
 
     <h2 style="font-family: 'Montserrat';">Installments</h2>
-    ${state.installmentsFrontend.map((item, i) => (
-    `<table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
-        <tr style="background-color: #ddd">
-            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.name}</th>
-        </tr>
-    </table>
     <table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
-        <tr>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Installment Amount</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.amount}</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Discount Amount</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.discount || 0}</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Penalty amount</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${item.penalty}</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Total Amount</td>
-            <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${parseFloat(item.amount) + parseFloat(item.penalty)}</td>
-        </tr>
-    </table>
-    <div>
-    `)).join('<br />')}`
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Installment Amount</td>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.amount}</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Discount Amount</td>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.discount || 0}</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Penalty amount</td>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.penalty || 0}</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Total Amount</td>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.amount}</td>
+    </tr>
+    </table>`
     doc.html(
         pdfContent,
         {
