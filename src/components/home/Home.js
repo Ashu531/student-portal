@@ -670,7 +670,7 @@ export default function Home() {
                         </div>
                     }
 
-                    {   dashboardType.name === 'autopay' && (dashboardType.status === 'setup_done' || dashboardType.status === 'setup_done_by_admin') &&
+                    {   dashboardType.name === 'autopay' && (dashboardType.status === 'setup_done' || dashboardType.status === 'setup_done_by_admin' || dashboardType.status === 'initiated') &&
                         <div style={{width:'100%',marginTop: 24}}>
                             <DetailBanner 
                                 dashboardStatus={dashboardType.status}
@@ -710,26 +710,34 @@ export default function Home() {
                     }
 
                     {dashboardType.name === 'autopay' && dashboardType.status === 'setup_done_by_admin' &&
-                        <div className='paid-status' style={{margin: '1rem 0', background: 'rgba(216, 35, 35, 0.3)'}}>
-                            <div className='icon-circle'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
+                        <div className='paid-status' style={{margin: '1rem 0', background: 'rgba(216, 35, 35, 0.3)',justifyContent:'space-between'}}>
+                            <div style={{display:'flex',justifyContent:'center',alignItems:'center',gap: 12}}>
+                                <div className='icon-circle'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
+                                </div>
+                                <div className='status-text'>
+                                    Your request to cancel eNach is rejected by your admin. Upcoming fees will be auto debited.
+                                </div> 
                             </div>
-                            <div className='status-text'>
-                                Your request to cancel eNach is rejected by your admin. Upcoming fees will be auto debited.
-                            </div> 
-                            <svg xmlns="http://www.w3.org/2000/svg" onClick={bannerCancellation} style={{marginLeft: 'auto', cursor: 'pointer'}} width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
+                            <div style={{height: '100%',alignSelf:'flex-end'}}>
+                                <svg xmlns="http://www.w3.org/2000/svg" onClick={bannerCancellation} style={{marginLeft: 'auto', cursor: 'pointer'}} width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
+                            </div>
                         </div>
                     }
 
                     {dashboardType.name === 'autopay' && dashboardType.status === 'setup_cancel_by_admin' &&
                         <div className='paid-status' style={{margin: '1rem 0', background: 'rgba(119, 219, 38, 0.3)'}}>
-                            <div className='icon-circle'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="40 144 96 200 224 72" fill="none" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
+                             <div style={{display:'flex',justifyContent:'flex-start',alignItems:'center',gap: 12}}>
+                                <div className='icon-circle'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="40 144 96 200 224 72" fill="none" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
+                                </div>
+                                <div className='status-text'>
+                                    Your request to cancel eNach is accepted by your admin.
+                                </div>
+                            </div> 
+                            <div style={{height: '100%',alignSelf:'center'}}>
+                                <svg xmlns="http://www.w3.org/2000/svg" onClick={bannerCancellation} style={{marginLeft: 'auto', cursor: 'pointer'}} width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
                             </div>
-                            <div className='status-text'>
-                                Your request to cancel eNach is accepted by your admin.
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" onClick={bannerCancellation} style={{marginLeft: 'auto', cursor: 'pointer'}} width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
                         </div>
                     }
 
