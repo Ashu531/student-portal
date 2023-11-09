@@ -38,7 +38,10 @@ export default function Payment() {
         'amount': amount,
         'mode': 'FULL_PAYMENT',
     }).then(res => res.data)
-    .catch(err => err.response.data);
+    .catch(error => {
+        alert(error.response.data.error)
+        return error.response.data
+    });
 
     return data;
 }
@@ -55,7 +58,10 @@ const getSelectedInstallments = () => {
 const getData = async () => {
     const data = await axios.get(`${API_URL}/api/kid/v1/school/all_installments/${getToken()}/`)
     .then(res => res.data)
-    .catch(error => error.response.data);
+    .catch(error => {
+        alert(error.response.data.error)
+        return error.response.data
+    });
 
     return data;
 }
@@ -89,7 +95,10 @@ const closeModal = () => {
 
 const logResponse = async (res) => {
     return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
-    .catch(err => err);
+    .catch(error => {
+        alert(error.response.data.error)
+        return error.response.data
+    });
 }
 
 const handleProceedAndPay = async () => {
@@ -147,7 +156,10 @@ const handlePaymentSuccessResponse=async(state)=>{
    }
 
    await axios.post(`${API_URL}/api/kid/v1/payment_success_response/${getToken()}/`,detail).then(res => res.data)
-   .catch(err => alert(error.response.data.error));
+   .catch(error => {
+    alert(error.response.data.error)
+    return error.response.data
+});
 
 }
 

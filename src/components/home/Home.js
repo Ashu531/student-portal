@@ -145,7 +145,10 @@ export default function Home() {
             'ids': ids,
             'amount': amount,
         }).then(res => res.data)
-        .catch(err => alert(error.response.data.error));
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
 
         return data;
     }
@@ -226,7 +229,10 @@ export default function Home() {
 
     const logResponse = async (res) => {
         return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
-        .catch(err => err);
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
     }
 
     const handleProceedAndPay = async () => {
@@ -416,9 +422,10 @@ export default function Home() {
             application_id: dashboardType.application_id
         }).then(res => {
             closeConfirmModal()
-        }).catch(err => {
-            alert(err.response.data.error)
+        }).catch(error => {
+            alert(error.response.data.error)
             closeConfirmModal()
+            return error.response.data
         });
     }
 
@@ -482,9 +489,10 @@ export default function Home() {
             type: dashboardType.name
         }).then(res => {
             closeConfirmModal()
-        }).catch(err => {
-            err.response.data
+        }).catch(error => {
+            alert(error.response.data.error)
             closeConfirmModal()
+            return error.response.data
         });
     }
 
@@ -530,8 +538,9 @@ export default function Home() {
                     state: res.data.data
                 });
             }
-        }).catch(err => {
-            alert(err.response.data.error)
+        }).catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
         });
         
     }
@@ -868,6 +877,7 @@ export default function Home() {
                 modalData={confirmModalData}
                 student={student}
                 amount={pendingAmount}
+                error={dashboardType.error}
                 handleClose={closeConfirmationModal}
                 installments_count={dashboardType.installments_count}
             />

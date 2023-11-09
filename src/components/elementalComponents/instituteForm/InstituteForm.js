@@ -266,7 +266,10 @@ export default function InstituteForm({
             .then(res => {
                 setDropDownOptions(res.data.data)
             })
-            .catch(error => error.response.data);
+            .catch(error => {
+                alert(error.response.data.error)
+                return error.response.data
+            });
         }else{
             setDropDownOptions([])
         }
@@ -278,7 +281,10 @@ export default function InstituteForm({
             setDropDownOptions(res.data.data)
             // getDropdownData(res.data.data)
         })
-        .catch(error => error.response.data);
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
     }
 
     const handleDropDownOpen=(e,item)=>{
@@ -377,18 +383,20 @@ export default function InstituteForm({
         
         const response = await axios.post(`${API_URL}/api/fees/v2/otf/payment/`,data).
         then(res => res.data)
-        .catch(err => {
-            err.response.data
-            alert(err.response.data.error)
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
         });
-    
         return response;
     }
 
 
     const logResponse = async (res) => {
         return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
-        .catch(err => err);
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
     }
 
     const handleProceed = async () => {

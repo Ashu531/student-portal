@@ -57,7 +57,10 @@ export default function PartialPayment() {
             'ids': ids,
             'amount': amount,
         }).then(res => res.data)
-        .catch(err => err.response.data);
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
 
         return data;
     }
@@ -74,7 +77,10 @@ export default function PartialPayment() {
     const getData = async () => {
         const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
         .then(res => res.data)
-        .catch(error => error.response.data);
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
 
         return data;
     }
@@ -156,7 +162,10 @@ export default function PartialPayment() {
 
     const logResponse = async (res) => {
         return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
-        .catch(err => err);
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
     }
 
     const handleProceedAndPay = async () => {
@@ -217,7 +226,10 @@ export default function PartialPayment() {
         }
      
         await axios.post(`${API_URL}/api/kid/v1/payment_success_response/${getToken()}/`,detail).then(res => res.data)
-        .catch(err => alert(error.response.data.error));
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
      
      }
 

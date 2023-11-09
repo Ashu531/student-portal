@@ -22,7 +22,10 @@ export default function Transaction() {
             }
                 
             )
-            .catch(error => error.response.data);
+            .catch(error => {
+                alert(error.response.data.error)
+                return error.response.data
+            });
     
             // return data;
         }
@@ -96,6 +99,14 @@ export default function Transaction() {
                     <div className='student-label'>No. of Payments</div>
                     <div className='student-detail'>{studentData?.installments_count}</div>
                 </div>
+                {
+                    urlQuery.length > 1 && urlQuery[1]?.name == 'status' && urlQuery[1]?.value == 'failure' &&
+                    <div className='student-container'>
+                        <div className='student-label'>Reason</div>
+                        <div className='student-detail'>{studentData?.error}</div>
+                    </div>
+                }
+               
            </div>
            <div style={{width: '100%',paddingBottom: '4rem'}}>
                 <Button 

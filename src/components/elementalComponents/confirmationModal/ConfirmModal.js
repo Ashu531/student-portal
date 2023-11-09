@@ -12,7 +12,8 @@ export default function ConfirmationModal({
     autoPay,
     student,
     amount,
-    installments_count
+    installments_count,
+    error
 }) 
 {
     return (
@@ -57,6 +58,13 @@ export default function ConfirmationModal({
                             <div className='student-label'>No. of Payments</div>
                             <div className='student-detail'>{installments_count}</div>
                         </div>}
+                        {
+                            modalData?.successImage === false &&
+                            <div className='student-container'>
+                                <div className='student-label'>Reason</div>
+                                <div className='student-detail'>{error}</div>
+                            </div>
+                        }
                     </div>
                 }
                         

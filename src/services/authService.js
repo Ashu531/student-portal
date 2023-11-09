@@ -36,7 +36,10 @@ const authenticateUser = async (token) => {
     
     let user = await axios.get(`${API_URL}/api/kid/v1/authentication/${token}/`)
     .then(res => res.data)
-    .catch(err => console.log(err));
+    .catch(error => {
+        alert(error.response.data.error)
+        return error.response.data
+    });
     if(user && user.status){
         saveToken(token);
         return true;
@@ -51,7 +54,10 @@ const logoutUser = async () => {
     // console.log('logging out...');
     let res = await axios.delete(`${API_URL}/api/kid/v1/logout/${getToken()}/`)
     .then(res => res.data)
-    .catch(err => console.log(err));
+    .catch(error => {
+        alert(error.response.data.error)
+        return error.response.data
+    });
     if(res){
         removeToken();
         return true;

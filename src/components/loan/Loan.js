@@ -58,7 +58,10 @@ export default function Loan() {
     const getData = async () => {
         const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
         .then(res => res.data)
-        .catch(error => error.response.data);
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
 
         return data;
     }
@@ -89,7 +92,10 @@ export default function Loan() {
                     setLoanSuccess(true)
                     setLoanData(res.data.data)
                 }
-            }).catch(err => alert(err.response.data.error));
+            }).catch(error => {
+                alert(error.response.data.error)
+                return error.response.data
+            });
         }
 
         
