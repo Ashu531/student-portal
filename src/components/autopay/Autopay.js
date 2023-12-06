@@ -46,8 +46,10 @@ export default function Autopay() {
     const getData = async () => {
         const data = await axios.get(`${API_URL}/api/kid/v1/autopay/installments/${getToken()}/`)
         .then(res => res.data)
-        .catch(error => error.response.data);
-
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
         return data; 
     }
 
@@ -101,7 +103,10 @@ export default function Autopay() {
             }
             
         })
-        .catch(error => error.response.data);
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
 
         return data;
     }
@@ -117,7 +122,10 @@ export default function Autopay() {
                let url = res.data.url
                window.location.href = url
            })
-            .catch(err => alert(err.response.data.error));
+           .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
     }
 
     const handleToggle=(item)=>{
@@ -243,7 +251,7 @@ export default function Autopay() {
                                 <div className='quarter-container' key={index}>
                                     <div className='quarter-header'>
                                         <span className='quarter-label'>{item.name}<br/><p style={{fontSize: '1rem', color: '#000000', fontWeight:'400', textTransform: 'capitalize',margin:0}}>{item?.fee_category?.name}</p></span>
-                                        <span className='quarter-label'>{moment(item.start_date).format("MMM Do YYYY")}</span>
+                                        <span className='quarter-label'>{moment(item.due_date).format("MMM Do YYYY")}</span>
                                         <span className='quarter-label' style={{fontWeight: 700,width: '20%',textAlign:'center'}}>₹ {item.amount}</span>
                                     </div>
                                     
