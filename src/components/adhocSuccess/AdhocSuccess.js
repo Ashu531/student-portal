@@ -75,7 +75,7 @@ export default function AdhocSuccess() {
                     </div>
                     <div className='pair'>
                         <div className='key'>{`Date & Time`}</div>
-                        <div className='value'>{state.addedon}</div>
+                        <div className='value'>{(new Date(state.addedon)).toLocaleDateString()}</div>
                     </div>
                     <div className='pair'>
                         <div className='key'>Amount</div>
@@ -89,7 +89,7 @@ export default function AdhocSuccess() {
                 <div className='small-wrapper' style={{margin: '1.5rem 0', width: '100%'}}>
                     <Button 
                         text='Download Acknowledgement' 
-                        handleClick={() => downloadAdhocPdf(state)} 
+                        handleClick={() => downloadAdhocPdf({...state, addedon: (new Date(`${state.addedon} UTC`)).toLocaleString()})} 
                         classes='button-big button-primary'/>
                 </div>
             </div>

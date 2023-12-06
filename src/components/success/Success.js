@@ -78,7 +78,8 @@ export default function Success() {
                     </div>
                     <div className='pair'>
                         <div className='key'>{`Date & Time`}</div>
-                        <div className='value'>{state.addedon}</div>
+                        {console.log('added on', state.addedon)}
+                        <div className='value'>{(new Date(`${state.addedon} UTC`)).toLocaleString()}</div>
                     </div>
                     <div className='pair'>
                         <div className='key'>Amount</div>
@@ -92,7 +93,7 @@ export default function Success() {
                 <div className='small-wrapper' style={{margin: '1.5rem 0', width: '100%'}}>
                     <Button 
                         text='Download Acknowledgement' 
-                        handleClick={() => downloadPdf(state)} 
+                        handleClick={() => downloadPdf({...state, addedon: (new Date(`${state.addedon} UTC`)).toLocaleString()})} 
                         classes='button-big button-primary'/>
                 </div>
             </div>
