@@ -62,55 +62,56 @@ export default function QuickViewModal({
                         {quickViewState.transactionHistory &&
                         quickViewState.transactionHistory.map((item, i) => (
                             <Collapsible
-                            key={i}
-                            handleCollapsibleDownload={()=>handleCollapsibleDownload(item)}
-                            collapsedChildren={[
-                                <div
-                                style={{
-                                    width: "10px",
-                                    height: "10px",
-                                    background:
-                                    item.status == "success" ? "#00CB9C" : "#E35151",
-                                    borderRadius: "100%",
-                                }}
-                                ></div>,
-                                <div style={{ flexGrow: "1" }}>
-                                <div
-                                    className="title"
-                                    style={{ textTransform: "capitalize" }}
-                                >
-                                    {item.categories.length > 0 &&
-                                    item.categories.join(", ")}
-                                    {item.categories.length == 0 && "Transaction"}
-                                </div>
-                                <div className="subtitle">
-                                    <span>
-                                    {item.payment_type}: {item.mode}
-                                    </span>
-                                    <span
-                                    style={{
-                                        display: "inline-block",
-                                        margin: "1px 4px",
-                                        width: "5px",
-                                        height: "5px",
-                                        background: "#0B0902",
-                                        borderRadius: "100%",
-                                    }}
-                                    ></span>
-                                    {item.transaction_date}{" "}
-                                    {item.transaction_time.split(".")[0]}
-                                </div>
-                                </div>,
-                                <div style={{ flexGrow: "1", textAlign: "end" }}>
-                                <div
-                                    className="title"
-                                    style={{ textTransform: "capitalize" }}
-                                >
-                                    ₹ {item.transaction_amount}
-                                </div>
-                                <div className="subtitle" style={ window.innerWidth < 500 ? {display:'none'} : null}>{item.transaction_id}</div>
-                                </div>,
-                            ]}
+                              download={item.status == 'success'}
+                              key={i}
+                              handleCollapsibleDownload={()=>handleCollapsibleDownload(item)}
+                              collapsedChildren={[
+                                  <div
+                                  style={{
+                                      width: "10px",
+                                      height: "10px",
+                                      background:
+                                      item.status == "success" ? "#00CB9C" : "#E35151",
+                                      borderRadius: "100%",
+                                  }}
+                                  ></div>,
+                                  <div style={{ flexGrow: "1" }}>
+                                  <div
+                                      className="title"
+                                      style={{ textTransform: "capitalize" }}
+                                  >
+                                      {item.categories.length > 0 &&
+                                      item.categories.join(", ")}
+                                      {item.categories.length == 0 && "Transaction"}
+                                  </div>
+                                  <div className="subtitle">
+                                      <span>
+                                      {item.payment_type}: {item.mode}
+                                      </span>
+                                      <span
+                                      style={{
+                                          display: "inline-block",
+                                          margin: "1px 4px",
+                                          width: "5px",
+                                          height: "5px",
+                                          background: "#0B0902",
+                                          borderRadius: "100%",
+                                      }}
+                                      ></span>
+                                      {item.transaction_date}{" "}
+                                      {item.transaction_time.split(".")[0]}
+                                  </div>
+                                  </div>,
+                                  <div style={{ flexGrow: "1", textAlign: "end" }}>
+                                  <div
+                                      className="title"
+                                      style={{ textTransform: "capitalize" }}
+                                  >
+                                      ₹ {item.transaction_amount}
+                                  </div>
+                                  <div className="subtitle" style={ window.innerWidth < 500 ? {display:'none'} : null}>{item.transaction_id}</div>
+                                  </div>,
+                              ]}
                             >
                             <div style={{ margin: "15px 0 0 0" }}></div>
                             <div

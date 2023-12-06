@@ -4,6 +4,7 @@ import './_quickviewcollapsible.scss';
 import cloudIcon from '../../../assets/cloudDownload.svg'
 
 export default function QuickViewCollapsible({ 
+    download=true,
     children,
     collapsedChildren=[],
     handleCollapsibleDownload
@@ -19,7 +20,7 @@ export default function QuickViewCollapsible({
             <div className='row' style={{background: `${collapsed ? '': 'rgb(255, 255, 255, 0.95)'}`}}>
                 {collapsedChildren.map(child => child)}
                 
-                <img src={cloudIcon} onClick={()=>handleCollapsibleDownload()} />
+                {download && <img src={cloudIcon} onClick={()=>handleCollapsibleDownload()} />}
             <div onClick={handleClick}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{transform: collapsed ? 'none' : 'rotate(180deg)'}}>
                     <g id="CaretDown">

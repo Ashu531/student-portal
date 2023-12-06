@@ -14,7 +14,7 @@ export default function TransactionStatus({title,description,icon}) {
             {
                 description && 
                 <div className='description'>
-                    Your auto-pay has been initiated and you will be get a confirmation up within 24 hours. 
+                    {description} 
                 </div>
             }
             
