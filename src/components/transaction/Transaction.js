@@ -5,23 +5,20 @@ import backIcon from '../../assets/caret-right.svg';
 import TransactionStatus from '../../components/elementalComponents/transactionStatus/TransactionStatus'
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { ThreeDots } from 'react-loader-spinner';
 
 export default function Transaction() {
 
     const navigate = useNavigate();
     const [urlQuery,setUrlQuery] = useState([])
-    const [studentData,setStudentData] = useState({
-
-    })
+    const [studentData,setStudentData] = useState({})
 
     const getTransactionDetail=async(queryList)=>{
         if(queryList[0]?.name == 'app_id'){
             const data = await axios.get(`${API_URL}/api/kid/v1/autopay/status/${queryList[0]?.value}/`)
             .then(res => {
                 setStudentData(res.data.student)
-            }
-                
-            )
+            })
             .catch(error => error.response.data);
     
             // return data;
@@ -109,6 +106,5 @@ export default function Transaction() {
         </>
     )
 }
-
 
 
