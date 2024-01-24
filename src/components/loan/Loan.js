@@ -11,6 +11,8 @@ import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
 import Select from 'react-select';
 import Switch from "react-switch";
 import ChatWidget from '@papercups-io/chat-widget';
+import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
+import { downloadTransaction } from '../../services/dowmloadTransaction';
 
 const relations = [
     { value: 'Self', label: 'Self' },
@@ -43,6 +45,8 @@ export default function Loan() {
     const [remark,setRemark] = useState('');
     const [applicantName,setApplicantName] = useState('')
     const [nameChecked,setNameChecked] = useState(false)
+    const [quickView,setQuickView] = useState(false);
+    const [quickViewState,setQuickViewState] = useState(false);
 
     const {state} = useLocation();
 
@@ -50,7 +54,6 @@ export default function Loan() {
         if(!state)
             navigate('/', {replace: true});
         else{
-            console.log(state,"state+++")
             setLoanData(state)
         }
     }, []);
@@ -193,6 +196,49 @@ export default function Loan() {
         }
     },[nameChecked])
 
+    const closeQuickView=()=>{
+        setQuickView(false)
+    }
+
+    const openQuickView=()=>{
+        setQuickView(true)
+        handleStudentClick()
+    }
+
+    const downloadCollapsiblePdf=(item)=>{
+        let name = item.student_name.split(' ');
+        let state =  {
+            ...item,
+            'instituteLogo': instituteLogo,
+            name
+        }
+        downloadTransaction(state)
+    }
+
+    const handleStudentClick = async () => {
+
+        let newQuickViewState = {};
+        newQuickViewState["student"] = student;
+
+  
+        let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
+            headers: {
+                'token' : getToken()
+            }
+        })
+        .then(res => {
+            newQuickViewState["transactionHistory"] = res.data.data
+        })
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
+  
+        Promise.all([history]).then((values) => {
+          setQuickViewState(newQuickViewState);
+        });
+    };
+
     return (
         <>
         {
@@ -203,6 +249,7 @@ export default function Loan() {
         <Header
              title="Pay With Credenc"
              icon={student.logo}
+             openQuickView={()=>openQuickView()}
            />
         <div className='loan'>
             <div style={window.innerWidth > 500 ? {minHeight: '12rem',width: '100%',display:'flex',justifyContent:'center',alignItems:'center'} : {minHeight: '15rem',width:'100%'}}>
@@ -306,6 +353,15 @@ export default function Loan() {
               </div>
             </div>
             </>
+        }
+        {
+            quickView &&
+            <QuickViewModal 
+                 closeQuickView={()=>closeQuickView()}
+                 quickView={quickView}
+                 quickViewState={quickViewState}
+                 handleCollapsibleDownload={(item)=>downloadCollapsiblePdf(item)}
+            />
         }
         <ChatWidget
             token={`${PAPERCUPS_TOKEN}`}

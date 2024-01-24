@@ -12,6 +12,8 @@ import Pair from '../elementalComponents/pair/Pair';
 import SmallTable from '../elementalComponents/smallTable/SmallTable';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 import Table from '../elementalComponents/table/Table';
+import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
+import { downloadTransaction } from '../../services/dowmloadTransaction';
 
 export default function Payment() {
 
@@ -29,6 +31,10 @@ export default function Payment() {
   const [confirmationDialog, setConfirmationDialog] = useState(false);
 
   const [easebuzzCheckout, setEasebuzzCheckout] = useState(null);
+
+  const [quickView,setQuickView] = useState(false);
+
+  const [quickViewState,setQuickViewState] = useState(false);
 
   const getModalData = async () => {
     const {ids, amount} = getSelectedInstallments();
@@ -209,17 +215,60 @@ useEffect(async () => {
         setEasebuzzCheckout(new EasebuzzCheckout("7ITASSQJE1", 'prod'));
     });
 
-}, [])
+    }, [])
 
-const logout = async () => {
-    const loggedOut = await logoutUser();
-    if(loggedOut)
-        navigate('/login', {replace: true});
-}
+    const logout = async () => {
+        const loggedOut = await logoutUser();
+        if(loggedOut)
+            navigate('/login', {replace: true});
+    }
+
+    const closeQuickView=()=>{
+        setQuickView(false)
+    }
+
+    const openQuickView=()=>{
+        setQuickView(true)
+        handleStudentClick()
+    }
+
+    const downloadCollapsiblePdf=(item)=>{
+        let name = item.student_name.split(' ');
+        let state =  {
+            ...item,
+            'instituteLogo': instituteLogo,
+            name
+        }
+        downloadTransaction(state)
+    }
+
+    const handleStudentClick = async () => {
+
+        let newQuickViewState = {};
+        newQuickViewState["student"] = student;
+
+  
+        let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
+            headers: {
+                'token' : getToken()
+            }
+        })
+        .then(res => {
+            newQuickViewState["transactionHistory"] = res.data.data
+        })
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
+  
+        Promise.all([history]).then((values) => {
+          setQuickViewState(newQuickViewState);
+        });
+    };
 
   return (
     <>
-            <Header title="Pay in Full" icon={student.logo} />
+        <Header title="Pay in Full" icon={student.logo} openQuickView={()=>openQuickView()} />
         <div className={`payment ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='wrapper container'>
                 {!loader && <div className='content-container'>
@@ -268,6 +317,15 @@ const logout = async () => {
             handleSubmit={handleProceedAndPay}
             handleClose={closeModal}
         />}
+        {
+            quickView &&
+            <QuickViewModal 
+                 closeQuickView={()=>closeQuickView()}
+                 quickView={quickView}
+                 quickViewState={quickViewState}
+                 handleCollapsibleDownload={(item)=>downloadCollapsiblePdf(item)}
+            />
+        }
         <ChatWidget
             token={`${PAPERCUPS_TOKEN}`}
             inbox={`${PAPERCUPS_INBOX}`}

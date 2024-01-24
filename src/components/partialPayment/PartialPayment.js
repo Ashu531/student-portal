@@ -20,6 +20,8 @@ import CurrencyEthIcon from '../../assets/currency-eth.svg';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 import Header from '../elementalComponents/header/Header';
 import ChatWidget from '@papercups-io/chat-widget';
+import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
+import { downloadTransaction } from '../../services/dowmloadTransaction';
 
 export default function PartialPayment() {
 
@@ -43,6 +45,10 @@ export default function PartialPayment() {
     const [easebuzzCheckout, setEasebuzzCheckout] = useState(null);
 
     const [loader, setLoader] = useState(false);
+
+    const [quickView,setQuickView] = useState(false);
+
+    const [quickViewState,setQuickViewState] = useState(false);
 
     const logout = async () => {
         const loggedOut = await logoutUser();
@@ -279,9 +285,52 @@ export default function PartialPayment() {
 
     }, [])
 
+    const closeQuickView=()=>{
+        setQuickView(false)
+    }
+
+    const openQuickView=()=>{
+        setQuickView(true)
+        handleStudentClick()
+    }
+
+    const downloadCollapsiblePdf=(item)=>{
+        let name = item.student_name.split(' ');
+        let state =  {
+            ...item,
+            'instituteLogo': instituteLogo,
+            name
+        }
+        downloadTransaction(state)
+    }
+
+    const handleStudentClick = async () => {
+
+        let newQuickViewState = {};
+        newQuickViewState["student"] = student;
+
+  
+        let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
+            headers: {
+                'token' : getToken()
+            }
+        })
+        .then(res => {
+            newQuickViewState["transactionHistory"] = res.data.data
+        })
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
+  
+        Promise.all([history]).then((values) => {
+          setQuickViewState(newQuickViewState);
+        });
+    };
+
     return (
         <>
-        <Header title="Pay Individually" icon={student.logo} />
+        <Header title="Pay Individually" icon={student.logo} openQuickView={()=>openQuickView()} />
         <div className={`partial-payment ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='wrapper container'>
                 {!loader && <div className='content-container'>
@@ -329,6 +378,15 @@ export default function PartialPayment() {
             handleSubmit={handleProceedAndPay}
             handleClose={closeModal}
         />}
+        {
+            quickView &&
+            <QuickViewModal 
+                 closeQuickView={()=>closeQuickView()}
+                 quickView={quickView}
+                 quickViewState={quickViewState}
+                 handleCollapsibleDownload={(item)=>downloadCollapsiblePdf(item)}
+            />
+        }
         <ChatWidget
             token={`${PAPERCUPS_TOKEN}`}
             inbox={`${PAPERCUPS_INBOX}`}

@@ -575,7 +575,7 @@ export default function InstituteForm({
                                                 options={dropDownOption}
                                                 styles={select}
                                                 onFocus={(e)=>handleDropDownOpen(e,item)}
-                                                noOptionsMessage={({inputValue}) => !inputValue ? noOptionsText : "Please select course/grade first"}
+                                                placeholder={`Please Select ${item.label}`}
                                             />
                                         </div>
                                 )

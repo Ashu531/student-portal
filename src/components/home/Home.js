@@ -555,7 +555,6 @@ export default function Home() {
     }
 
     const downloadCollapsiblePdf=(item)=>{
-        console.log(item.student_name,"item++")
         let name = item.student_name.split(' ');
         let state =  {
             ...item,
