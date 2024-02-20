@@ -119,8 +119,10 @@ export default function Autopay() {
         let response = await axios.post(`${API_URL}/api/kid/v1/autopay/apply/${getToken()}/`, {
             'amount': String(totalAmount)
            }).then(res => {
-               let url = res.data.url
-               window.location.href = url
+                let url = res.data.url
+                if(url != null){
+                    window.location.href = url
+                }
            })
            .catch(error => {
             alert(error.response.data.error)
