@@ -141,9 +141,7 @@ export default function QuickViewModal({
                         className="quick-view-col"
                         style={{ gap: "5px", width: "100%", margin: "15px 0 30px 0" }}
                     >
-                        {Object.entries(quickViewState.details).map((entry) => (
-                        <Pair1 name={entry[0]} value={`${entry[1]}`} />
-                        ))}
+                        
                     </div> */}
                     </div>
                 )}

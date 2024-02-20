@@ -12,6 +12,8 @@ import ConfirmationModal from '../elementalComponents/confirmationModal/ConfirmM
 import awaitIcon from '../../assets/awaitIcon.svg'
 import ChatWidget from '@papercups-io/chat-widget';
 import { Bars, TailSpin } from "react-loader-spinner";
+import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
+import { downloadTransaction } from '../../services/dowmloadTransaction';
 
 export default function Autopay() {
 
@@ -34,6 +36,9 @@ export default function Autopay() {
         successImage: false
    })
    const [autopayLoader,setAutopayLoader] = useState(false)
+   const [quickView,setQuickView] = useState(false);
+   const [quickViewState,setQuickViewState] = useState(false);
+
    const {state} = useLocation();
 
     useEffect(() => {
@@ -184,12 +189,56 @@ export default function Autopay() {
         setApplicationStatus(false)
     }
 
+    const closeQuickView=()=>{
+        setQuickView(false)
+    }
+
+    const openQuickView=()=>{
+        setQuickView(true)
+        handleStudentClick()
+    }
+
+    const downloadCollapsiblePdf=(item)=>{
+        let name = item.student_name.split(' ');
+        let state =  {
+            ...item,
+            'instituteLogo': instituteLogo,
+            name
+        }
+        downloadTransaction(state)
+    }
+
+    const handleStudentClick = async () => {
+
+        let newQuickViewState = {};
+        newQuickViewState["student"] = student;
+
+  
+        let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
+            headers: {
+                'token' : getToken()
+            }
+        })
+        .then(res => {
+            newQuickViewState["transactionHistory"] = res.data.data
+        })
+        .catch(error => {
+            alert(error.response.data.error)
+            return error.response.data
+        });
+  
+        Promise.all([history]).then((values) => {
+          setQuickViewState(newQuickViewState);
+        });
+    };
+
     return (
         <>
         <Header
              title="Auto-Pay"
              icon={student.logo}
-           />
+             openQuickView={()=>openQuickView()}
+        />
         <div className='autopay'>
            <StudentDetails 
                 name={student.name}
@@ -297,7 +346,17 @@ export default function Autopay() {
                 <TailSpin color="#00BFFF" height={60} width={60}/>
               </div>
             }
+            {
+            quickView &&
+            <QuickViewModal 
+                 closeQuickView={()=>closeQuickView()}
+                 quickView={quickView}
+                 quickViewState={quickViewState}
+                 handleCollapsibleDownload={(item)=>downloadCollapsiblePdf(item)}
+            />
+            }
         </div>
+        
         <ChatWidget
             token={`${PAPERCUPS_TOKEN}`}
             inbox={`${PAPERCUPS_INBOX}`}
