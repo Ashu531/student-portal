@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Button from '../button/Button';
 import InputField from '../inputField/InputField';
-import { getToken } from '../../../services/authService';
-import axios from 'axios';
 import Select from 'react-select';
-import constant from '../../../config/constant'
 import useScript from '../../../hooks/useScript';
 import Modal from '../../elementalComponents/modal/Modal';
 import { useNavigate } from 'react-router';
+import { apiRequest } from '../../../services/apiRequest';
 
 const relations = [
     { value: 'Father', label: 'Father' },
@@ -88,27 +86,48 @@ export default function InstituteForm({
             'domain': onlySignUp ? 'signup' : 'adhoc'
         }
 
-        const data = await axios.post(`${API_URL}/api/fees/v2/fetch/fields/${url}`,urldata)
-        .then(res => {
-            setRequiredField(res.data.data)
-            settleParamsData(res.data.data)
-            if(!onlySignUp){
-                setAdhocData(res.data.adhoc)
-                segregateAmountData(res.data.adhoc.amount)
-            }
-            setButtonData(res.data.button)
-            if(res?.data?.college?.length > 0){
-                setCollegeData(res?.data?.college[0])
-            }
-            // getDropdownData(res.data.data)
-        })
-        .catch(error => {
-            if(error.response.status === 406){
-                handleLinkExpired()
-            }
-        });
+        // const data = await axios.post(`${API_URL}/api/fees/v2/fetch/fields/${url}`,urldata)
+        // .then(res => {
+        //     setRequiredField(res.data.data)
+        //     settleParamsData(res.data.data)
+        //     if(!onlySignUp){
+        //         setAdhocData(res.data.adhoc)
+        //         segregateAmountData(res.data.adhoc.amount)
+        //     }
+        //     setButtonData(res.data.button)
+        //     if(res?.data?.college?.length > 0){
+        //         setCollegeData(res?.data?.college[0])
+        //     }
+        //     // getDropdownData(res.data.data)
+        // })
+        // .catch(error => {
+        //     if(error.response.status === 406){
+        //         handleLinkExpired()
+        //     }
+        // });
 
-        return data;
+        await apiRequest({
+            url: `/api/fees/v2/fetch/fields/${url}`,
+            method: 'POST',
+            data: urldata,
+            onSuccess: async (data) => {
+                setRequiredField(data.data)
+                settleParamsData(data.data)
+                if(!onlySignUp){
+                    setAdhocData(data.adhoc)
+                    segregateAmountData(data.adhoc.amount)
+                }
+                setButtonData(data.button)
+                if(data?.college?.length > 0){
+                    setCollegeData(data?.college[0])
+                }
+            },
+            onError: (response) => {
+                if(response.status === 406){
+                    handleLinkExpired()
+                }
+            }
+        })
 
     }
 
@@ -205,25 +224,20 @@ export default function InstituteForm({
         let data = {}
         let details = [...instituteDetails];
         if(details?.length > 0){
-            for(let i = 0; i < details.length; i++){
-                const set = details[i];
 
-                if(set.label === item.label){
-                    details[i] = {
+            details = details.map(d => {
+                if(d.label === item.label){
+                    d = {
                         'label': item.label,
                         'value' : e
                     }
-                    // array.splice[index,0,data]
-                    setInstituteDetails(details)
                 }
-                else{
-                    data = {
-                        'label': item.label,
-                        'value' : e
-                    }
-                    setInstituteDetails([...details,data])
-                }
-            }
+
+                return d;
+            })
+
+            setInstituteDetails(details);
+            
         }else{
             data = {
                 'label': item.label,
@@ -262,29 +276,52 @@ export default function InstituteForm({
 
     const getAcademicYearValue=async()=>{
         if(batchId){
-            await axios.get(`${API_URL}/api/fees/v2/otf/batches/${batchId}/`)
-            .then(res => {
-                setDropDownOptions(res.data.data)
+            // await axios.get(`${API_URL}/api/fees/v2/otf/batches/${batchId}/`)
+            // .then(res => {
+            //     setDropDownOptions(res.data.data)
+            // })
+            // .catch(error => {
+            //     alert(error.response.data.error)
+            //     return error.response.data
+            // });
+
+            await apiRequest({
+                url: `/api/fees/v2/otf/batches/${batchId}/`,
+                method: 'GET',
+                onSuccess: async (data) => {
+                    setDropDownOptions(data.data)
+                },
+                onError: (response) => {
+                    alert(response.data.error)
+                }
             })
-            .catch(error => {
-                alert(error.response.data.error)
-                return error.response.data
-            });
+
         }else{
             setDropDownOptions([])
         }
     }
 
     const getGradeData=async(e)=>{
-        await axios.get(`${API_URL}/api/fees/v2/otf/grades/${slug}`)
-        .then(res => {
-            setDropDownOptions(res.data.data)
-            // getDropdownData(res.data.data)
+        // await axios.get(`${API_URL}/api/fees/v2/otf/grades/${slug}`)
+        // .then(res => {
+        //     setDropDownOptions(res.data.data)
+        //     // getDropdownData(res.data.data)
+        // })
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+
+        await apiRequest({
+            url: `/api/fees/v2/otf/grades/${slug}`,
+            method: 'GET',
+            onSuccess: async (data) => {
+                setDropDownOptions(data.data)
+            },
+            onError: (response) => {
+                alert(response.data.error)
+            }
         })
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
     }
 
     const handleDropDownOpen=(e,item)=>{
@@ -381,22 +418,49 @@ export default function InstituteForm({
 
         data['amount'] = totalAmount.amount;
         
-        const response = await axios.post(`${API_URL}/api/fees/v2/otf/payment/`,data).
-        then(res => res.data)
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
+        // const response = await axios.post(`${API_URL}/api/fees/v2/otf/payment/`,data).
+        // then(res => res.data)
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+
+        let response;
+        await apiRequest({
+            url: `/api/fees/v2/otf/payment/`,
+            method: 'POST',
+            data: data,
+            onSuccess: async (data) => {
+                response = data;
+            },
+            onError: (response) => {
+                alert(response.data.error)
+                response = response.data
+            }
+        })
+
         return response;
     }
 
 
     const logResponse = async (res) => {
-        return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
+        // return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+
+        await apiRequest({
+            url: `/api/kid/v1/log/${modalData.logNumber}/`,
+            method: 'POST',
+            data: JSON.stringify(res),
+            onSuccess: async (data) => {
+                response = data;
+            },
+            onError: (response) => {
+                alert(response.data.error)
+            }
+        })
     }
 
     const handleProceed = async () => {

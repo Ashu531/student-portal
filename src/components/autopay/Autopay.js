@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/elementalComponents/header/Header'
 import Button from '../elementalComponents/button/Button';
-import backIcon from '../../assets/caret-right.svg';
-import axios from 'axios';
 import { getToken,logoutUser } from '../../services/authService';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
-import useScript from '../../hooks/useScript';
 import moment from 'moment'
 import { useNavigate, useLocation } from 'react-router-dom';
 import ConfirmationModal from '../elementalComponents/confirmationModal/ConfirmModal';
 import awaitIcon from '../../assets/awaitIcon.svg'
 import ChatWidget from '@papercups-io/chat-widget';
-import { Bars, TailSpin } from "react-loader-spinner";
+import { TailSpin } from "react-loader-spinner";
 import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
 import { downloadTransaction } from '../../services/dowmloadTransaction';
+import { apiRequest } from '../../services/apiRequest';
 
 export default function Autopay() {
 
@@ -49,12 +47,26 @@ export default function Autopay() {
     }, []);
 
     const getData = async () => {
-        const data = await axios.get(`${API_URL}/api/kid/v1/autopay/installments/${getToken()}/`)
-        .then(res => res.data)
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
+        // const data = await axios.get(`${API_URL}/api/kid/v1/autopay/installments/${getToken()}/`)
+        // .then(res => res.data)
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+
+        let data;
+        await apiRequest({
+            url: `/api/kid/v1/autopay/installments/${getToken()}/`,
+            method: 'GET',
+            onSuccess: async (data) => {
+                data = data;
+            },
+            onError: (response) => {
+                alert(response.data.error)
+                data = response.data
+            }
+        })
+
         return data; 
     }
 
@@ -99,21 +111,30 @@ export default function Autopay() {
     }, [])
 
     const _getPaymentDetails=async()=>{
-        const data = await axios.get(`${API_URL}/api/kid/v1/autopay/installments/${getToken()}/`)
-        .then(res => {
-            if(res.status === 401){
-                logout()
-            }else{
-                setPaymentDetailData(res.data.data)
-            }
+        // const data = await axios.get(`${API_URL}/api/kid/v1/autopay/installments/${getToken()}/`)
+        // .then(res => {
+        //     if(res.status === 401){
+        //         logout()
+        //     }else{
+        //         setPaymentDetailData(res.data.data)
+        //     }
             
-        })
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
+        // })
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
 
-        return data;
+        await apiRequest({
+            url: `/api/kid/v1/autopay/installments/${getToken()}/`,
+            method: 'GET',
+            onSuccess: async (data) => {
+                setPaymentDetailData(data.data)
+            },
+            onError: (response) => {
+                alert(response.data.error)
+            }
+        })
     }
 
     const handleProceed=()=>{
@@ -121,18 +142,35 @@ export default function Autopay() {
     }
 
     const handleAutopay=async()=>{
-        let response = await axios.post(`${API_URL}/api/kid/v1/autopay/apply/${getToken()}/`, {
-            'amount': String(totalAmount)
-           }).then(res => {
-                let url = res.data.url
+        // let response = await axios.post(`${API_URL}/api/kid/v1/autopay/apply/${getToken()}/`, {
+        //     'amount': String(totalAmount)
+        //    }).then(res => {
+        //         let url = res.data.url
+        //         if(url != null){
+        //             window.location.href = url
+        //         }
+        //    })
+        //    .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+
+        await apiRequest({
+            url: `/api/kid/v1/autopay/apply/${getToken()}/`,
+            method: 'POST',
+            data: {
+                'amount': String(totalAmount)
+            },
+            onSuccess: async (data) => {
+                let url = data.url
                 if(url != null){
                     window.location.href = url
                 }
-           })
-           .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
+            },
+            onError: (response) => {
+                alert(response.data.error)
+            }
+        })
     }
 
     const handleToggle=(item)=>{
@@ -164,20 +202,41 @@ export default function Autopay() {
     const cancelAutopay=async()=>{
         setAutopayLoader(true)
         if(state.applicationId){
-            let response = await axios.post(`${API_URL}/api/kid/v1/autopay/request_cancel/${getToken()}/`, {
-                application_id: state.applicationId,
-               }).then(res => {
-                closeConfirmationModal()
-                alert('Request for Cancellation submitted to Institute')
-                setAutopayLoader(false)
-                navigateToHome();
-               })
-            .catch(err => {
-                closeConfirmationModal()
-                setAutopayLoader(false)
-                navigateToHome();
-                alert(err.response.data.error)
-            });
+            // let response = await axios.post(`${API_URL}/api/kid/v1/autopay/request_cancel/${getToken()}/`, {
+            //     application_id: state.applicationId,
+            //    }).then(res => {
+            //     closeConfirmationModal()
+            //     alert('Request for Cancellation submitted to Institute')
+            //     setAutopayLoader(false)
+            //     navigateToHome();
+            //    })
+            // .catch(err => {
+            //     closeConfirmationModal()
+            //     setAutopayLoader(false)
+            //     navigateToHome();
+            //     alert(err.response.data.error)
+            // });
+
+            await apiRequest({
+                url: `/api/kid/v1/autopay/request_cancel/${getToken()}/`,
+                method: 'POST',
+                data: {
+                    application_id: state.applicationId,
+                },
+                onSuccess: async (data) => {
+                    closeConfirmationModal()
+                    alert('Request for Cancellation submitted to Institute')
+                    setAutopayLoader(false)
+                    navigateToHome();
+                },
+                onError: (response) => {
+                    closeConfirmationModal()
+                    setAutopayLoader(false)
+                    navigateToHome();
+                    alert(response.data.error)
+                }
+            })
+
         }else{
             alert('Invalid Application Id')
             setAutopayLoader(false)
@@ -214,22 +273,37 @@ export default function Autopay() {
         newQuickViewState["student"] = student;
 
   
-        let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
+        // let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
+        //     headers: {
+        //         'token' : getToken()
+        //     }
+        // })
+        // .then(res => {
+        //     newQuickViewState["transactionHistory"] = res.data.data
+        // })
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+
+        // Promise.all([history]).then((values) => {
+        //     setQuickViewState(newQuickViewState);
+        // });
+
+        await apiRequest({
+            url: `/api/kid/v1/transactions/${student?.id}/`,
+            method: 'GET',
             headers: {
                 'token' : getToken()
+            },
+            onSuccess: async (data) => {
+                newQuickViewState["transactionHistory"] = data.data
+                setQuickViewState(newQuickViewState);
+            },
+            onError: (response) => {
+                alert(response.data.error)
             }
         })
-        .then(res => {
-            newQuickViewState["transactionHistory"] = res.data.data
-        })
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
-  
-        Promise.all([history]).then((values) => {
-          setQuickViewState(newQuickViewState);
-        });
     };
 
     return (

@@ -4,15 +4,13 @@ import logo from '../../assets/credenc-logo.svg';
 import Button from '../elementalComponents/button/Button';
 import InputField from '../elementalComponents/inputField/InputField';
 import OtpField from '../elementalComponents/otpField/OtpField';
-import background from '../../assets/background.png';
 import caret from '../../assets/caret-right.svg';
-import axios from 'axios';
 import { delay, getToken, saveStudents, saveToken } from '../../services/authService';
 import { Bars, TailSpin } from 'react-loader-spinner';
-import CheckBox from '../elementalComponents/checkBox/CheckBox';
 import TcModal from '../elementalComponents/tandc/TcModal';
 import InstituteForm from '../elementalComponents/instituteForm/InstituteForm';
 import { CountrySelect } from '../countrySelect/CountrySelect';
+import { apiRequest } from '../../services/apiRequest';
 
 export default function Login() {
 
@@ -62,24 +60,47 @@ export default function Login() {
         let params = window.location.pathname
         let urlSlug = params.substring(7,params.length)
 
+        let otpVerified;
         if(value.length == 6){
-            const otpVerified = await axios.post(`${API_URL}/api/kid/v1/verify_otp/`, JSON.stringify({
-                'phone_number': `${selectedCountry} ${inputValue}`,
-                'otp': value,
-                'college_slug': urlSlug
-            }), {
+            
+            await apiRequest({
+                url: `/api/kid/v1/verify_otp/`,
+                method: 'POST',
+                data: JSON.stringify({
+                    'phone_number': `${selectedCountry} ${inputValue}`,
+                    'otp': value,
+                    'college_slug': urlSlug
+                }),
                 headers: {
                     'Content-Type': 'application/json'
+                },
+                onSuccess: async (data) => {
+                    otpVerified = data;
+                },
+                onError: (response) => {
+                    setError({...error, otp: response.data.message});
+                    setLoader(false)
                 }
             })
-            .then(res => (res.data))
-            .catch(err => {
-                setError({...error, otp: err.response.data.message});
-                setLoader(false)
-            });
 
-            return otpVerified;
+            // const otpVerified = await axios.post(`${API_URL}/api/kid/v1/verify_otp/`, JSON.stringify({
+            //     'phone_number': `${selectedCountry} ${inputValue}`,
+            //     'otp': value,
+            //     'college_slug': urlSlug
+            // }), {
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // })
+            // .then(res => (res.data))
+            // .catch(err => {
+            //     setError({...error, otp: err.response.data.message});
+            //     setLoader(false)
+            // });
+
         }
+
+        return otpVerified;
     }
 
     const handleOtp = (val, i) => {
@@ -105,16 +126,31 @@ export default function Login() {
             key => (data[key] == null || data[key] == '') && delete data[key],
         );
 
-        const otpGenerated = await axios.post(`${API_URL}/api/kid/v1/send_otp/`,data, {
+        let otpGenerated;
+        await apiRequest({
+            url: `/api/kid/v1/send_otp/`,
+            method: 'POST',
+            data: data,
             headers: {
                 'Content-Type': 'application/json'
+            },
+            onSuccess: async (data) => {
+                otpGenerated = data;
+            },
+            onError: (response) => {
+                setError({...error, number: response.data.message});
             }
         })
-        .then(res => (res.data))
-        .catch(err => {
-            // console.log('res', {...err});
-            setError({...error, number: err.response.data.message});
-        });
+        // const otpGenerated = await axios.post(`${API_URL}/api/kid/v1/send_otp/`,data, {
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // })
+        // .then(res => (res.data))
+        // .catch(err => {
+        //     // console.log('res', {...err});
+        //     setError({...error, number: err.response.data.message});
+        // });
 
         return otpGenerated ? otpGenerated.status: otpGenerated;
     }
@@ -124,18 +160,38 @@ export default function Login() {
         setOtp({...otp,values: resendState})
         let params = window.location.pathname
         let urlSlug = params.substring(7,params.length)
-        const resent = await axios.post(`${API_URL}/api/kid/v1/resend_otp/`, 
-        JSON.stringify({
-            phone_number: `${selectedCountry} ${inputValue}`,
-            college_slug: urlSlug
-        }), 
-        {
+
+        let resent;
+        await apiRequest({
+            url: `/api/kid/v1/resend_otp/`,
+            method: 'POST',
+            data: JSON.stringify({
+                phone_number: `${selectedCountry} ${inputValue}`,
+                college_slug: urlSlug
+            }),
             headers: {
                 'Content-Type': 'application/json'
+            },
+            onSuccess: async (data) => {
+                resent = data;
+            },
+            onError: (response) => {
+                alert(response.data.error)
             }
         })
-        .then(res => (res.data))
-        .catch(err => console.log(err));
+
+        // const resent = await axios.post(`${API_URL}/api/kid/v1/resend_otp/`, 
+        // JSON.stringify({
+        //     phone_number: `${selectedCountry} ${inputValue}`,
+        //     college_slug: urlSlug
+        // }), 
+        // {
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // })
+        // .then(res => (res.data))
+        // .catch(err => console.log(err));
 
         return resent ? resent.status: resent;
     }
@@ -143,18 +199,37 @@ export default function Login() {
     const getStudents = async () => {
         let params = window.location.pathname
         let urlSlug = params.substring(7,params.length)
-        const students = await axios.post(`${API_URL}/api/kid/v1/identify/${selectedCountry}_${inputValue}/`,
-        JSON.stringify({
-            college_slug: urlSlug
-        }), 
-        {
+
+        let students;
+        await apiRequest({
+            url: `/api/kid/v1/identify/${selectedCountry}_${inputValue}/`,
+            method: 'POST',
+            data: JSON.stringify({
+                college_slug: urlSlug
+            }),
             headers: {
                 'Content-Type': 'application/json'
+            },
+            onSuccess: async (data) => {
+                students = data.data;
+            },
+            onError: (response) => {
+                console.log(response);
             }
-        }
-        )
-        .then(res => (res.data.data))
-        .catch(err => console.log(err));
+        })
+
+        // const students = await axios.post(`${API_URL}/api/kid/v1/identify/${selectedCountry}_${inputValue}/`,
+        // JSON.stringify({
+        //     college_slug: urlSlug
+        // }), 
+        // {
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // }
+        // )
+        // .then(res => (res.data.data))
+        // .catch(err => console.log(err));
 
         return students;
     }
@@ -285,20 +360,38 @@ export default function Login() {
         }
 
     const submitSignupData=async(data)=>{
-        const response = await axios.post(`${API_URL}/api/kid/v1/signup/`,data)
-        .then(res => {
-            try{
-                    if(res.data.signup === false){
+        // const response = await axios.post(`${API_URL}/api/kid/v1/signup/`,data)
+        // .then(res => {
+        //     try{
+        //             if(res.data.signup === false){
+        //                 handleApplicationData()
+        //             }
+        //     }catch(err) {
+        //         console.log(err,'error')
+        //     }
+            
+        // })
+        // .catch(err => {
+        //     alert(err.response.data.error)
+        // });
+
+        await apiRequest({
+            url: `/api/kid/v1/signup/`,
+            method: 'POST',
+            data: data,
+            onSuccess: async (data) => {
+                try{
+                    if(data.signup === false){
                         handleApplicationData()
                     }
-            }catch(err) {
-                console.log(err,'error')
+                }catch(err) {
+                    console.log(err,'error')
+                }
+            },
+            onError: (response) => {
+                alert(response.data.error)
             }
-            
         })
-        .catch(err => {
-            alert(err.response.data.error)
-        });
 
     }
 
@@ -311,18 +404,35 @@ export default function Login() {
             'domain': 'signup'
         }
         if(url.length > 0){
-            const data = await axios.post(`${API_URL}/api/fees/v2/fetch/fields/${url}/`,urldata)
-            .then(res => {
-                if(res?.data?.college?.length > 0){
-                    setCollegeData(res?.data?.college[0])
+            // const data = await axios.post(`${API_URL}/api/fees/v2/fetch/fields/${url}/`,urldata)
+            // .then(res => {
+            //     if(res?.data?.college?.length > 0){
+            //         setCollegeData(res?.data?.college[0])
+            //     }
+            //     // getDropdownData(res.data.data)
+            // })
+            // .catch(error => {
+            //     if(error.response.status === 406){
+            //         handleLinkExpired()
+            //     }
+            // });
+
+            await apiRequest({
+                url: `/api/fees/v2/fetch/fields/${url}/`,
+                method: 'POST',
+                data: urldata,
+                onSuccess: async (data) => {
+                    if(data?.college?.length > 0){
+                        setCollegeData(data?.college[0])
+                    }
+                },
+                onError: (response) => {
+                    if(response.status === 406){
+                        handleLinkExpired()
+                    }
                 }
-                // getDropdownData(res.data.data)
             })
-            .catch(error => {
-                if(error.response.status === 406){
-                    handleLinkExpired()
-                }
-            });
+
         }
     }
 

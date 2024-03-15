@@ -1,5 +1,4 @@
 import ChatWidget from '@papercups-io/chat-widget';
-import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { TailSpin } from 'react-loader-spinner';
 import { useNavigate } from 'react-router';
@@ -38,16 +37,34 @@ export default function Payment() {
 
   const getModalData = async () => {
     const {ids, amount} = getSelectedInstallments();
-    // console.log(ids, amount);
-    const data = await axios.post(`${API_URL}/api/kid/v1/payment/${getToken()}/`, {
-        'ids': ids,
-        'amount': amount,
-        'mode': 'FULL_PAYMENT',
-    }).then(res => res.data)
-    .catch(error => {
-        alert(error.response.data.error)
-        return error.response.data
-    });
+
+    // const data = await axios.post(`${API_URL}/api/kid/v1/payment/${getToken()}/`, {
+    //     'ids': ids,
+    //     'amount': amount,
+    //     'mode': 'FULL_PAYMENT',
+    // }).then(res => res.data)
+    // .catch(error => {
+    //     alert(error.response.data.error)
+    //     return error.response.data
+    // });
+
+    let data;
+    await apiRequest({
+        url: `/api/kid/v1/payment/${getToken()}/`,
+        method: 'POST',
+        data: {
+            'ids': ids,
+            'amount': amount,
+            'mode': 'FULL_PAYMENT',
+        },
+        onSuccess: async (data) => {
+            data = data;
+        },
+        onError: (response) => {
+            alert(response.data.error)
+            data = response.data
+        }
+    })
 
     return data;
 }
@@ -62,12 +79,26 @@ const getSelectedInstallments = () => {
 }
 
 const getData = async () => {
-    const data = await axios.get(`${API_URL}/api/kid/v1/school/all_installments/${getToken()}/`)
-    .then(res => res.data)
-    .catch(error => {
-        alert(error.response.data.error)
-        return error.response.data
-    });
+    // const data = await axios.get(`${API_URL}/api/kid/v1/school/all_installments/${getToken()}/`)
+    // .then(res => res.data)
+    // .catch(error => {
+    //     alert(error.response.data.error)
+    //     return error.response.data
+    // });
+
+    let data;
+    await apiRequest({
+        url: `/api/kid/v1/school/all_installments/${getToken()}/`,
+        method: 'GET',
+        token: getToken(),
+        onSuccess: async (data) => {
+            data = data
+        },
+        onError: (response) => {
+            alert(response.data.error)
+            data = response.data;
+        }
+    })
 
     return data;
 }
@@ -100,11 +131,21 @@ const closeModal = () => {
 }
 
 const logResponse = async (res) => {
-    return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
-    .catch(error => {
-        alert(error.response.data.error)
-        return error.response.data
-    });
+    // return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
+    // .catch(error => {
+    //     alert(error.response.data.error)
+    //     return error.response.data
+    // });
+
+    await apiRequest({
+        url: `/api/kid/v1/log/${modalData.logNumber}/`,
+        method: 'POST',
+        data: JSON.stringify(res),
+        onSuccess: async (data) => {},
+        onError: (response) => {
+            alert(response.data.error)
+        }
+    })
 }
 
 const handleProceedAndPay = async () => {
@@ -161,11 +202,19 @@ const handlePaymentSuccessResponse=async(state)=>{
     "logo": state.studentFrontend.logo
    }
 
-   await axios.post(`${API_URL}/api/kid/v1/payment_success_response/${getToken()}/`,detail).then(res => res.data)
-   .catch(error => {
-    alert(error.response.data.error)
-    return error.response.data
-});
+//    await axios.post(`${API_URL}/api/kid/v1/payment_success_response/${getToken()}/`,detail).then(res => res.data)
+//    .catch(error => {
+//     alert(error.response.data.error)
+//     return error.response.data
+//     });
+
+    await apiRequest({
+        url: `/api/kid/v1/payment_success_response/${getToken()}/`,
+        method: 'POST',
+        data: detail,
+        onSuccess: async (data) => {},
+        onError: (response) => {}
+    })
 
 }
 
@@ -248,22 +297,35 @@ useEffect(async () => {
         newQuickViewState["student"] = student;
 
   
-        let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
-            headers: {
-                'token' : getToken()
+        // let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
+        //     headers: {
+        //         'token' : getToken()
+        //     }
+        // })
+        // .then(res => {
+        //     newQuickViewState["transactionHistory"] = res.data.data
+        // })
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+  
+        // Promise.all([history]).then((values) => {
+        //   setQuickViewState(newQuickViewState);
+        // });
+
+        await apiRequest({
+            url: `/api/kid/v1/transactions/${student?.id}/`,
+            method: 'GET',
+            token: getToken(),
+            onSuccess: async (data) => {
+                newQuickViewState["transactionHistory"] = data.data;
+                setQuickViewState(newQuickViewState);
+            },
+            onError: (response) => {
+                alert(response.data.error)
             }
         })
-        .then(res => {
-            newQuickViewState["transactionHistory"] = res.data.data
-        })
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
-  
-        Promise.all([history]).then((values) => {
-          setQuickViewState(newQuickViewState);
-        });
     };
 
   return (

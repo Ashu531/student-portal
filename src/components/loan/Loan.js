@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/elementalComponents/header/Header'
 import Button from '../elementalComponents/button/Button';
-import backIcon from '../../assets/caret-right.svg';
 import InputField from '../elementalComponents/inputField/InputField';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
-import { getToken,logoutUser } from '../../services/authService';
-import axios from 'axios';
-import { useParams, useNavigate, useSearchParams,useLocation } from 'react-router-dom';
+import { getToken, logoutUser } from '../../services/authService';
+import { useNavigate, useLocation } from 'react-router-dom';
 import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
 import Select from 'react-select';
 import Switch from "react-switch";
@@ -59,12 +57,25 @@ export default function Loan() {
     }, []);
 
     const getData = async () => {
-        const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
-        .then(res => res.data)
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
+        // const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
+        // .then(res => res.data)
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+
+        let data;
+        await apiRequest({
+            url: `/api/kid/v1/school/installments/${getToken()}/`,
+            method: 'GET',
+            onSuccess: async (data) => {
+                data = data;
+            },
+            onError: (response) => {
+                alert(response.data.error)
+                data = response.data;
+            }
+        })
 
         return data;
     }
@@ -90,15 +101,30 @@ export default function Loan() {
         if(!emailStatus) alert('Please enter valid email')
         else if(!mobileStatus) alert('Please enter valid phone number')
         else{
-            await axios.post(`${API_URL}/api/kid/v1/loan/${getToken()}/`, data).then(res => {
-                if(res.data.status){
-                    setLoanSuccess(true)
-                    setLoanData(res.data.data)
+            // await axios.post(`${API_URL}/api/kid/v1/loan/${getToken()}/`, data).then(res => {
+            //     if(res.data.status){
+            //         setLoanSuccess(true)
+            //         setLoanData(res.data.data)
+            //     }
+            // }).catch(error => {
+            //     alert(error.response.data.error)
+            //     return error.response.data
+            // });
+
+            await apiRequest({
+                url: `/api/kid/v1/loan/${getToken()}/`,
+                method: 'POST',
+                data: data,
+                onSuccess: async (data) => {
+                    if(data.status){
+                        setLoanSuccess(true)
+                        setLoanData(data.data)
+                    }
+                },
+                onError: (response) => {
+                    alert(response.data.error)
                 }
-            }).catch(error => {
-                alert(error.response.data.error)
-                return error.response.data
-            });
+            })
         }
 
         
@@ -220,23 +246,36 @@ export default function Loan() {
         let newQuickViewState = {};
         newQuickViewState["student"] = student;
 
-  
-        let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
-            headers: {
-                'token' : getToken()
+        // let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
+        //     headers: {
+        //         'token' : getToken()
+        //     }
+        // })
+        // .then(res => {
+        //     newQuickViewState["transactionHistory"] = res.data.data
+        // })
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+
+        // Promise.all([history]).then((values) => {
+        //     setQuickViewState(newQuickViewState);
+        // });
+
+        await apiRequest({
+            url: `/api/kid/v1/transactions/${student?.id}/`,
+            method: 'GET',
+            token: getToken(),
+            onSuccess: async (data) => {
+                newQuickViewState["transactionHistory"] = data.data;
+                setQuickViewState(newQuickViewState);
+            },
+            onError: (response) => {
+                alert(response.data.error)
             }
         })
-        .then(res => {
-            newQuickViewState["transactionHistory"] = res.data.data
-        })
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
   
-        Promise.all([history]).then((values) => {
-          setQuickViewState(newQuickViewState);
-        });
     };
 
     return (

@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Button from '../elementalComponents/button/Button';
-import logo from '../../assets/credenc-logo.svg';
 import Table from '../elementalComponents/table/Table';
 import Modal from '../elementalComponents/modal/Modal';
-import background from '../../assets/background.png';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Collapsible from '../elementalComponents/collapsible/Collapsible';
+import { useNavigate } from 'react-router-dom';
 import SmallTable from '../elementalComponents/smallTable/SmallTable';
 import useScript from '../../hooks/useScript';
-import { Bars, TailSpin } from 'react-loader-spinner';
-import { delay, getToken, logoutUser } from '../../services/authService';
+import { TailSpin } from 'react-loader-spinner';
+import { getToken, logoutUser } from '../../services/authService';
 import Pair from '../elementalComponents/pair/Pair';
-import PaymentOption from '../elementalComponents/paymentOption/PaymentOption';
-import moneyIcon from '../../assets/money-icon.svg';
-import handCoinsIcon from '../../assets/hand-coins.svg';
-import coinsIcon from '../../assets/coins.svg';
-import CurrencyEthIcon from '../../assets/currency-eth.svg';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 import Header from '../elementalComponents/header/Header';
 import ChatWidget from '@papercups-io/chat-widget';
@@ -58,15 +49,32 @@ export default function PartialPayment() {
 
     const getModalData = async () => {
         const {ids, amount} = getSelectedInstallments();
-        // console.log(ids, amount);
-        const data = await axios.post(`${API_URL}/api/kid/v1/payment/${getToken()}/`, {
-            'ids': ids,
-            'amount': amount,
-        }).then(res => res.data)
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
+
+        // const data = await axios.post(`${API_URL}/api/kid/v1/payment/${getToken()}/`, {
+        //     'ids': ids,
+        //     'amount': amount,
+        // }).then(res => res.data)
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+
+        let data;
+        await apiRequest({
+            url: `/api/kid/v1/payment/${getToken()}/`,
+            method: 'POST',
+            data: {
+                'ids': ids,
+                'amount': amount,
+            },
+            onSuccess: async (data) => {
+                data = data;
+            },
+            onError: (response) => {
+                alert(response.data.error)
+                data = response.data
+            }
+        })
 
         return data;
     }
@@ -81,12 +89,25 @@ export default function PartialPayment() {
     }
 
     const getData = async () => {
-        const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
-        .then(res => res.data)
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
+        // const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
+        // .then(res => res.data)
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+
+        let data;
+        await apiRequest({
+            url: `/api/kid/v1/school/installments/${getToken()}/`,
+            method: 'GET',
+            onSuccess: async (data) => {
+                data = data;
+            },
+            onError: (response) => {
+                alert(response.data.error)
+                data = response.data
+            }
+        })
 
         return data;
     }
@@ -167,11 +188,21 @@ export default function PartialPayment() {
     }
 
     const logResponse = async (res) => {
-        return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
+        // return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+
+        await apiRequest({
+            url: `/api/kid/v1/log/${modalData.logNumber}/`,
+            method: 'POST',
+            data: JSON.stringify(res),
+            onSuccess: async (data) => {},
+            onError: (response) => {
+                alert(response.data.error);
+            }
+        })
     }
 
     const handleProceedAndPay = async () => {
@@ -231,11 +262,21 @@ export default function PartialPayment() {
          "logo": state.studentFrontend.logo
         }
      
-        await axios.post(`${API_URL}/api/kid/v1/payment_success_response/${getToken()}/`,detail).then(res => res.data)
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
+        // await axios.post(`${API_URL}/api/kid/v1/payment_success_response/${getToken()}/`,detail).then(res => res.data)
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+
+        await apiRequest({
+            url: `/api/kid/v1/payment_success_response/${getToken()}/`,
+            method: 'POST',
+            data: detail,
+            onSuccess: async (data) => {},
+            onError: (response) => {
+                alert(response.data.error)
+            }
+        })
      
      }
 
@@ -310,22 +351,35 @@ export default function PartialPayment() {
         newQuickViewState["student"] = student;
 
   
-        let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
-            headers: {
-                'token' : getToken()
+        // let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
+        //     headers: {
+        //         'token' : getToken()
+        //     }
+        // })
+        // .then(res => {
+        //     newQuickViewState["transactionHistory"] = res.data.data
+        // })
+        // .catch(error => {
+        //     alert(error.response.data.error)
+        //     return error.response.data
+        // });
+  
+        // Promise.all([history]).then((values) => {
+        //   setQuickViewState(newQuickViewState);
+        // });
+
+        await apiRequest({
+            url: `/api/kid/v1/transactions/${student?.id}/`,
+            method: 'GET',
+            token : getToken(),
+            onSuccess: async (data) => {
+                newQuickViewState["transactionHistory"] = data.data;
+                setQuickViewState(newQuickViewState);
+            },
+            onError: (response) => {
+                alert(response.data.error)
             }
         })
-        .then(res => {
-            newQuickViewState["transactionHistory"] = res.data.data
-        })
-        .catch(error => {
-            alert(error.response.data.error)
-            return error.response.data
-        });
-  
-        Promise.all([history]).then((values) => {
-          setQuickViewState(newQuickViewState);
-        });
     };
 
     return (
