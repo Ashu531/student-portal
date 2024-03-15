@@ -86,26 +86,6 @@ export default function InstituteForm({
             'domain': onlySignUp ? 'signup' : 'adhoc'
         }
 
-        // const data = await axios.post(`${API_URL}/api/fees/v2/fetch/fields/${url}`,urldata)
-        // .then(res => {
-        //     setRequiredField(res.data.data)
-        //     settleParamsData(res.data.data)
-        //     if(!onlySignUp){
-        //         setAdhocData(res.data.adhoc)
-        //         segregateAmountData(res.data.adhoc.amount)
-        //     }
-        //     setButtonData(res.data.button)
-        //     if(res?.data?.college?.length > 0){
-        //         setCollegeData(res?.data?.college[0])
-        //     }
-        //     // getDropdownData(res.data.data)
-        // })
-        // .catch(error => {
-        //     if(error.response.status === 406){
-        //         handleLinkExpired()
-        //     }
-        // });
-
         await apiRequest({
             url: `/api/fees/v2/fetch/fields/${url}`,
             method: 'POST',
@@ -276,14 +256,6 @@ export default function InstituteForm({
 
     const getAcademicYearValue=async()=>{
         if(batchId){
-            // await axios.get(`${API_URL}/api/fees/v2/otf/batches/${batchId}/`)
-            // .then(res => {
-            //     setDropDownOptions(res.data.data)
-            // })
-            // .catch(error => {
-            //     alert(error.response.data.error)
-            //     return error.response.data
-            // });
 
             await apiRequest({
                 url: `/api/fees/v2/otf/batches/${batchId}/`,
@@ -302,15 +274,6 @@ export default function InstituteForm({
     }
 
     const getGradeData=async(e)=>{
-        // await axios.get(`${API_URL}/api/fees/v2/otf/grades/${slug}`)
-        // .then(res => {
-        //     setDropDownOptions(res.data.data)
-        //     // getDropdownData(res.data.data)
-        // })
-        // .catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
 
         await apiRequest({
             url: `/api/fees/v2/otf/grades/${slug}`,
@@ -417,13 +380,6 @@ export default function InstituteForm({
         );
 
         data['amount'] = totalAmount.amount;
-        
-        // const response = await axios.post(`${API_URL}/api/fees/v2/otf/payment/`,data).
-        // then(res => res.data)
-        // .catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
 
         let response;
         await apiRequest({
@@ -444,11 +400,6 @@ export default function InstituteForm({
 
 
     const logResponse = async (res) => {
-        // return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
-        // .catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
 
         await apiRequest({
             url: `/api/kid/v1/log/${modalData.logNumber}/`,

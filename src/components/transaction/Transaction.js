@@ -12,14 +12,7 @@ export default function Transaction() {
 
     const getTransactionDetail=async(queryList)=>{
         if(queryList[0]?.name == 'app_id'){
-            // const data = await axios.get(`${API_URL}/api/kid/v1/autopay/status/${queryList[0]?.value}/`)
-            // .then(res => {
-            //     setStudentData(res.data.student)
-            // })
-            // .catch(error => {
-            //     alert(error.response.data.error)
-            //     return error.response.data
-            // });
+            
             await apiRequest({
                 url: `/api/kid/v1/autopay/status/${queryList[0]?.value}/`,
                 method: 'GET',

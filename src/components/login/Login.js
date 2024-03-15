@@ -360,20 +360,6 @@ export default function Login() {
         }
 
     const submitSignupData=async(data)=>{
-        // const response = await axios.post(`${API_URL}/api/kid/v1/signup/`,data)
-        // .then(res => {
-        //     try{
-        //             if(res.data.signup === false){
-        //                 handleApplicationData()
-        //             }
-        //     }catch(err) {
-        //         console.log(err,'error')
-        //     }
-            
-        // })
-        // .catch(err => {
-        //     alert(err.response.data.error)
-        // });
 
         await apiRequest({
             url: `/api/kid/v1/signup/`,
@@ -404,18 +390,6 @@ export default function Login() {
             'domain': 'signup'
         }
         if(url.length > 0){
-            // const data = await axios.post(`${API_URL}/api/fees/v2/fetch/fields/${url}/`,urldata)
-            // .then(res => {
-            //     if(res?.data?.college?.length > 0){
-            //         setCollegeData(res?.data?.college[0])
-            //     }
-            //     // getDropdownData(res.data.data)
-            // })
-            // .catch(error => {
-            //     if(error.response.status === 406){
-            //         handleLinkExpired()
-            //     }
-            // });
 
             await apiRequest({
                 url: `/api/fees/v2/fetch/fields/${url}/`,

@@ -167,16 +167,7 @@ export default function Signup() {
     }
 
     const submitData=async(data)=>{
-        // let response = await axios.post(`${API_URL}/api/kid/v1/adhoc/loan/`, data).then(res => {
-        //     if(res?.data['status'] === true){
-        //        setLoanData(res.data.data)
-        //        setLoanSuccess(true)
-        //     }
-        //    })
-        //    .catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
+        
         await apiRequest({
             url: `/api/kid/v1/adhoc/loan/`,
             method: 'POST',

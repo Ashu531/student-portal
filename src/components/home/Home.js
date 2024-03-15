@@ -90,24 +90,6 @@ export default function Home() {
         let newQuickViewState = {};
         newQuickViewState["student"] = student;
 
-  
-        // let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
-        //     headers: {
-        //         'token' : getToken()
-        //     }
-        // })
-        // .then(res => {
-        //     newQuickViewState["transactionHistory"] = res.data.data
-        // })
-        // .catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
-
-        // Promise.all([history]).then((values) => {
-        //     setQuickViewState(newQuickViewState);
-        // });
-
         await apiRequest({
             url: `/api/kid/v1/transactions/${student?.id}/`,
             method: 'GET',
@@ -130,27 +112,21 @@ export default function Home() {
     }
 
     const getData = async () => {
-        // const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
-        // .then(res => res.data)
-        // .catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
 
-        let data;
+        let res;
         await apiRequest({
             url: `/api/kid/v1/school/installments/${getToken()}/`,
             method: 'GET',
             onSuccess: async (data) => {
-                data = data;
+                res = data;
             },
             onError: (response) => {
-                data = response.data;
+                res = response.data;
                 alert(response.data.error);
             }
         })
 
-        return data;
+        return res;
     }
 
     const getSelectedInstallments = () => {
@@ -165,16 +141,7 @@ export default function Home() {
     const getModalData = async () => {
         const {ids, amount} = getSelectedInstallments();
 
-        // const data = await axios.post(`${API_URL}/api/kid/v1/payment/${getToken()}/`, {
-        //     'ids': ids,
-        //     'amount': amount,
-        // }).then(res => res.data)
-        // .catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
-
-        let data;
+        let res;
         await apiRequest({
             url: `/api/kid/v1/payment/${getToken()}/`,
             method: 'POST',
@@ -183,15 +150,15 @@ export default function Home() {
                 'amount': amount,
             },
             onSuccess: async (data) => {
-                data = data;
+                res = data;
             },
             onError: (response) => {
                 alert(response.data.error);
-                data = response.data;       
+                res = response.data;       
             }
         })
 
-        return data;
+        return res;
     }
 
     const handleProceed = async () => {
@@ -269,11 +236,6 @@ export default function Home() {
     }
 
     const logResponse = async (res) => {
-        // return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
-        // .catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
 
         await apiRequest({
             url: `/api/kid/v1/log/${modalData.logNumber}/`,
@@ -378,13 +340,9 @@ export default function Home() {
     const initHome = async () => {
         setLoader(true);
         const data = await getData();
-        if(data.status_code === 401){
-            await logout();
-            return;
-        }else{
-            setStudent(data.student);
-            setInstituteLogo(data.student.logo)
-        }
+        
+        setStudent(data.student);
+        setInstituteLogo(data.student.logo)
 
         setDashboardType(data.dashboard_type)
         let status = data.dashboard_type.banner
@@ -468,16 +426,6 @@ export default function Home() {
     }
 
     const cancelLoan=async()=>{
-        
-        // await axios.post(`${API_URL}/api/kid/v1/loan/cancel/${getToken()}/`, {
-        //     application_id: dashboardType.application_id
-        // }).then(res => {
-        //     closeConfirmModal()
-        // }).catch(error => {
-        //     alert(error.response.data.error)
-        //     closeConfirmModal()
-        //     return error.response.data
-        // });
 
         await apiRequest({
             url: `/api/kid/v1/loan/cancel/${getToken()}/`,
@@ -550,16 +498,6 @@ export default function Home() {
     },[dashboardType.status])
 
     const bannerCancellation=async()=>{
-        // await axios.post(`${API_URL}/api/kid/v1/banner/cancel/${getToken()}/`, {
-        //     application_id: dashboardType.application_id,
-        //     type: dashboardType.name
-        // }).then(res => {
-        //     closeConfirmModal()
-        // }).catch(error => {
-        //     alert(error.response.data.error)
-        //     closeConfirmModal()
-        //     return error.response.data
-        // });
 
         await apiRequest({
             url: `/api/kid/v1/banner/cancel/${getToken()}/`,
@@ -610,20 +548,6 @@ export default function Home() {
             'applicant_name': student.name,
             'college': student.college_id
         }
-
-        // await axios.post(`${API_URL}/api/kid/v1/loan/${getToken()}/`, data).then(res => {
-        //     if(res.data.status){
-        //         setLoanData(res.data.data)
-        //         closeLoanModal()
-        //         navigate(`/credenc-loan`, {
-        //             replace: true,
-        //             state: res.data.data
-        //         });
-        //     }
-        // }).catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
 
         await apiRequest({
             url: `/api/kid/v1/loan/${getToken()}/`,

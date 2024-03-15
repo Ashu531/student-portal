@@ -48,7 +48,7 @@ export default function Payment() {
     //     return error.response.data
     // });
 
-    let data;
+    let res;
     await apiRequest({
         url: `/api/kid/v1/payment/${getToken()}/`,
         method: 'POST',
@@ -58,15 +58,15 @@ export default function Payment() {
             'mode': 'FULL_PAYMENT',
         },
         onSuccess: async (data) => {
-            data = data;
+            res = data;
         },
         onError: (response) => {
             alert(response.data.error)
-            data = response.data
+            res = response.data
         }
     })
 
-    return data;
+    return res;
 }
 
 const getSelectedInstallments = () => {
@@ -79,28 +79,22 @@ const getSelectedInstallments = () => {
 }
 
 const getData = async () => {
-    // const data = await axios.get(`${API_URL}/api/kid/v1/school/all_installments/${getToken()}/`)
-    // .then(res => res.data)
-    // .catch(error => {
-    //     alert(error.response.data.error)
-    //     return error.response.data
-    // });
 
-    let data;
+    let res;
     await apiRequest({
         url: `/api/kid/v1/school/all_installments/${getToken()}/`,
         method: 'GET',
         token: getToken(),
         onSuccess: async (data) => {
-            data = data
+            res = data
         },
         onError: (response) => {
             alert(response.data.error)
-            data = response.data;
+            res = response.data;
         }
     })
 
-    return data;
+    return res;
 }
 
 const handleProceed = async () => {
@@ -131,11 +125,6 @@ const closeModal = () => {
 }
 
 const logResponse = async (res) => {
-    // return await axios.post(`${API_URL}/api/kid/v1/log/${modalData.logNumber}/`, JSON.stringify(res))
-    // .catch(error => {
-    //     alert(error.response.data.error)
-    //     return error.response.data
-    // });
 
     await apiRequest({
         url: `/api/kid/v1/log/${modalData.logNumber}/`,
@@ -202,12 +191,6 @@ const handlePaymentSuccessResponse=async(state)=>{
     "logo": state.studentFrontend.logo
    }
 
-//    await axios.post(`${API_URL}/api/kid/v1/payment_success_response/${getToken()}/`,detail).then(res => res.data)
-//    .catch(error => {
-//     alert(error.response.data.error)
-//     return error.response.data
-//     });
-
     await apiRequest({
         url: `/api/kid/v1/payment_success_response/${getToken()}/`,
         method: 'POST',
@@ -237,14 +220,8 @@ useEffect(async () => {
     setLoader(true);
     const data = await getData();
 
-    if(data.status_code === 401){
-        await logout();
-        return;
-    }else{
-        setStudent(data.student);
-    }
+    setStudent(data.student);
     
-
     data.data.forEach((installment, i) => {
 
         if(installment['status'] !== 'due' && installment['status'] !== 'overdue' && installment['status'] !== 'upcoming'){
@@ -295,24 +272,6 @@ useEffect(async () => {
 
         let newQuickViewState = {};
         newQuickViewState["student"] = student;
-
-  
-        // let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
-        //     headers: {
-        //         'token' : getToken()
-        //     }
-        // })
-        // .then(res => {
-        //     newQuickViewState["transactionHistory"] = res.data.data
-        // })
-        // .catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
-  
-        // Promise.all([history]).then((values) => {
-        //   setQuickViewState(newQuickViewState);
-        // });
 
         await apiRequest({
             url: `/api/kid/v1/transactions/${student?.id}/`,

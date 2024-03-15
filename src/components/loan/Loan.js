@@ -64,20 +64,20 @@ export default function Loan() {
         //     return error.response.data
         // });
 
-        let data;
+        let res;
         await apiRequest({
             url: `/api/kid/v1/school/installments/${getToken()}/`,
             method: 'GET',
             onSuccess: async (data) => {
-                data = data;
+                res = data;
             },
             onError: (response) => {
                 alert(response.data.error)
-                data = response.data;
+                res = response.data;
             }
         })
 
-        return data;
+        return res;
     }
 
     const handleSubmit=async()=>{
@@ -101,15 +101,6 @@ export default function Loan() {
         if(!emailStatus) alert('Please enter valid email')
         else if(!mobileStatus) alert('Please enter valid phone number')
         else{
-            // await axios.post(`${API_URL}/api/kid/v1/loan/${getToken()}/`, data).then(res => {
-            //     if(res.data.status){
-            //         setLoanSuccess(true)
-            //         setLoanData(res.data.data)
-            //     }
-            // }).catch(error => {
-            //     alert(error.response.data.error)
-            //     return error.response.data
-            // });
 
             await apiRequest({
                 url: `/api/kid/v1/loan/${getToken()}/`,
@@ -154,12 +145,7 @@ export default function Loan() {
         setLoader(true);
         const data = await getData();
 
-        if(data.status_code === 401){
-            await logout();
-            return;
-        }else{
-            setStudent(data.student);
-        }
+        setStudent(data.student);
         
         let amount = 0;
         data.data.forEach((installment,index)=>{
@@ -245,23 +231,6 @@ export default function Loan() {
 
         let newQuickViewState = {};
         newQuickViewState["student"] = student;
-
-        // let history = await axios.get(`${API_URL}/api/kid/v1/transactions/${student?.id}/`,{
-        //     headers: {
-        //         'token' : getToken()
-        //     }
-        // })
-        // .then(res => {
-        //     newQuickViewState["transactionHistory"] = res.data.data
-        // })
-        // .catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
-
-        // Promise.all([history]).then((values) => {
-        //     setQuickViewState(newQuickViewState);
-        // });
 
         await apiRequest({
             url: `/api/kid/v1/transactions/${student?.id}/`,
