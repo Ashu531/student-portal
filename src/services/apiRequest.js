@@ -4,7 +4,8 @@ import { logoutUser } from './authService';
 export const apiRequest = async (
     options
 ) => {
-    let response = await axios({
+    
+    await axios({
         baseURL: API_URL,
         url: options.url,
         headers: {
@@ -39,5 +40,5 @@ export const onStatus401 = (statusCode) => {
 export const logout = async () => {
     const loggedOut = await logoutUser();
     if(loggedOut)
-        navigate('/login', {replace: true});
+        location.href = '/login';
 }

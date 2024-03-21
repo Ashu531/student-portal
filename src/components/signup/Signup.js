@@ -6,6 +6,7 @@ import Select from 'react-select';
 import Button from '../elementalComponents/button/Button';
 import backIcon from '../../assets/caret-right.svg';
 import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
+import { apiRequest } from '../../services/apiRequest';
 
 const tenures = [
     { value: 3, label: '3 Months' },

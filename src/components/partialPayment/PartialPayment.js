@@ -13,6 +13,7 @@ import Header from '../elementalComponents/header/Header';
 import ChatWidget from '@papercups-io/chat-widget';
 import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
 import { downloadTransaction } from '../../services/dowmloadTransaction';
+import { apiRequest } from '../../services/apiRequest';
 
 export default function PartialPayment() {
 

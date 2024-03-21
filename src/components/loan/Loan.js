@@ -11,6 +11,7 @@ import Switch from "react-switch";
 import ChatWidget from '@papercups-io/chat-widget';
 import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
 import { downloadTransaction } from '../../services/dowmloadTransaction';
+import { apiRequest } from '../../services/apiRequest';
 
 const relations = [
     { value: 'Self', label: 'Self' },
