@@ -58,12 +58,6 @@ export default function Loan() {
     }, []);
 
     const getData = async () => {
-        // const data = await axios.get(`${API_URL}/api/kid/v1/school/installments/${getToken()}/`)
-        // .then(res => res.data)
-        // .catch(error => {
-        //     alert(error.response.data.error)
-        //     return error.response.data
-        // });
 
         let res;
         await apiRequest({

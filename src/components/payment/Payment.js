@@ -39,16 +39,6 @@ export default function Payment() {
   const getModalData = async () => {
     const {ids, amount} = getSelectedInstallments();
 
-    // const data = await axios.post(`${API_URL}/api/kid/v1/payment/${getToken()}/`, {
-    //     'ids': ids,
-    //     'amount': amount,
-    //     'mode': 'FULL_PAYMENT',
-    // }).then(res => res.data)
-    // .catch(error => {
-    //     alert(error.response.data.error)
-    //     return error.response.data
-    // });
-
     let res;
     await apiRequest({
         url: `/api/kid/v1/payment/${getToken()}/`,

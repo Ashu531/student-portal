@@ -83,21 +83,6 @@ export default function Login() {
                 }
             })
 
-            // const otpVerified = await axios.post(`${API_URL}/api/kid/v1/verify_otp/`, JSON.stringify({
-            //     'phone_number': `${selectedCountry} ${inputValue}`,
-            //     'otp': value,
-            //     'college_slug': urlSlug
-            // }), {
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // })
-            // .then(res => (res.data))
-            // .catch(err => {
-            //     setError({...error, otp: err.response.data.message});
-            //     setLoader(false)
-            // });
-
         }
 
         return otpVerified;
@@ -141,16 +126,6 @@ export default function Login() {
                 setError({...error, number: response.data.message});
             }
         })
-        // const otpGenerated = await axios.post(`${API_URL}/api/kid/v1/send_otp/`,data, {
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // })
-        // .then(res => (res.data))
-        // .catch(err => {
-        //     // console.log('res', {...err});
-        //     setError({...error, number: err.response.data.message});
-        // });
 
         return otpGenerated ? otpGenerated.status: otpGenerated;
     }
@@ -180,19 +155,6 @@ export default function Login() {
             }
         })
 
-        // const resent = await axios.post(`${API_URL}/api/kid/v1/resend_otp/`, 
-        // JSON.stringify({
-        //     phone_number: `${selectedCountry} ${inputValue}`,
-        //     college_slug: urlSlug
-        // }), 
-        // {
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // })
-        // .then(res => (res.data))
-        // .catch(err => console.log(err));
-
         return resent ? resent.status: resent;
     }
 
@@ -217,19 +179,6 @@ export default function Login() {
                 console.log(response);
             }
         })
-
-        // const students = await axios.post(`${API_URL}/api/kid/v1/identify/${selectedCountry}_${inputValue}/`,
-        // JSON.stringify({
-        //     college_slug: urlSlug
-        // }), 
-        // {
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // }
-        // )
-        // .then(res => (res.data.data))
-        // .catch(err => console.log(err));
 
         return students;
     }
