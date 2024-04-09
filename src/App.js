@@ -13,6 +13,7 @@ import PartialPayment from './components/partialPayment/PartialPayment';
 import LoanSuccess from './components/elementalComponents/loan-success/LoanSuccess';
 import Signup from './components/signup/Signup';
 import AdhocSuccess from './components/adhocSuccess/AdhocSuccess';
+import PaymentGateway from './components/paymentGateway/PaymentGateway'
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
                 <Route path="/partial-payment" element={<PartialPayment />}/>
               </Route>
               <Route path="/adhoc-success" element={<AdhocSuccess/>} />
+              <Route path="/pg/*" element={<PaymentGateway />} />
               <Route path="/adhoc/*" element={<Signup />}/>
               <Route path="/*" element={<InitialRoute />}/>
           </Routes>
