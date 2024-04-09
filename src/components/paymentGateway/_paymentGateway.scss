@@ -1,0 +1,27 @@
+.payment{
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+
+
+    .error{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .button-container{
+        margin-top: 1rem;
+        .button{
+            padding: 8px;
+            background: #8F14CC;
+    
+        }
+    }
+    
+}
