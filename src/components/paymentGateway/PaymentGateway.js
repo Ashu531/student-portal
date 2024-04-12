@@ -65,6 +65,7 @@ const PaymentGateway = () => {
         onResponse: (response) => {
             console.log(response,"reponse")
             if (!response || !response?.status) {
+                setError(response.message)
                 alert(`Some error occurred!`);
               } else if (response?.status.toLowerCase() === 'success') {
                 alert(`Payment successful`);

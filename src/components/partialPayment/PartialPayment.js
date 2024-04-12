@@ -14,6 +14,7 @@ import ChatWidget from '@papercups-io/chat-widget';
 import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
 import { downloadTransaction } from '../../services/dowmloadTransaction';
 import { apiRequest } from '../../services/apiRequest';
+import html2pdf from 'html2pdf.js';
 
 export default function PartialPayment() {
 
@@ -305,15 +306,36 @@ export default function PartialPayment() {
         handleStudentClick()
     }
 
-    const downloadCollapsiblePdf=(item)=>{
-        let name = item.student_name.split(' ');
-        let state =  {
-            ...item,
-            'instituteLogo': instituteLogo,
-            name
-        }
-        downloadTransaction(state)
+    const downloadCollapsiblePdf=async(item)=>{
+        const response =  await apiRequest({
+            url: `payment/download/reciept/${item?.transaction_id}/`,
+            method: 'GET',
+            data: {},
+            token: getToken(),
+            onSuccess: (data) => {
+                downloadTransactionPDF(data['html_content'])
+            },
+            onError: (response) => {
+                // toast.error(response.data.error);
+                console.log(response,"error")
+            }
+        })
     }
+
+    const downloadTransactionPDF = (htmlString) => {
+    
+        const element = document.createElement('div');
+        element.innerHTML = htmlString;
+        element.style.width = '100%';
+        const options = {
+        margin: 10,
+        filename: 'report.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        };
+        html2pdf(element, options);
+    };
 
     const handleStudentClick = async () => {
 
