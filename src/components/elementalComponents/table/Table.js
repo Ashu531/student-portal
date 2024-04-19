@@ -87,7 +87,7 @@ export default function Table({ heading='Installments', list, handleCheckBox, se
             <tbody className='tbody'>
                 {list.map((listItem, i) => (
                     <tr key={i} className='row'>
-                        <td style={{flex: '3 1 0px'}}>
+                        <td style={{flex: '3 1 0px',textAlign: 'start'}}>
                             <span style={{fontSize: '1.4rem', color: '#000000', fontWeight:'500', textTransform: 'capitalize'}}>
                                 {listItem.name}<br/>
                                 <p style={{fontSize: '1rem', color: '#000000', fontWeight:'400', textTransform: 'capitalize',margin:0}}>{listItem?.fee_category?.name}</p>

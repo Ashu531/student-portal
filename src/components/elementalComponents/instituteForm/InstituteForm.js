@@ -457,20 +457,20 @@ export default function InstituteForm({
 
     const validateEmail = (email) => {
         let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if(email.match(mailformat)) return true
+        if(email && email.match(mailformat)) return true
         else return false
     };
 
     const validateNumber=(number)=>{
         let numformat = /^[0-9]+$/;
-        if(number.length != 10) return false
-        if(number.match(numformat)) return true
+        if(number && number.length != 10) return false
+        if(number && number.match(numformat)) return true
         else return false
     }
 
     const validateAlphabet=(alpha)=>{
         let aplhaformat = /^[a-zA-Z_ ]+$/;
-        if(alpha.match(aplhaformat)) return true
+        if(alpha && alpha.match(aplhaformat)) return true
         else return false
     }
 
