@@ -1,35 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Bars, TailSpin } from "react-loader-spinner";
-import { Outlet, Navigate, useParams } from "react-router-dom";
-import { authenticateUser, delay } from "../services/authService";
-import background from '../assets/background.png';
+import React, { Component } from "react";
+import { Outlet, Navigate } from "react-router-dom";
 
-
-function CheckAuthentication() {
-    const {token} = useParams();
-    const [authStatus, setAuthStatus] = useState(null);
-
-    useEffect(async () => {
-      let authRes = await authenticateUser(token);
-      setAuthStatus(authRes);
-    }, [])
-
-    // useEffect(() => {
-    //   console.log( 'authres', authStatus);
-    // }, [setAuthStatus]);
-
-    if(authStatus == null){
+const CheckAuthentication = (ActualComponent) => {
+  class Authenticate extends Component {
+    render() {
+      const authkey = localStorage.getItem('fms-student-portal');
       return (
-        <div className="credenc-loader-white fullscreen-loader">
-          <TailSpin color="#00BFFF" height={100} width={100}/>
-        </div>
+        <>
+          {authkey ? (
+            <ActualComponent {...this.props} />
+          ) : (
+            <Navigate to="/login" />
+          )}
+        </>
       );
     }
-    else if(authStatus == true) {
-      return <Outlet />;
-    }
+  }
 
-    return <Navigate replace to='/login'/>;
+  return Authenticate;
 };
 
 export default CheckAuthentication;

@@ -1,0 +1,35 @@
+.plms-list{
+    list-style-type: none;
+    overflow: hidden;
+    /* padding: 0 0 0 12px; */
+    border-radius: 8px;
+    background: #F4F4F4;
+    padding: 5px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.plms-item{
+    display: inline;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 0 32px 0 0;
+    color: #6e6e6e;
+    font-weight: 400;
+    cursor: pointer;
+    padding: 10px 15px;
+}
+
+  /* .item:hover{
+    color: #ffffff;
+} */
+
+  .plms-active-tab{
+    color: #ffffff;
+    /* border-bottom: solid var(--primary-base);.label */
+    font-weight: 500;
+    border-radius: 8px;
+    background: #8F14CC;
+    padding: 10px 15px;
+}

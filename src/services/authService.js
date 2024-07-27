@@ -1,17 +1,17 @@
 import axios from "axios";
 
 const saveToken = (token) => {
-    localStorage.setItem('credenc-fms-student-portal', token);
+    localStorage.setItem('fms-student-portal', token);
 }
 
 const removeToken = () => {
-    localStorage.removeItem('credenc-fms-student-portal');
+    localStorage.removeItem('fms-student-portal');
     removeStudents();
 }
 
 const getToken = () => {
     // console.log('getting token from localhost...');
-    return localStorage.getItem('credenc-fms-student-portal');
+    return localStorage.getItem('fms-student-portal');
 }
 
 const saveStudents = (students) => {
@@ -51,16 +51,22 @@ const authenticateUser = async (token) => {
 }
 
 const logoutUser = async () => {
-    // console.log('logging out...');
-    let res = await axios.delete(`${API_URL}/api/kid/v1/logout/${getToken()}/`)
-    .then(res => res.data)
-    .catch(error => {
-        alert(error.response.data.error)
-        return error.response.data
-    });
-    if(res){
-        removeToken();
-        return true;
+    const token = getToken();  
+
+    try {
+        let res = await axios.post(`${API_URL}/api/auth/v1/logout/`, {}, {
+            headers: {
+                'Token': `${token}`
+            }
+        });
+
+        if (res.status === 200) {
+            removeToken();
+            return true;
+        }
+    } catch (error) {
+        alert(error.response?.data?.error || 'Logout failed');
+        return false;
     }
 
     return false;

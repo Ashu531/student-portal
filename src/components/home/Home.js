@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../elementalComponents/button/Button';
 import Table from '../elementalComponents/table/Table';
 import Modal from '../elementalComponents/modal/Modal';
-import { useNavigate } from 'react-router-dom';
-import Collapsible from '../elementalComponents/collapsible/Collapsible';
+import { useNavigate, useLocation } from 'react-router-dom';
 import SmallTable from '../elementalComponents/smallTable/SmallTable';
-import useScript from '../../hooks/useScript';
 import { TailSpin } from 'react-loader-spinner';
 import { getStudents, getToken, logoutUser, saveToken } from '../../services/authService';
-import Pair from '../elementalComponents/pair/Pair';
 import PaymentOption from '../elementalComponents/paymentOption/PaymentOption';
 import moneyIcon from '../../assets/money-icon.svg';
 import handCoinsIcon from '../../assets/hand-coins.svg';
@@ -16,30 +12,32 @@ import coinsIcon from '../../assets/coins.svg';
 import CurrencyEthIcon from '../../assets/currency-eth.svg';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 import Header from '../elementalComponents/header/Header';
-import Steps from '../elementalComponents/steps/Steps';
 import ConfirmationModal from '../elementalComponents/confirmationModal/ConfirmModal';
-import DetailBanner from '../elementalComponents/detailBanner/DetailBanner';
-import {ChatWidget} from "@papercups-io/chat-widget";
-import CredencLoanModal from '../elementalComponents/loanModal/LoanModal';
 import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
 import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
-import { downloadTransaction } from '../../services/dowmloadTransaction';
 import { apiRequest } from '../../services/apiRequest';
 import html2pdf from 'html2pdf.js';
 
 export default function Home() {
 
-    const [token, setToken] = useState('');
+    const paymentPlans = [
+        {
+            name: 'LOAN',
+            tag: 'No Cost EMI',
+            description: 'Pay full fee using loan!',
+            bgColor: '#FFD45C',
+            disabled: false,
+        }
+    ];
+
     const navigate = useNavigate();
 
     const [installments, setInstallments] = useState([]);
     const [adhocInstallments, setAdhocInstallments] = useState([]);
 
-    const [paymentPlans, setPaymentPlans] = useState([]);
-
     
     const [student, setStudent] = useState({});
-    const [students, setStudents] = useState([]);
+    const [studentDetails, setStudentDetails] = useState([]);
 
     const [selectAll, setSelectAll] = useState(false);
 
@@ -85,6 +83,24 @@ export default function Home() {
     const [quickViewState,setQuickViewState] = useState(false);
 
     const [quickView,setQuickView] = useState(false);
+
+    useEffect(()=>{
+        getStudentDetails()
+    },[])
+
+    const  getStudentDetails=async()=>{
+        await apiRequest({
+            url: `/api/auth/v1/student_data/`,
+            method: 'GET',
+            token: getToken(),
+            onSuccess: async (data) => {
+                setStudentDetails(data.user_data)
+            },
+            onError: (response) => {
+                alert(response.data.error)
+            }
+        })
+    }
 
     const handleStudentClick = async () => {
 
@@ -289,105 +305,6 @@ export default function Home() {
     }
 
 
-    useEffect(() => {
-        if(!confirmationDialog)  {
-            setModalData({});
-        }
-    }, [confirmationDialog])
-
-    useEffect(() => {
-        let amount = 0;
-        let pendingAmount = 0;
-
-        if(installments.length === 0){
-            setNoAcademicFeeState(true)
-        }else{
-            setNoAcademicFeeState(false)
-        }
-
-        installments.forEach((installment) => {
-            if(installment['is_mandatory'] === 'True' || installment['is_mandatory'] === true){
-                amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
-            }
-
-            if(installment['status'] !== 'paid'){
-                pendingAmount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
-            }
-        })
-
-        setAmount(amount.toFixed(2));
-        setPendingAmount(pendingAmount.toFixed(2));
-    }, [installments])
-
-    useEffect(() => {
-        let amount = 0;
-        adhocInstallments.forEach((installment) => {
-            if(installment['is_mandatory'] === 'True' || installment['is_mandatory'] === true){
-                amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
-            }
-        })
-
-        setAdhocAmount(amount.toFixed(2));
-    }, [adhocInstallments])
-
-    useEffect(() => {
-        if(token != ''){
-            saveToken(token);
-            initHome();
-            window.history.replaceState(null, "", `/installments/${token}`)
-        }
-    }, [token]);
-
-    const initHome = async () => {
-        setLoader(true);
-        const data = await getData();
-        
-        setStudent(data.student);
-        setInstituteLogo(data.student.logo)
-
-        setDashboardType(data.dashboard_type)
-        let status = data.dashboard_type.banner
-        setApplicationStatus(status)
-
-        data.data.forEach((installment, i) => {
-            if(data.selected){
-                const id = data.selected.find(id => id === installment['id']);
-                if(id){
-                    data.data[i]['is_mandatory'] = 'True';
-                }
-            }
-            if(installment['status'] !== 'due' && installment['status'] !== 'overdue'){
-                data.data[i]['is_mandatory'] = false;
-            }
-        });
-
-        setInstallments(data.data);
-
-        data.adhoc.forEach((installment, i) => {
-            if(installment['is_mandatory'] !== 'True'){
-                data.adhoc[i]['is_mandatory'] = false;
-            }
-        });
-        setAdhocInstallments(data.adhoc);
-        getAdhocData(data.data)
-
-        setPaymentPlans(data.plans);
-
-        setLoader(false);
-    }
-
-    useEffect(() => {
-
-        setStudents([...getStudents()]);
-        
-        initHome();
-
-        useScript('https://ebz-static.s3.ap-south-1.amazonaws.com/easecheckout/easebuzz-checkout.js', () => {
-            setEasebuzzCheckout(new EasebuzzCheckout("7ITASSQJE1", 'prod'));
-        });
-
-    }, [])
-
     const getAdhocData=(data)=>{
         data.forEach((item,index)=>{
             if(item.status != 'paid'){
@@ -449,55 +366,6 @@ export default function Home() {
         initHome()
     }
 
-    useEffect(()=>{
-        if(dashboardType.name === 'loan'){
-            setConfirmModalData({
-                title: 'Loan Application Rejected',
-                subHeading: 'Your loan application was denied for fee payment. Apply for a loan again or try paying with other available payment methods.',
-                description: `To know more about your loan application contact us on help@credenc.com`,
-                buttonText: 'Go to Dashboard',
-                successImage: false,
-                handleSubmit: bannerCancellation,
-                type: 1
-            })
-            setApplicationStatus(dashboardType.banner)
-        }else if(dashboardType.name === 'autopay'){
-            if(dashboardType.status === 'setup_done'){
-                setConfirmModalData({
-                    title: 'Auto-Pay Set up Successful!',
-                    buttonText: 'Back to Dashboard',
-                    successImage: true,
-                    handleSubmit: bannerCancellation,
-                    type: 2
-                })
-                setApplicationStatus(dashboardType.banner)
-            }else if(dashboardType.status === 'setup_cancel'){
-                setConfirmModalData({
-                    title: 'Auto-Pay Set up Unsuccessful',
-                    subHeading: 'Your auto-pay has not been set up. Try again! ',
-                    buttonText: 'Back to Dashboard',
-                    successImage: false,
-                    handleSubmit: bannerCancellation,
-                    type: 2
-                })
-                setApplicationStatus(dashboardType.banner)
-            }
-            else if(dashboardType.status === 'initiated'){
-                setConfirmModalData({
-                    title: 'Auto-Pay Initiation Unsuccessful',
-                    subHeading: 'Your auto-pay has not been set up. Try again! ',
-                    buttonText: 'Back to Dashboard',
-                    successImage: false,
-                    handleSubmit: bannerCancellation,
-                    type: 1
-                })
-                setApplicationStatus(dashboardType.banner)
-            }
-            
-        }
-        
-    },[dashboardType.status])
-
     const bannerCancellation=async()=>{
 
         await apiRequest({
@@ -532,35 +400,20 @@ export default function Home() {
         setApplicationStatus(false)
     }
 
-    const closeLoanModal=()=>{
-        setCredencLoanModal(false)
-    }
-
     const applyCredencLoan=async()=>{
-        let data = {
-            'name': student.name,
-            'email': student.email,
-            'phone_number': '',
-            'relation': 'Self',
-            'amount': String(pendingAmount),
-            'remark': '',
-            'tenure': '',
-            'course_name': student.course_id,
-            'applicant_name': student.name,
-            'college': student.college_id
-        }
-
         await apiRequest({
-            url: `/api/kid/v1/loan/${getToken()}/`,
-            method: 'POST',
-            data: data,
+            url: `/api/loan/v1/loan-lead/${studentDetails.lead_id}/`,
+            method: 'GET',
+            data: {},
+            token: getToken(),
             onSuccess: async (data) => {
                 if(data.status){
-                    setLoanData(data.data)
-                    closeLoanModal()
-                    navigate(`/credenc-loan`, {
+                    navigate(`/loan`, {
                         replace: true,
-                        state: data.data
+                        state: { 
+                            "loan_data" : data.data,
+                            "student_data" : studentDetails
+                    }
                     });
                 }
             },
@@ -568,7 +421,6 @@ export default function Home() {
                 alert(response.data.error)
             }
         })
-        
     }
 
     const closeQuickView=()=>{
@@ -613,217 +465,23 @@ export default function Home() {
 
     return (
         <>
-        <Header title="Student Fee Ledger" back={false} icon={student?.logo} openQuickView={()=>openQuickView()} />
+        <Header 
+         title="Student Fee Ledger" 
+         back={false} 
+         icon={student?.logo} 
+         openQuickView={()=>openQuickView()} 
+        />
         <div className={`home ${confirmationDialog ? 'open-modal' : ''}`}>
             <div className='container'>
-                {!loader && <div className='content-container'>
-
-                    <div className='hideOnDesktop'>
-                        <Collapsible 
-                            title={'Student'}
-                            students={students}
-                            student={student} 
-                            collapsed={studentCollapsed}
-                            handleClick={() => setStudentCollapsed(!studentCollapsed)}
-                            handleStudentClick={(student) => setToken(student.token)}
-                        />
-                    </div>
-
-                    <div className='hideOnMobile'>
-                        <div className="student-details" style={{background: '#404040', alignItems: 'flex-start', justifyContent: 'flex-end', padding: '1rem 2rem', position: 'relative', overflow: 'visible'}}>
-                            <div className="row">
-                                <div className="field" style={{color: '#FFFFFF'}}>Institute</div>
-                                <div className="value" style={{color: '#FFFFFF'}}>{student.college}</div>
-                            </div>
-                            <div style={{position: 'absolute', left: '0'}}>
-                                <Collapsible
-                                    title={'Student'}
-                                    students={students}
-                                    student={student} 
-                                    collapsed={studentCollapsed}
-                                    handleClick={() => setStudentCollapsed(!studentCollapsed)}
-                                    handleStudentClick={(student) => setToken(student.token)}
-                                />
-                            </div>
-                            <div className="row">
-                                <div className="field" style={{color: '#FFFFFF'}}>Grade/Course</div>
-                                <div className="value" style={{color: '#FFFFFF'}}>{student.course}</div>
-                            </div>
-                            <div className="row">
-                                <div className="field" style={{color: '#FFFFFF'}}>Admission No.</div>
-                                <div className="value" style={{color: '#FFFFFF'}}>{student.prn}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                    
-                    <div className='hideOnDesktop'>
+                {!loader && <div className='content-container'>                  
+                    {/* <div className='hideOnDesktop'> */}
                         <StudentDetails 
-                            name={student.name}
-                            id={student.prn}
-                            grade={student.course}
-                            school={student.college}
+                            name={studentDetails.full_name}
+                            phone_number={studentDetails.phone_number}
+                            email={studentDetails.email}
+                            school={studentDetails.institute}
                         />
-                    </div>                 
-
-                    {adhocInstallments.length > 0 && 
-                     <div className='pair-heading tooltip' style={{margin: '1rem 0 0.8rem 0'}}>
-                         ADD ON FEE
-                         <span style={{ display: 'inline-block', padding: '6px 2px 0 2px', cursor: 'pointer'}}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" style={{paddingTop: 5}}>
-                                <path d="M10 1.875C8.39303 1.875 6.82214 2.35152 5.486 3.24431C4.14985 4.1371 3.10844 5.40605 2.49348 6.8907C1.87852 8.37535 1.71762 10.009 2.03112 11.5851C2.34463 13.1612 3.11846 14.6089 4.25476 15.7452C5.39106 16.8815 6.8388 17.6554 8.4149 17.9689C9.99099 18.2824 11.6247 18.1215 13.1093 17.5065C14.594 16.8916 15.8629 15.8502 16.7557 14.514C17.6485 13.1779 18.125 11.607 18.125 10C18.1227 7.84581 17.266 5.78051 15.7427 4.25727C14.2195 2.73403 12.1542 1.87727 10 1.875ZM9.6875 5.625C9.87292 5.625 10.0542 5.67998 10.2084 5.783C10.3625 5.88601 10.4827 6.03243 10.5536 6.20373C10.6246 6.37504 10.6432 6.56354 10.607 6.7454C10.5708 6.92725 10.4815 7.0943 10.3504 7.22541C10.2193 7.35652 10.0523 7.44581 9.8704 7.48199C9.68854 7.51816 9.50004 7.49959 9.32874 7.42864C9.15743 7.35768 9.01101 7.23752 8.908 7.08335C8.80499 6.92918 8.75 6.74792 8.75 6.5625C8.75 6.31386 8.84878 6.0754 9.02459 5.89959C9.20041 5.72377 9.43886 5.625 9.6875 5.625ZM10.625 14.375C10.2935 14.375 9.97554 14.2433 9.74112 14.0089C9.5067 13.7745 9.375 13.4565 9.375 13.125V10C9.20924 10 9.05027 9.93415 8.93306 9.81694C8.81585 9.69973 8.75 9.54076 8.75 9.375C8.75 9.20924 8.81585 9.05027 8.93306 8.93306C9.05027 8.81585 9.20924 8.75 9.375 8.75C9.70652 8.75 10.0245 8.8817 10.2589 9.11612C10.4933 9.35054 10.625 9.66848 10.625 10V13.125C10.7908 13.125 10.9497 13.1908 11.0669 13.3081C11.1842 13.4253 11.25 13.5842 11.25 13.75C11.25 13.9158 11.1842 14.0747 11.0669 14.1919C10.9497 14.3092 10.7908 14.375 10.625 14.375Z" fill="black"/>
-                            </svg>
-                        </span>
-                        <div className='tooltiptext'>Additional charges, not part of the Academic Fee. </div>
-                     </div>
-                    }
-
-                    <Table 
-                        heading={'Add-On Fee Breakup'}
-                        list={adhocInstallments} 
-                        handleCheckBox={handleAmount} 
-                        selectAll={selectAll}
-                    />
-
-                    <SmallTable 
-                        heading={'Add-On Fee Breakup'}
-                        list={adhocInstallments} 
-                        handleCheckBox={handleAmount}
-                    />
-
-                    {adhocInstallments.length > 0 && <div className='button-container'>
-                        <Button 
-                            text={`Pay ₹ ${adhocAmount} Now `} 
-                            handleClick={handleProceed}
-                            classes={`button-small button-primary ${adhocAmount > 0 ? '' : 'disabled'}`}
-                            align={'flex-end'}
-                        />
-                    </div>}
-
-                    {
-                        noAcademicFeeState && 
-                        <div className='paid-status' style={{marginTop: 24}}>
-                            <div className='icon-circle'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
-                            </div>
-                            <div className='status-text'>
-                                You dont have any academic fee to pay.
-                            </div>    
-                        </div>
-                    }
-
-                    {
-                        (!nonPaidStatus && !noAcademicFeeState) && 
-                        <div className='paid-status' style={{marginTop: 24}}>
-                            <div className='icon-circle'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
-                            </div>
-                            <div className='status-text'>
-                                The fee has been paid in full. Summary of the same is given below.
-                            </div>    
-                        </div>
-                    }
-
-                    {   dashboardType.name === 'autopay' && (dashboardType.status === 'setup_done' || dashboardType.status === 'setup_done_by_admin' || dashboardType.status === 'initiated') &&
-                        <div style={{width:'100%',marginTop: 24}}>
-                            <DetailBanner 
-                                dashboardStatus={dashboardType.status}
-                                handleSubmit={handleAutopayModal}
-                            />
-                        </div>
-                    }
-                    {
-                        dashboardType.name === 'loan' && 
-                        <div className='steps' style={dashboardType.status == 'cancelled' || dashboardType.status == 'denied' ? {display:'none',visibility:'hidden'} : null}>
-                                <div className='steps-header'>Loan Status</div>
-                                <Steps status={dashboardType.status} />
-                        </div>
-                    }
-                   
-                   {
-                        dashboardType.name === 'loan' && dashboardType.status === 'applied' && 
-                        <div className='paid-status' style={{marginTop: 12}}>
-                            <div className='icon-circle'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
-                            </div>
-                            <div className='status-text'>
-                                 You have successfully applied for loan with Credenc! If you wish to cancel your loan, you can do it before the approval by <b style={{textDecoration: 'underline',cursor:'pointer'}} onClick={openCancellationModal}>Clicking Here</b>.
-                            </div>    
-                        </div>
-                    }
-
-                    {dashboardType.name === 'autopay' && dashboardType.status === 'setup_to_cancel' &&
-                        <div className='paid-status' style={{margin: '1rem 0', background: 'rgba(216, 133, 35, 0.3)'}}>
-                            <div className='icon-circle'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M128,128,67.2,82.4A8,8,0,0,1,64,76V40a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8V75.64A8,8,0,0,1,188.82,82L128,128h0" fill="none" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><path d="M128,128,67.2,173.6A8,8,0,0,0,64,180v36a8,8,0,0,0,8,8H184a8,8,0,0,0,8-8V180.36a8,8,0,0,0-3.18-6.38L128,128h0" fill="none" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
-                            </div>
-                            <div className='status-text'>
-                                Your request to cancel eNach is in review, awaiting approval from your admin. Until approved upcoming fees will be auto debited.
-                            </div>    
-                        </div>
-                    }
-
-                    {dashboardType.name === 'autopay' && dashboardType.status === 'setup_done_by_admin' &&
-                        <div className='paid-status' style={{margin: '1rem 0', background: 'rgba(216, 35, 35, 0.3)',justifyContent:'space-between'}}>
-                            <div style={{display:'flex',justifyContent:'center',alignItems:'center',gap: 12}}>
-                                <div className='icon-circle'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
-                                </div>
-                                <div className='status-text'>
-                                    Your request to cancel eNach is rejected by your admin. Upcoming fees will be auto debited.
-                                </div> 
-                            </div>
-                            <div style={{height: '100%',alignSelf:'flex-end'}}>
-                                <svg xmlns="http://www.w3.org/2000/svg" onClick={bannerCancellation} style={{marginLeft: 'auto', cursor: 'pointer'}} width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
-                            </div>
-                        </div>
-                    }
-
-                    {dashboardType.name === 'autopay' && dashboardType.status === 'setup_cancel_by_admin' &&
-                        <div className='paid-status' style={{margin: '1rem 0', background: 'rgba(119, 219, 38, 0.3)'}}>
-                             <div style={{display:'flex',justifyContent:'flex-start',alignItems:'center',gap: 12}}>
-                                <div className='icon-circle'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="40 144 96 200 224 72" fill="none" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
-                                </div>
-                                <div className='status-text'>
-                                    Your request to cancel eNach is accepted by your admin.
-                                </div>
-                            </div> 
-                            <div style={{height: '100%',alignSelf:'center'}}>
-                                <svg xmlns="http://www.w3.org/2000/svg" onClick={bannerCancellation} style={{marginLeft: 'auto', cursor: 'pointer'}} width="16" height="16" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="200" y1="200" x2="56" y2="56" stroke="#232426" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
-                            </div>
-                        </div>
-                    }
-
-                    {
-                        dashboardType.name === 'loan' && dashboardType.status === 'disbursed' && 
-                        <div className='paid-status'>
-                            <div className='icon-circle'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#a8cfff" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
-                            </div>
-                            <div className='status-text'>
-                             Your fee has been successfully paid by Credenc! No more financial worries for you!
-                            </div>    
-                        </div>
-                    }
-
-
-                    <div className='pair-heading tooltip' style={{margin: '1rem 0 0.8rem 0',display:'flex',alignItems:'center'}}>
-                         ACADEMIC FEE
-                         <span style={{ display: 'inline-block', cursor: 'pointer'}}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" style={{paddingTop: 5}}>
-                                <path d="M10 1.875C8.39303 1.875 6.82214 2.35152 5.486 3.24431C4.14985 4.1371 3.10844 5.40605 2.49348 6.8907C1.87852 8.37535 1.71762 10.009 2.03112 11.5851C2.34463 13.1612 3.11846 14.6089 4.25476 15.7452C5.39106 16.8815 6.8388 17.6554 8.4149 17.9689C9.99099 18.2824 11.6247 18.1215 13.1093 17.5065C14.594 16.8916 15.8629 15.8502 16.7557 14.514C17.6485 13.1779 18.125 11.607 18.125 10C18.1227 7.84581 17.266 5.78051 15.7427 4.25727C14.2195 2.73403 12.1542 1.87727 10 1.875ZM9.6875 5.625C9.87292 5.625 10.0542 5.67998 10.2084 5.783C10.3625 5.88601 10.4827 6.03243 10.5536 6.20373C10.6246 6.37504 10.6432 6.56354 10.607 6.7454C10.5708 6.92725 10.4815 7.0943 10.3504 7.22541C10.2193 7.35652 10.0523 7.44581 9.8704 7.48199C9.68854 7.51816 9.50004 7.49959 9.32874 7.42864C9.15743 7.35768 9.01101 7.23752 8.908 7.08335C8.80499 6.92918 8.75 6.74792 8.75 6.5625C8.75 6.31386 8.84878 6.0754 9.02459 5.89959C9.20041 5.72377 9.43886 5.625 9.6875 5.625ZM10.625 14.375C10.2935 14.375 9.97554 14.2433 9.74112 14.0089C9.5067 13.7745 9.375 13.4565 9.375 13.125V10C9.20924 10 9.05027 9.93415 8.93306 9.81694C8.81585 9.69973 8.75 9.54076 8.75 9.375C8.75 9.20924 8.81585 9.05027 8.93306 8.93306C9.05027 8.81585 9.20924 8.75 9.375 8.75C9.70652 8.75 10.0245 8.8817 10.2589 9.11612C10.4933 9.35054 10.625 9.66848 10.625 10V13.125C10.7908 13.125 10.9497 13.1908 11.0669 13.3081C11.1842 13.4253 11.25 13.5842 11.25 13.75C11.25 13.9158 11.1842 14.0747 11.0669 14.1919C10.9497 14.3092 10.7908 14.375 10.625 14.375Z" fill="black"/>
-                            </svg>
-                        </span>
-                        <div className='tooltiptext'>Mandatory fee for the academic program</div>
-                     </div>
-                    <Pair 
-                        radius={'1rem'}
-                        bgColor={'#5654BF'}
-                        keyname={'Outstanding Fee :'}
-                        value={`₹ ${pendingAmount}`}
-                    />
+                    {/* </div>                  */}
 
                     <div style={{height: '1rem'}}></div>
 
@@ -875,9 +533,9 @@ export default function Home() {
                                     icon={handCoinsIcon}
                                     tag={plan.tag}
                                     heading={'PAY WITH NO COST EMI'}
-                                    description={'Pay full fee using Credenc loan!'}
+                                    description={'Pay full fee using loan!'}
                                     bgColor={'#FFD45C'}
-                                    onClick={navigateToLoanPage}
+                                    onClick={applyCredencLoan}
                                     disabled={plan?.disabled}
                                     type="loan"
                                 />
@@ -934,13 +592,6 @@ export default function Home() {
             handleClose={closeModal}
         />}
         {
-            credencLoanModal && 
-            <CredencLoanModal 
-                closeLoanModal={()=>closeLoanModal()}
-                applyLoan={()=>applyCredencLoan()}
-            />
-        }
-        {
             loanSuccess && 
             <LoanSuccess loanData={loanData} adhocLoan={false} />
         }
@@ -953,30 +604,6 @@ export default function Home() {
                  handleCollapsibleDownload={(item)=>downloadCollapsiblePdf(item)}
             />
         }
-        <ChatWidget
-            token={`${PAPERCUPS_TOKEN}`}
-            inbox={`${PAPERCUPS_INBOX}`}
-            title="Welcome to Credenc Fee Pay"
-            subtitle="Ask us anything in the chat window below 😊"
-            primaryColor="#8F14CC"
-            newMessagePlaceholder="Start typing..."
-            showAgentAvailability={true}
-            agentAvailableText="We're online right now!"
-            agentUnavailableText="We're away at the moment."
-            iconVariant="outlined"
-            baseUrl="https://app.papercups.io"
-            customer={{
-              name: student.name,
-              email: student.email,
-              metadata: {
-                college: student.college,
-                id: student.id,
-                course: student.course,
-                batch: student.batch,
-                prn: student.prn
-              }
-            }}
-        />
         </>
     )
 }

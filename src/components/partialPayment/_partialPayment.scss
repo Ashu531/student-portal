@@ -50,7 +50,7 @@
     pointer-events: none;
 }
 
-@media screen and(max-width: 499px){
+@media screen and (max-width: 499px){
     .home{
         align-items: flex-start;
         .container{
@@ -98,7 +98,7 @@
     }
 }
 
-@media screen and(max-height: 600px){
+@media screen and (max-height: 600px){
     .home{
         overflow: scroll;
         padding-top: 12%;

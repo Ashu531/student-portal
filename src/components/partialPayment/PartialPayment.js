@@ -10,7 +10,6 @@ import { getToken, logoutUser } from '../../services/authService';
 import Pair from '../elementalComponents/pair/Pair';
 import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
 import Header from '../elementalComponents/header/Header';
-import ChatWidget from '@papercups-io/chat-widget';
 import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
 import { downloadTransaction } from '../../services/dowmloadTransaction';
 import { apiRequest } from '../../services/apiRequest';
@@ -415,30 +414,7 @@ export default function PartialPayment() {
                  handleCollapsibleDownload={(item)=>downloadCollapsiblePdf(item)}
             />
         }
-        <ChatWidget
-            token={`${PAPERCUPS_TOKEN}`}
-            inbox={`${PAPERCUPS_INBOX}`}
-            title="Welcome to Credenc Fee Pay"
-            subtitle="Ask us anything in the chat window below 😊"
-            primaryColor="#8F14CC"
-            newMessagePlaceholder="Start typing..."
-            showAgentAvailability={true}
-            agentAvailableText="We're online right now!"
-            agentUnavailableText="We're away at the moment."
-            iconVariant="outlined"
-            baseUrl="https://app.papercups.io"
-            customer={{
-              name: student.name,
-              email: student.email,
-              metadata: {
-                college: student.college,
-                id: student.id,
-                course: student.course,
-                batch: student.batch,
-                prn: student.prn
-              }
-            }}
-        />
+
         </>
     )
 }

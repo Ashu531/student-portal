@@ -15,6 +15,9 @@ import Signup from './components/signup/Signup';
 import AdhocSuccess from './components/adhocSuccess/AdhocSuccess';
 import PaymentGateway from './components/paymentGateway/PaymentGateway'
 
+const AuthenticatedHome = CheckAuthentication(Home);
+const AuthenticatedLoan = CheckAuthentication(Loan);
+
 function App() {
 
   return(
@@ -30,25 +33,24 @@ function App() {
       <Router>
           <Routes>
               <Route path="/login/*" element={<Login/>} />
-              <Route path="/adhoc" element={<Signup/>} />
+              <Route exact path="/home" element={<AuthenticatedHome />} />
+              <Route exact path="/loan" element={<AuthenticatedLoan />} />
+              <Route path="/*" element={<AuthenticatedHome />}/>
+              {/* <Route path="/adhoc" element={<Signup/>} />
               <Route exact path="/success" element={<Success/>} />
-              <Route element={<CheckAuthentication />}>
-                <Route exact path="/installments/:token" element={<Home />} />
-                <Route exact path="/autopay/:token" element={<Autopay />} />
-                <Route  path="/autopay" element={<Autopay />} />
-                <Route exact path="/credenc-loan/:token" element={<Loan />} />
-                <Route path="/credenc-loan" element={<Loan />} />
+                <Route element={<CheckAuthentication />}>
                 <Route path="/transaction/:token" element={<Transaction />} />
                 <Route path="/transaction" element={<Transaction />} />
                 <Route exact path="/payment/:token" element={<Payment />}/>
                 <Route path="/payment" element={<Payment />}/>
-                <Route exact path="/partial-payment/:token" element={<PartialPayment />}/>
                 <Route path="/partial-payment" element={<PartialPayment />}/>
+                <Route exact path="/autopay/:token" element={<Autopay />} />
+                <Route  path="/autopay" element={<Autopay />} />
               </Route>
               <Route path="/adhoc-success" element={<AdhocSuccess/>} />
               <Route path="/pg/*" element={<PaymentGateway />} />
-              <Route path="/adhoc/*" element={<Signup />}/>
-              <Route path="/*" element={<InitialRoute />}/>
+              <Route path="/adhoc/*" element={<Signup />}/> */}
+              
           </Routes>
       </Router>
     </>

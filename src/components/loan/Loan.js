@@ -1,403 +1,324 @@
-import React, { useEffect, useState } from 'react';
-import Header from '../../components/elementalComponents/header/Header'
-import Button from '../elementalComponents/button/Button';
-import InputField from '../elementalComponents/inputField/InputField';
-import StudentDetails from '../elementalComponents/studentDetails/StudentDetails';
-import { getToken, logoutUser } from '../../services/authService';
+import React,{useEffect, useState, useRef} from 'react';
+import caretIcon from '../../assets/caretIcon.svg'
+import DocumentCard from '../../components/elementalComponents/documentCard/documentCard.jsx';
+import TabBar from '../../components/elementalComponents/tabBar/tabBar.jsx';
+import Upload, { uploadtStates } from '../../components/elementalComponents/upload/upload.jsx';
+import axios from 'axios';
+import FinancialForm from '../../components/elementalComponents/financialForm/financialForm.jsx';
+import LeadForm, { EditableLeadForm } from '../../components/elementalComponents/leadForm/leadform.jsx';
+import { formViewTypes } from '../../components/forms/leadDetails.jsx';
+import { leadState, requestData } from '../entities/formDetails.js';
+import ChoiceBox, { Checklist } from '../../components/elementalComponents/checklist/checklist.jsx';
+import { Bars, TailSpin } from "react-loader-spinner";
 import { useNavigate, useLocation } from 'react-router-dom';
-import LoanSuccess from '../elementalComponents/loan-success/LoanSuccess';
-import Select from 'react-select';
-import Switch from "react-switch";
-import ChatWidget from '@papercups-io/chat-widget';
-import QuickViewModal from '../elementalComponents/quickViewModal/QuickViewModal';
-import { downloadTransaction } from '../../services/dowmloadTransaction';
-import { apiRequest } from '../../services/apiRequest';
+import './/loan.css'
+import { getToken } from '../../services/authService';
+import Button from '../elementalComponents/loanButton/button.jsx';
 
-const relations = [
-    { value: 'Self', label: 'Self' },
-    { value: 'Father', label: 'Father' },
-    { value: 'Mother', label: 'Mother' },
-    { value: 'Brother', label: 'Brother' },
-    { value: 'Sister', label: 'Sister' },
-  ];
+const documentTypes = [
+    'Aadhaar Card', 
+    'Passport', 
+    'Driving License', 
+    'Voter ID', 
+    'Landline Bill', 
+    'Electricity Bill', 
+    'Gas Bill', 
+    'Water Bill',
+    'Others'
+]
 
-  const tenures = [
-    { value: 3, label: '3 Months' },
-    { value: 6, label: '6 Months' },
-    { value: 9, label: '9 Months' },
-    { value: 12, label: '12 Months' },
-  ];
+export default function Loan({
+    instituteName,
+    leadOverview,
+    ...props
+}) {
 
-export default function Loan() {
+const initialFormState = {
+        leadId: '',
+        studentName: '',
+        institute: '',
+        mobile: '',
+        email: '',
+        borrowerName: '',
+        course: '',
+        courseFee: '',
+        loanAmount: '',
+        tenure: '',
+        advanceEmi: '-1'
+      }
 
-    const [student, setStudent] = useState({});
-    const [name,setName] = useState('')
-    const [email,setEmail] = useState('')
-    const [mobileNumber,setMobileNumber] = useState('')
-    const [relation,setRelation] = useState('')
-    const [totalAmount,setTotalAmount] = useState('')
-    const navigate = useNavigate();
-    const [loanSuccess,setLoanSuccess] = useState(true);
-    const [loader, setLoader] = useState(false);
-    const [loanData,setLoanData] = useState({})
-    const [tenure,setTenure] = useState(0)
-    const [remark,setRemark] = useState('');
-    const [applicantName,setApplicantName] = useState('')
-    const [nameChecked,setNameChecked] = useState(false)
-    const [quickView,setQuickView] = useState(false);
-    const [quickViewState,setQuickViewState] = useState(false);
+ const [tab,setTab] = useState(0);
+ const [documentValue,setDocumentValue] = useState('PAN Card')
 
-    const {state} = useLocation();
+ const [selectedDocTypes, setSelectedDocTypes] = useState(new Set([]));
+ const [currentUploadState, setCurrentUploadState] = useState(uploadtStates.drop);
 
-    useEffect(() => {
-        if(!state)
-            navigate('/', {replace: true});
-        else{
-            setLoanData(state)
-        }
-    }, []);
+const [selectedFiles, setSelectedFiles] = useState([]);
+const [deletedFiles, setDeletedFiles] = useState([]);
+const [verifiedFiles, setVerifiedFiles] = useState([]);
+const [loader,setLoader] = useState(false)
+const [loanData,setLoanData] = useState({})
+const [formData,setFormData] = useState({...initialFormState})
+const [studentData,setStudentData] = useState({});
 
-    const getData = async () => {
+const {state} = useLocation();
+const navigate = useNavigate();
 
-        let res;
-        await apiRequest({
-            url: `/api/kid/v1/school/installments/${getToken()}/`,
-            method: 'GET',
-            onSuccess: async (data) => {
-                res = data;
-            },
-            onError: (response) => {
-                alert(response.data.error)
-                res = response.data;
-            }
-        })
-
-        return res;
+useEffect(() => {
+    if(!state)
+        navigate('/', {replace: true});
+    else{
+        setLoanData(state.loan_data)
+        setStudentData(state.student_data)
+        setFormData(state.loan_data)
     }
+}, [loanData]);
 
-    const handleSubmit=async()=>{
-        let data = {
-            'name': name,
-            'email': email,
-            'phone_number': mobileNumber,
-            'relation': relation,
-            'amount': String(totalAmount),
-            'remark': remark,
-            'tenure': tenure,
-            'course_name': student.course_id,
-            'applicant_name': applicantName,
-            'college': student.college_id
+const switchToDropState = () => {
+    setCurrentUploadState(uploadtStates.drop)
+}
+
+const switchToPreviewState = () => {
+    setCurrentUploadState(uploadtStates.preview)
+}
+
+const switchToUploadedState = () => {
+    setCurrentUploadState(uploadtStates.uploaded)
+}
+
+const removeFile = (i) => {
+    let selected = [...deletedFiles];
+    
+    selected.forEach((file, idx) => {
+      if(idx == i)
+        selected[idx] = -1;
+    });
+
+    setDeletedFiles([...selected]);
+    setVerifiedFiles([]);
+    switchToDropState();
+}
+
+const getDocumentType = () => {
+    switch(documentValue){
+        case 'PAN Card': return 'pan'
+        case 'Aadhaar Card': return 'aadhar'
+        case 'Bank Statement': return 'statement'
+        case 'Passport': return 'passport' 
+        case 'Driving License': return 'license' 
+        case 'Voter ID': return 'voter' 
+        case 'Landline Bill': return 'landline' 
+        case 'Electricity Bill': return 'electricity_bill' 
+        case 'Gas Bill': return 'gas_bill' 
+        case 'Water Bill': return 'water_bill'
+        case 'Others': return 'other'
+    }
+}
+
+  const handleBack=()=>{
+    navigate('/',{
+        replace: true
+    })
+  }
+
+  const handleTabNavigation = (i) => {
+    setTab(i);
+ }
+
+const handleDocumentsCard=(data)=>{
+setDocumentValue(data)
+    if(documentValue != data){
+        removeFile(0)
+    }
+    
+}
+console.log(documentValue,"valuee")
+const handleDocTypeSelection = (docType) => {
+        if(selectedDocTypes.has(docType)){
+            setSelectedDocTypes(prev => {prev.delete(docType); return new Set(prev);})
+        } else {
+            setSelectedDocTypes(prev => new Set(prev.add(docType)));
         }
+}
 
-        let emailStatus = validateEmail(email)
-
-        let mobileStatus = validateNumber(mobileNumber)
-
-        if(!emailStatus) alert('Please enter valid email')
-        else if(!mobileStatus) alert('Please enter valid phone number')
-        else{
-
-            await apiRequest({
-                url: `/api/kid/v1/loan/${getToken()}/`,
-                method: 'POST',
-                data: data,
-                onSuccess: async (data) => {
-                    if(data.status){
-                        setLoanSuccess(true)
-                        setLoanData(data.data)
-                    }
+const saveLead=async()=>{
+    if(loanData.id){
+        try {
+            const response = await axios.put(`${API_URL}/api/loan/v1/loan-lead/${loanData.id}/`, formData, {
+                headers: {
+                    token: `${getToken()}`,
                 },
-                onError: (response) => {
-                    alert(response.data.error)
-                }
-            })
+            });
+            return response.data; 
+        } catch (error) {
+            console.error(error);
+            throw error; 
         }
-
-        
-       
-    }
-
-    const validateEmail = (email) => {
-        let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if(email.match(mailformat)) return true
-        else return false
-    };
-
-    const validateNumber=(number)=>{
-        let numformat = /^[0-9]+$/;
-        if(number.length != 10) return false
-        else if(number.match(numformat)) return true
-        else return false
-    }
-
-    const logout = async () => {
-        const loggedOut = await logoutUser();
-        if(loggedOut)
-            navigate('/login', {replace: true});
-    }
-
-    useEffect(async () => {
-        setLoader(true);
-        const data = await getData();
-
-        setStudent(data.student);
-        
-        let amount = 0;
-        data.data.forEach((installment,index)=>{
-            if(installment['status'] !== 'paid'){
-                amount += parseFloat(installment['amount']) + parseFloat(installment['penalty']);
-            }
-        })
-        setTotalAmount(amount.toFixed(2));
-        setLoader(false);
-    }, [])
-
-    const handleName=(e)=>{
-        setName(e)
-        if(nameChecked){
-            setApplicantName(e)
-        }
-    }
-
-    const handleEmail=(e)=>{
-        setEmail(e)
-    }
-
-    const handleMobileNumber=(e)=>{
-        setMobileNumber(e)
-    }
-
-    const handleRelation=(e)=>{
-         setRelation(e.value)
-    }
-
-    const handleTenure=(e)=>{
-        setTenure(e.value)
-    }
-
-    const handleRemark=(e)=>{
-        setRemark(e)
-    }
-
-    const handleBorrowerName=(e)=>{
-        setApplicantName(e)
-    }
-
-    const handleBorrowerToggle=()=>{
-        let tempCheck = nameChecked 
-        setNameChecked(!nameChecked);
-        console.log(tempCheck,name)
-        if(!tempCheck){
-            setApplicantName(name)
-        }else{
-            setApplicantName('')
-        }
-    }
-
-    useEffect(()=>{
-        if(nameChecked){
-            handleBorrowerName(name)
-            // setApplicantName(name)
-        }else{
-            setApplicantName(applicantName)
-        }
-    },[nameChecked])
-
-    const closeQuickView=()=>{
-        setQuickView(false)
-    }
-
-    const openQuickView=()=>{
-        setQuickView(true)
-        handleStudentClick()
-    }
-
-    const downloadCollapsiblePdf=(item)=>{
-        let name = item.student_name.split(' ');
-        let state =  {
-            ...item,
-            'instituteLogo': instituteLogo,
-            name
-        }
-        downloadTransaction(state)
-    }
-
-    const handleStudentClick = async () => {
-
-        let newQuickViewState = {};
-        newQuickViewState["student"] = student;
-
-        await apiRequest({
-            url: `/api/kid/v1/transactions/${student?.id}/`,
-            method: 'GET',
-            token: getToken(),
-            onSuccess: async (data) => {
-                newQuickViewState["transactionHistory"] = data.data;
-                setQuickViewState(newQuickViewState);
+    }else{
+        await axios.post(`${API_URL}/api/loan/v1/loan-lead/`, requestData(formData), {
+            headers: {
+                token: `${getToken()}`,
             },
-            onError: (response) => {
-                alert(response.data.error)
-            }
+        }).then(res => {
+            alert("Data Saved Successfully")
         })
-  
-    };
+        .catch(err => {
+           return err.response
+        })
+    }
+}
 
-    return (
-        <>
-        {
-            loanSuccess ? 
-            <LoanSuccess loanData={loanData} adhocLoan={false} />
-            :
-        <>
-        <Header
-             title="Pay With Credenc"
-             icon={student.logo}
-             openQuickView={()=>openQuickView()}
-           />
-        <div className='loan'>
-            <div style={window.innerWidth > 500 ? {minHeight: '12rem',width: '100%',display:'flex',justifyContent:'center',alignItems:'center'} : {minHeight: '15rem',width:'100%'}}>
-                <StudentDetails 
-                        name={student.name}
-                        id={student.prn}
-                        grade={student.course}
-                        school={student.college}
-                />
-            </div>
-               
-               <div className='amount-container'>
-                    <div className='amount-label'>
-                        Total Amount
+  return (
+    <div className='lead-detail-page'>
+        <div className='lead-page-header full-width'>
+            <div className='row full-width'>
+                <div className='row' style={{marginLeft: 24}}>
+                    <img src={caretIcon} onClick={()=>handleBack()} style={{cursor:'pointer'}}/>
+                    <div className='column' style={{marginTop: 20,marginLeft: 12}}>
+                        <span className='lead-page-heading' >{studentData?.full_name}</span>
+                        <span className='lead-page-subheading'> {studentData?.phone_number}</span>
                     </div>
-                    <div className='amount'>
-                        ₹ {totalAmount}
-                    </div>
-               </div>
-               
-               <div className="loan-application">
-                   <div>
-                       <h2 className="loan-application-heading">Loan Application</h2>
-                   </div>
-                    <form className='form'>
-                        <div className='form-content'>
-                            <div className="formDiv">
-                                <div className='toggle-content'>
-                                    <label className="label" style={{marginBottom: 0}}>Applicant's Name</label>
-                                    <div className='toggle-content'>
-                                        <Switch onChange={()=>handleBorrowerToggle()} checked={nameChecked} height={18} width={36} />
-                                        <p style={{marginLeft: 5,fontSize: 11}}>Name same as borrower</p>
-                                    </div>
-                                </div>
-                                <InputField handleChange={(e)=>handleName(e)} maxLength={30} />
-                            </div>
-                            <div className="formDiv">
-                                <label className="label">Applicant's Email</label>
-                                <InputField handleChange={(e)=>handleEmail(e)} />
-                            </div>
-                        </div>
-                        <div className='form-content'>
-                            <div className="formDiv">
-                                <label className="label">Borrower Name</label>
-                                <InputField handleChange={(e)=>handleBorrowerName(e)} maxLength={30} value={applicantName} disabled={nameChecked} />
-                            </div>
-                            <div className="formDiv">
-                                <label className="label">School/Institute Name</label>
-                                <InputField value={student.college} disabled={true} />
-                            </div>
-                        </div>
-                        <div className='form-content'>
-                            <div className="formDiv">
-                                <label className="label">Applicant's Phone Number</label>
-                                <InputField handleChange={(e)=>handleMobileNumber(e)} maxLength={10} inputType="tel" />
-                            </div>
-                            
-                            <div className="formDiv" style={ window.innerWidth > 500 ? {marginTop: 0} : null }>
-                                <label className="label">Relationship</label>
-                                <Select
-                                    defaultValue={relation}
-                                    onChange={(e)=>handleRelation(e)}
-                                    options={relations}
-                                    styles={select}
-                                />
-                            </div>
-                        </div>
-                        <div className='form-content'>
-                            <div className="formDiv" style={ window.innerWidth > 500 ? {marginTop: 0} : null }>
-                                <label className="label">Tenure</label>
-                                <Select
-                                    defaultValue={tenure}
-                                    onChange={(e)=>handleTenure(e)}
-                                    options={tenures}
-                                    styles={select}
-                                />
-                            </div>
-                            <div className="formDiv">
-                                <label className="label">Course Fee</label>
-                                <InputField value={totalAmount} disabled={true} />
-                            </div>
-                        </div>
-                        <div className='form-content'>
-                        <div className="formDiv">
-                                <label className="label">Course</label>
-                                <InputField value={student.course} disabled={true}/>
-                            </div>
-                            <div className="formDiv">
-                                <label className="label">Remark</label>
-                                <InputField handleChange={(e)=>handleRemark(e)} />
-                            </div>
-                        </div>
-                    </form>
-               </div>
-              <div className='button-container'>
-                <Button 
-                 text='Proceed' 
-                 classes='button'
-                 handleClick={()=>handleSubmit()}
-                />
-              </div>
+                </div>
             </div>
-            </>
-        }
-        {
-            quickView &&
-            <QuickViewModal 
-                 closeQuickView={()=>closeQuickView()}
-                 quickView={quickView}
-                 quickViewState={quickViewState}
-                 handleCollapsibleDownload={(item)=>downloadCollapsiblePdf(item)}
+        </div>
+        <div className='lead-page-content'>
+            <TabBar 
+                items={["Details", "Financials", "Documents"]}
+                handleTabNumber={handleTabNavigation}
+                selected={tab}
             />
+            {
+                tab === 0 && 
+                Object.keys(loanData).length > 0 && <div className="scrollable-form-container">
+                    <EditableLeadForm
+                        instituteName={studentData?.institute}
+                        viewType={formViewTypes.CREATE}
+                        previousFormData={loanData}
+                        formData={formData}
+                        setFormData={setFormData}
+                        showHeadings={true}
+                    />
+                    <div style={{width: '25%',position:'fixed',bottom: 40,left: 56}}>
+                        <Button 
+                          text='Save'
+                            classes={{
+                                background: '#8F14CC',
+                                borderRadius: '8px',
+                                height: '44px'
+                            }}
+                            textClass={{
+                                color: '#FFF',
+                                fontSize: '14px',
+                                fontFamily: 'Poppins',
+                                fontWeight: 600
+                            }}
+                            onClick={()=>saveLead()}
+                        />
+                    </div>
+              </div>
+            }
+            {
+                tab === 1 && 
+                <div className='financials-container row full-width'>
+                    <FinancialForm 
+                        leadData={loanData}
+                        token={getToken()}
+                    />
+                </div>
+            }
+            {
+                tab === 2 && 
+                <div className='document-container row full-width'>
+                    <div className='column' style={{gap:20}}>
+                        <div style={{...(documentValue === 'PAN Card' ? {background: '#F7F0FF',borderRadius: 8} : null), width: '100%'}}>
+                            <DocumentCard
+                                onClick={()=>handleDocumentsCard('PAN Card')}
+                                title={'PAN Card'}
+                                desc={'Upload a clear image of your Document clearly stating your name and date of birth.'}
+                                instruction={'Format: PDF, PNG, JPEG, JPG.'}
+                            />
+                        </div>
+                        <div style={{...(documentValue === 'Aadhaar Card' ? {background: '#F7F0FF',borderRadius: 8} : null), width: '100%'}}>
+                            <DocumentCard
+                                onClick={()=>handleDocumentsCard('Aadhaar Card')}
+                                title={'Aadhaar Card'}
+                                desc={'Upload a clear image of your Document clearly stating your name and date of birth.'}
+                                instruction={'Format: PDF, PNG, JPEG, JPG.'}
+                            />
+                        </div>
+                        <div style={{...(documentValue === 'Bank Statement' ? {background: '#F7F0FF',borderRadius: 8} : null), width: '100%'}}>
+                            <DocumentCard
+                                onClick={()=>handleDocumentsCard('Bank Statement')}
+                                title={'Bank Statement'}
+                                desc={'Upload a clear image of your Document clearly stating your name and date of birth.'}
+                                instruction={'Format: PDF, PNG, JPEG, JPG.'}
+                            />
+                        </div>
+                        {/* <div className='add-info-container row full-width'>
+                            <div className='row'>
+                                <img src={addIcon} height={20} width={20} style={{objectFit:'contain'}} />
+                                <span className='add-doc-text'>Additional Documents</span>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 256 256"><path d="M210.83,98.83l-80,80a4,4,0,0,1-5.66,0l-80-80a4,4,0,0,1,5.66-5.66L128,170.34l77.17-77.17a4,4,0,1,1,5.66,5.66Z"></path></svg>
+                        </div> */}
+                        <div style={{width: '100%'}}>
+                            <ChoiceBox 
+                                list={documentTypes}
+                                onSelect={(docType) => handleDocTypeSelection(docType)}
+                                title={'Additional Documents'}
+                                selected={selectedDocTypes}
+                            />
+                        </div>
+
+                        {Array.from(selectedDocTypes).map((docType, index) => (
+                            <div style={{...(documentValue === docType ? {background: '#F7F0FF',borderRadius: 8} : null), width: '100%'}}>
+                                <DocumentCard
+                                    onClick={()=>handleDocumentsCard(docType)}
+                                    id={`${docType}-${index}`}
+                                    title={docType}
+                                    desc={'Upload a clear image of your Document clearly stating your name and date of birth.'}
+                                    instruction={'Format: PDF, PNG, JPEG, JPG.'}
+                                    isMandatory={false}
+                                    onRemove={() => {
+                                        handleDocTypeSelection(docType)
+                                    }}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <div className='row' style={{border: '1px solid #8F14CC', borderRadius: '8px', justifyContent: 'center'}}>
+                        <Upload 
+                            showBorder={true} 
+                            token={props?.token} 
+                            selectedFiles={selectedFiles}
+                            setSelectedFiles={setSelectedFiles}
+                            deletedFiles={deletedFiles}
+                            setDeletedFiles={setDeletedFiles}
+                            verifiedFiles={verifiedFiles}
+                            setVerifiedFiles={setVerifiedFiles}
+                            removeFile={removeFile}
+                            getDocumentType={getDocumentType}
+                            currentUploadState={currentUploadState}
+                            onDrop={switchToPreviewState}
+                            onCancel={() => removeFile(0)}
+                            onUpload={() => {
+                                switchToUploadedState();
+                                setTimeout(() => switchToDropState(), 3000)
+                            }}
+                            leadID={studentData?.lead_id}
+                            getDocumentType={()=>getDocumentType()}
+                            documentValue={documentValue}
+                        />
+                    </div>
+                </div>    
+            }
+        </div>
+        {
+        loader && 
+          <div className="credenc-loader-white fullscreen-loader" style={{position:'absolute'}}>
+            <TailSpin color="#00BFFF" height={100} width={100}/>
+          </div>
         }
-        <ChatWidget
-            token={`${PAPERCUPS_TOKEN}`}
-            inbox={`${PAPERCUPS_INBOX}`}
-            title="Welcome to Credenc Fee Pay"
-            subtitle="Ask us anything in the chat window below 😊"
-            primaryColor="#8F14CC"
-            newMessagePlaceholder="Start typing..."
-            showAgentAvailability={true}
-            agentAvailableText="We're online right now!"
-            agentUnavailableText="We're away at the moment."
-            iconVariant="outlined"
-            baseUrl="https://app.papercups.io"
-            customer={{
-              name: student.name,
-              email: student.email,
-              metadata: {
-                college: student.college,
-                id: student.id,
-                course: student.course,
-                batch: student.batch,
-                prn: student.prn
-              }
-            }}
-        />
-        </>
-    )
+    </div>
+  )
 }
-
-const select = {
-    height: 54,
-    width: '40%'
-}
-
-
-

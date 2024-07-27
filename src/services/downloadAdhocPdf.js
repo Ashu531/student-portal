@@ -6,7 +6,7 @@ export const downloadAdhocPdf = (state) => {
     const doc = new jsPDF('p', 'pt', 'a4', true);
     let pdfContent = `<div style="padding: 50px 20px;background: #FFF; color: #000; font-size: 16px; width: 81.25%;heigth:100%;">
     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-    <h1 style="font-weight: bolder;font-family: 'Montserrat';font-size:44px">
+    <h1 style="font-weight: bolder;font-family: 'Poppins';font-size:44px">
         Receipt
     </h1>
     <div style="padding: 30px 40px">
@@ -14,7 +14,7 @@ export const downloadAdhocPdf = (state) => {
     </div>
     </div>
     <table>
-        <tr style="text-align: left;font-family: 'Montserrat';">
+        <tr style="text-align: left;font-family: 'Poppins';">
             <td style="width: 70%; border: none; vertical-align: top;">
                 <h2>Student Details</h2>
                 <table style="border-collapse: collapse; width: 100%;">
@@ -35,8 +35,8 @@ export const downloadAdhocPdf = (state) => {
         </tr>
     </table>
 
-    <h2 style="background-color: #fff; color: #000000; font-weight: bold;font-family: 'Montserrat';">Transactions Details</h2>
-    <table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
+    <h2 style="background-color: #fff; color: #000000; font-weight: bold;font-family: 'Poppins';">Transactions Details</h2>
+    <table style="border-collapse: collapse; width: 100%;font-family: 'Poppins';">
     <tr>
         <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Fee Payment Reference ID</td>
         <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.txnid}</td>
@@ -55,8 +55,8 @@ export const downloadAdhocPdf = (state) => {
     </tr>
     </table>
 
-    <h2 style="font-family: 'Montserrat';">Installments</h2>
-    <table style="border-collapse: collapse; width: 100%;font-family: 'Montserrat';">
+    <h2 style="font-family: 'Poppins';">Installments</h2>
+    <table style="border-collapse: collapse; width: 100%;font-family: 'Poppins';">
     <tr>
         <td style="border: 1px solid #ddd; padding: 8px; text-align: left;width: 40%;">Installment Amount</td>
         <td style="border: 1px solid #ddd; padding: 8px; text-align: left;font-weight: bolder;">${state.amount}</td>
@@ -86,9 +86,9 @@ export const downloadAdhocPdf = (state) => {
             const footerX = 0; // Aligned to the start of the page horizontally
             const footerY = pageHeight - footerImageHeight; // Aligned to the bottom of the page
 
-            // doc.addFont('Montserrat-Regular', 'Montserrat', 'normal');
+            // doc.addFont('Poppins-Regular', 'Poppins', 'normal');
 
-            // Set the font to Montserrat
+            // Set the font to Poppins
             doc.setFont('Helvetica');
             // Add the footer image
             doc.addImage(credencWoodmark, 'PNG', footerX, footerY, footerImageWidth, footerImageHeight);

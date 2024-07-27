@@ -214,8 +214,9 @@
         }
 
         .payment-options-container {
-            width: 100%;
+            // width: 100%;
             display: flex;
+            align-self: flex-start;
             gap: 1rem;
             row-gap: 1rem;
             flex-wrap: wrap;
@@ -291,7 +292,7 @@
     pointer-events: none;
 }
 
-@media screen and(max-width: 499px){
+@media screen and (max-width: 499px){
 
     .tooltip .tooltiptext {
         top: 100%;
@@ -345,9 +346,13 @@
             }
         }
     }
+
+    .payment-options-container{
+        width: 100%;
+    }
 }
 
-// @media screen and(max-height: 600px){
+// @media screen and (max-height: 600px){
 //     .home{
 //         overflow: scroll;
 //         padding-top: 12%;

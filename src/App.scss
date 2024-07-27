@@ -98,6 +98,23 @@ body {
 }
 
 
+.column {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+
 .wrapper, .small-wrapper, .input-wrapper, .small-wrapper-colored{
   position: relative;
 
@@ -240,7 +257,7 @@ body {
   background-position-x: left;
 }
 
-@media screen and(max-width: 499px){
+@media screen and (max-width: 499px){
 
   .hideOnMobile{
     display: none;

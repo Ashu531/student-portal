@@ -1,0 +1,83 @@
+.financial-form-container{
+    width: 100%;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.financial-form-header{
+    color: #0B090D;
+    font-size: 20px;
+    font-family: 'Poppins';
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.financial-form-header{
+    color: #0B090D;
+    font-size: 20px;
+    font-family: 'Poppins';
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.finacial-form-divider{
+    width: 20%;
+}
+
+.financial-credenc-loader-white{
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 1rem 0;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    border-radius: 1.2rem;
+}
+
+.financial-fullscreen-loader{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(0.01rem);
+    /* background-color: rgba(0,0,0,0.5); */
+    background-size: auto;
+    -webkit-background-size: auto;
+    -moz-background-size: auto;
+    -o-background-size: auto;
+    background-position-y: center;
+    background-position-x: left;
+}
+
+.download-credenc-loader-white{
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 1rem 0;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    border-radius: 1.2rem;
+}
+
+.download-fullscreen-loader{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(0.01rem);
+    /* background-color: rgba(0,0,0,0.5); */
+    background-size: auto;
+    -webkit-background-size: auto;
+    -moz-background-size: auto;
+    -o-background-size: auto;
+    background-position-y: center;
+    background-position-x: left;
+}

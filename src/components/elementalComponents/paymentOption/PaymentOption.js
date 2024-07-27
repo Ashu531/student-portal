@@ -29,7 +29,7 @@ export default function PaymentOption({
                 {tag && <div className='tag'>{tag}</div>}
             </div>
             <div>
-                {type === 'loan' && <img src={credencPaymentLogo} className='icon' />}
+                {/* {type === 'loan' && <img src={credencPaymentLogo} className='icon' />} */}
                 {type === 'online' && <img src={onlinePaymentIcon} className='icon' />}
             </div>
         </div>

@@ -1,0 +1,239 @@
+.plms-content-box {
+    /* min-width: 50rem; */
+    /* background-color: var(--background-top); */
+    border-radius: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+   
+}
+
+.plms-header {
+    width: 100%;
+    height: 5.6rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background-middle);
+    border-radius: 0.8rem 0.8rem 0 0;
+    padding: 1.6rem 2.4rem;
+    /* border-bottom: 1px solid #e9e6e2; */
+  }
+  .plms-dialog-body {
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    padding: 3.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    overflow: scroll;
+
+  }
+    .plms-template{
+        width: 100%;
+        padding: 1.6rem;
+        background: #fafafa;
+        border-radius: 1.2rem;
+        border: 1px solid #e9e6e2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        /* img{
+            width: 3.2rem;
+            height: 3.2rem;
+        } */
+
+    .plms-dropzone{
+        margin: 2rem 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 4rem;
+        border-radius: 2.4rem;
+        /* border: 2px dashed #99bbff; */
+        cursor: pointer;
+    }
+
+        /* input {
+            display: none;
+        } */
+
+        /* img{
+            width: 60px;
+            height: 60px;
+        } */
+    
+
+    .plms-file-container{
+        width: 100%;
+    }
+
+  .plms-deleted{
+    display: none;
+  }
+
+  .plms-error-text{
+    color: red;
+  }
+
+  .plms-title{
+    color: #444444;
+    font-family: 'Poppins';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: capitalize;
+  }
+
+  .plms-or-text{
+    color: #444444;
+    font-family: 'Poppins';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 10px 0px;
+  }
+
+
+  .plms-subtitle{
+    color: #8F14CC;
+    font-family: 'Poppins';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-decoration-line: underline;
+    text-transform: capitalize;
+  }
+
+  .file-preview{
+    max-width: 350px;
+    max-height: 230px;
+  }
+
+  .react-pdf__Document, .react-pdf__Page, .react-pdf__Page__canvas {
+    margin: 0 !important;
+    max-width: 345px !important;
+    max-height: 230px !important;
+    overflow: hidden;
+  }
+
+  .plms-status-bar{
+      width: 100%;
+      border-radius: 30px;
+      background: rgb(229, 229, 229);
+      border: 1px solid #EAEAEA;
+      overflow: hidden;
+      position: relative;
+  }
+
+  .plms-error{
+    background: red;
+  }
+
+  .plms-footer {
+    width: 100%;
+    height: 7.2rem;
+    /* background-color: var(--background-middle); */
+    border-radius: 0 0 0.8rem 0.8rem;
+    padding: 1.6rem 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* border-top: 1px solid #e9e6e2; */
+  }
+
+  .plms-back-button{
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 1.2rem;
+    flex-grow: 1;
+    color: #b3b3b3;
+  }
+
+  .plms-heading {
+    font-size: 1.8rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--text-header-high-emphasis);
+  }
+  .plms-cross-icon-wrapper {
+    transition: all ease-in-out 0.3s;
+    border-radius: 20%;
+    display: flex;
+    align-items: center;
+    padding: 1px;
+    justify-content: center;
+  
+  }
+
+  /* .img {
+    cursor: pointer;
+  } */
+
+  /* :hover.img{
+    padding: 1px;
+    background: var(--background-base);
+  } */
+
+  .plms-status{
+    height: 20px;
+    border-radius: 5px;
+    background: #F7F0FF;
+  }
+
+  .plms-status-text{
+    color: #000;
+    font-family: "Poppins";
+    font-size: 14px;
+    font-weight: 500;
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+
+  .plms-icon-container{
+    padding: 1.2rem;
+    background: #f1f3f8;
+    border-radius: 1.2rem;
+
+  
+}
+
+/* img{
+    width: 2.8rem;
+    height: 2.8rem;
+} */
+
+.plms-cross-icon-container{
+    padding: 0.7rem 0.8rem 0.2rem 0.7rem;
+    /* background: #f1f3f8; */
+    /* border-radius: 50%; */
+    cursor: pointer;
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    
+}
+
+/* img{
+    width: 2rem;
+    height: 2rem;
+} */
+
+::-webkit-scrollbar{
+    display: none;
+}
+
+  
