@@ -11,16 +11,6 @@ const configs = addBaseConfig({
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
-          },
-        },
-      },
-      {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
@@ -45,18 +35,25 @@ const configs = addBaseConfig({
   },
   plugins: [
     new DefinePlugin({
+      // REACT_APP_ENCRYPTION_KEY: JSON.stringify(
+      //   "U2FsdGVkX19p7zIuVPh8mW1fp9PdMxR0aGHzQ0IbJuw="
+      // ),
+      // LOGIN_API_URL: JSON.stringify("http://localhost:7777"),
       API_URL: JSON.stringify("http://ec2-16-16-27-246.eu-north-1.compute.amazonaws.com:8000"),
       PAPERCUPS_TOKEN: JSON.stringify('56c70349-6e9c-4af4-9523-214be28e4f63'),
       PAPERCUPS_INBOX: JSON.stringify('50015cd0-ebc1-4726-bbc8-0728e7851f93')
     }),
+    // new HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       title: "React Cards",
       filename: "index.html",
       template: "./index.html",
+      // favicon: "src/assets/invoid-logo.svg",
     }),
   ],
   devServer: {
     host: "0.0.0.0",
+    // disableHostCheck: true,
     allowedHosts: "all",
     port: 4444,
     historyApiFallback: true,
