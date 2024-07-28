@@ -307,7 +307,6 @@ const saveLead=async()=>{
                             }}
                             leadID={studentData?.lead_id}
                             getDocumentType={()=>getDocumentType()}
-                            documentValue={documentValue}
                         />
                     </div>
                 </div>    
