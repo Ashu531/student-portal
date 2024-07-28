@@ -31,7 +31,7 @@ const configs = addBaseConfig({
   },
   plugins: [
     new DefinePlugin({
-      API_URL: JSON.stringify("https://fmsbackend.credenc.com"),
+      API_URL: JSON.stringify("http://ec2-16-16-27-246.eu-north-1.compute.amazonaws.com:8000"),
       PAPERCUPS_TOKEN: JSON.stringify('56c70349-6e9c-4af4-9523-214be28e4f63'),
       PAPERCUPS_INBOX: JSON.stringify('50015cd0-ebc1-4726-bbc8-0728e7851f93')
     }),
