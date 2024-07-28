@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --config webpack-dev.config.js",
     "dev": "webpack --config webpack-dev.config.js",
-    "build": "webpack --config webpack-prod.config.js"
+    "build": "webpack --config webpack-prod.config.js",
+    "dev-server": "webpack-dev-server" 
   },
   "eslintConfig": {
     "extends": [
